@@ -4,20 +4,23 @@ import {Login, SignUp, Dashboard, CategoryPage, Checkout, ProductPage, SearchPag
 import "./SCSS/index.scss"
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <nav>
         <ul>
           <li>
-            <Link to="/categoryPage/smart-watch">watches</Link>
+            <Link reloadDocument to="/categoryPage/smart-watch">
+              watches
+            </Link>
           </li>
           <li>
-            <Link to="/categoryPage/smart-band">bands</Link>
+            <Link reloadDocument to="/categoryPage/smart-band">
+              bands
+            </Link>
           </li>
           <li>
-            <Link to="/categoryPage/smart-strap">straps</Link>
+            <Link reloadDocument to="/categoryPage/smart-strap">straps</Link>
           </li>
         </ul>
       </nav>
@@ -25,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/categoryPage/:id/*" element={<CategoryPage />} />
-        <Route path="/productPage" element={<ProductPage />} />
+        <Route path="/productPage/:id" element={<ProductPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
