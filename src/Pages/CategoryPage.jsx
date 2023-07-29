@@ -1,39 +1,35 @@
 import { useState, useEffect} from "react"
 import { Link, useParams } from "react-router-dom"
-
+import useFetch from "../Components/ReusableComponents/useFetch"
 
 
 const CategoryPage = () => {
-  const [product, setProduct] = useState([])
   const { id } = useParams()
+  const {
+    isLoading,
+    isError,
+    data: products,
+  } = useFetch(`http://localhost:3000/products?category=${id}`)
 
-  console.log(id)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/products?category=${id}`)
-        const fetchedProduct = await response.json()
-        console.log(fetchedProduct)
-        setProduct(fetchedProduct)
-
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    fetchData()
-  }, [])
-  
+  if (isLoading) {
+    return <h2>Loading...</h2>
+  }
+  if (isError) {
+    return <h2>There was an error</h2>
+  }
 
   return (
     <>
       <div> {id}</div>
      
 
-      {product.map((el) => (
-        <Link key={el.id} to={`/productPage/${el.id}`}>{el.name}</Link>
-      ))}
+      {products.map((el) => {
+        const {id, name} = el
+        
+       return <Link key={id} to={`/productPage/${id}`}>
+          {name}
+        </Link>
+      })}
     </>
   )
 }

@@ -1,28 +1,22 @@
-import { useState, useEffect } from "react"
-import { useParams, useSearchParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
+import useFetch from "../Components/ReusableComponents/useFetch"
 
 const ProductPage = () => {
    const { id } = useParams()
-   const [product, setProduct] = useState([])
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(
-            `http://localhost:3000/products/${id}`
-          )
-          const fetchedProduct = await response.json()
-          // console.log(fetchedProduct)
-          setProduct(fetchedProduct)
-        } catch (error) {
-          console.log(error)
-        }
-      }
+   const { isLoading, isError, data: product } = useFetch(
+     `http://localhost:3000/products/${id}`
+   )
 
-      fetchData()
-    }, [])
+  if(isLoading){
+    return <h2>Loading...</h2>
+  }  
+  if(isError){
+    return <h2>There was an error</h2>
+  }
 
-  return <div>ProductPage {product.id} </div>
+  const { id: dataId } = product
+
+  return <div>ProductPag {dataId} </div>
 }
 export default ProductPage
 
