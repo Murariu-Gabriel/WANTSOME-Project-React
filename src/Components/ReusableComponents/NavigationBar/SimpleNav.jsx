@@ -1,17 +1,9 @@
 import { Link } from "react-router-dom"
 
-const NavigationBar = () => {
+const SimpleNav = () => {
   return (
     <nav>
       <ul>
-        <li>
-          <Link reloadDocument to="/">
-            <img
-              src="/assets/Images/logo-images/second-logo/png/logo-no-background.png"
-              alt="Logo"
-            />
-          </Link>
-        </li>
         <li>
           <Link reloadDocument to="/categoryPage/smart-watch">
             watches
@@ -31,4 +23,4 @@ const NavigationBar = () => {
     </nav>
   )
 }
-export default NavigationBar
+export default SimpleNav
