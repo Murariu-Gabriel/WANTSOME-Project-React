@@ -3,9 +3,12 @@ import SimpleNav from "./SimpleNav"
 import NavToggle from "./NavToggle"
 import SearchBar from "./SearchBar"
 
+import "./NavigationStyles/header.scss"
+
+
 const NavigationBar = () => {
   return (
-    <section>
+    <section className="navigation">
       <div className="container">
         <header>
           <button id="h-button">
@@ -59,6 +62,8 @@ const NavigationBar = () => {
           </button>
 
           <SearchBar/>
+
+          
         </header>
       </div>
     </section>

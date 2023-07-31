@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/categoryPage/:id/*" element={<CategoryPage />} />
         <Route path="/productPage/:id" element={<ProductPage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/search/:id" element={<SearchPage />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

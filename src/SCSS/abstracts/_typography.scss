@@ -1,0 +1,73 @@
+@use "variables" as *;
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500&display=swap');
+
+$s-font: 1rem;
+$m-font: 1.125rem;
+$l-font: 1.75rem;
+$xl-font: 2.25rem;
+$h2-font-size: 2.5rem;
+$h1-font-size: 3.5rem;
+
+$h1-line-height: 3.625rem;
+
+body{
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    line-height: 25px;
+}
+
+
+h1, h2, h3, h4, h5, h6, .overline, .subtitle{
+  text-transform: uppercase;
+}
+
+h1{
+    letter-spacing: 0.125rem;
+    line-height: 3.625rem;
+    font-size: 3.5rem;
+}
+
+h2{
+    letter-spacing: 0.094rem;
+    line-height: 2.75rem;
+    font-size: 2.5rem;
+}
+
+h3{
+    letter-spacing: 0.072rem;
+    line-height: 2.25rem;
+    font-size: 2rem;
+}
+
+h4{
+    letter-spacing: 0.125rem;
+    line-height: 2.25rem;
+    font-size: 1.75rem;
+}
+
+h5{
+    letter-spacing: 0.106rem;
+    line-height: 2.063rem;
+    font-size: 1.5rem;
+}
+
+h6{
+    letter-spacing: 0.081rem;
+    line-height: 1.5rem;
+    font-size: 1.125rem;
+}
+
+.overline{
+    letter-spacing: 0.625rem;
+    line-height: 1.188rem;
+    font-size: 0.875rem;
+    color: $orange;
+}
+
+.subtitle{
+    letter-spacing: 0.063rem;
+    line-height: 1.563rem;
+    font-size: 0.875rem;
+    color: $orange;
+}
+
