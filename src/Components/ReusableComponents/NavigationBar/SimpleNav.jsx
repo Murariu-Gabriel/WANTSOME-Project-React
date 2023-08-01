@@ -5,17 +5,17 @@ const SimpleNav = () => {
     <nav>
       <ul>
         <li>
-          <Link reloadDocument to="/categoryPage/smart-watch">
+          <Link className="link" reloadDocument to="/categoryPage/smart-watch">
             watches
           </Link>
         </li>
         <li>
-          <Link reloadDocument to="/categoryPage/smart-band">
+          <Link className="link" reloadDocument to="/categoryPage/smart-band">
             bands
           </Link>
         </li>
         <li>
-          <Link reloadDocument to="/categoryPage/smart-strap">
+          <Link className="link" reloadDocument to="/categoryPage/smart-strap">
             straps
           </Link>
         </li>

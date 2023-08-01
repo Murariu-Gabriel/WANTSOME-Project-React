@@ -1,0 +1,43 @@
+@use "../../../../SCSS/abstracts/index" as *;
+
+@media screen and (min-width: 990px) {
+  .container {
+    max-width: 1100px;
+    padding: 0;
+  }
+  
+  .navigation{
+    >.container {
+        
+      header {
+        justify-content: space-between;
+        align-items: center;
+
+        >button {
+          &:first-of-type {
+            display: none;
+          }
+        }
+
+        // NAV REVERTION
+        .nav-toggle{ 
+          display: none;
+        }
+
+        nav {
+          margin-right: auto; 
+          
+          &:not(.visual-nav){
+            display: inline-block;
+            flex-grow: 2;
+
+            ul {
+              @include flex(center, center, none, row);
+              gap: $m-spacing;
+            }
+          }
+        }
+      }
+    }
+  }
+}
