@@ -1,0 +1,38 @@
+@use "../../../../../SCSS/abstracts/index" as *;
+
+@media screen and (min-width: 550px) {
+    .navigation{
+        
+        >.container{
+            header{
+                .search-container {
+                    margin: 0;
+                    margin-left: auto;
+            
+                    .form-content{
+            
+                        .input-container{
+                        
+                            .close-search{
+                                right: 50px;
+                                width: 40px;
+                                svg{
+                                    width: 20px;
+                                }
+                            }
+                        }
+                    }
+            
+                    .content-width{
+                        // width: 90%;
+                        padding: 1.5rem 0;
+                    }
+            
+                    .top{
+                        top: 0;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -5,6 +5,8 @@ import "./SCSS/index.scss"
 
 function App() {
 
+  // Right now if you want to render the generated looped items from  categories you need to reload page, you might need to think about another way of doing this
+
   return (
     <>
       <NavigationBar />

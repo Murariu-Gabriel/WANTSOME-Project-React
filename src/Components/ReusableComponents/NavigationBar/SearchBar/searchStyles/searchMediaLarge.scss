@@ -1,0 +1,19 @@
+@use "../../../../../SCSS/abstracts/index" as *;
+
+@media screen and (min-width: 990px) {
+    .navigation{
+        nav {
+            margin-right: auto; 
+            
+            &:not(.visual-nav){
+                display: inline-block;
+                flex-grow: 2;
+
+                ul {
+                    @include flex(center, center, none, row);
+                    gap: $m-spacing;
+                }
+            }
+        }
+    }
+}

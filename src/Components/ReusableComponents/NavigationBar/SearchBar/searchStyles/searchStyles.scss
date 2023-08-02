@@ -1,0 +1,203 @@
+@use "../../../../../SCSS/abstracts/index" as *;
+
+
+
+.dummy{
+    max-width: 350px; 
+    width: 350px;
+    margin-left: auto; 
+    height: 35px;
+    width: 100%;
+}
+
+.search-container {
+    align-self: center;
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+
+    // transition: all 0.3s ease-in-out;
+    // transition: max-width 0.3 ease-in-out;
+    // transform-origin: center;
+    
+    
+    
+    .form-content{
+        
+        max-width: 1100px;
+        align-self: center;
+        width: 100%;
+        margin: 0 auto;
+        
+        .input-container{
+                position: relative;
+                margin: 0 auto;
+                max-width: 450px;
+                
+                input {
+                    position: relative;
+                    box-sizing: border-box;
+                    width: 100%;
+                    padding: 0.5rem 1rem;
+                    // max-width: 350px;
+                    &:focus{
+                    outline:none;
+                    }
+                    font-family: inherit;
+                }
+                
+                .place-holder{
+                    position: absolute;
+                    pointer-events: none;
+                    top: 0.4rem;
+                    left: 1.08rem;
+                    margin: 0;
+                    font-size: 0.84rem;
+                    font-weight: 700;
+                    color: rgba($color: $out-of-color-palette-gray, $alpha: 0.3);
+                }
+
+                button {
+                    position: absolute;
+                    background-color: transparent;
+                    fill: $black;
+                    height: 38px;
+                    width: 50px;
+                    top: 0;
+                    right: 0;
+                    border-bottom-right-radius: $base-border-radius;
+                    border-top-right-radius: $base-border-radius;
+                    transition: background-color 0.2s ease-in-out;
+                    svg {
+                        border-bottom-right-radius: $base-border-radius;
+                        border-top-right-radius: $base-border-radius;
+                        
+                        transition: background-color 0.2s ease-in-out;
+                    }
+
+                    &:hover {
+                        background-color: $orange;
+                        fill: $white;
+                    }
+
+                    
+                }
+                .close-search{
+                    right: 50px;
+                    width: 30px;
+                    border-radius: 0;
+                    
+                    svg{
+                        width: 15px;
+                    }
+
+                    &:hover{
+                        background-color: rgba($color: $orange, $alpha: 0.5);
+                    }
+
+                }
+
+                .hide{
+                    display: none;
+                }
+            }
+    }
+
+    .content-width{
+        width: 90%;
+
+        .input-container button{
+            border-bottom-right-radius: 0;
+        }
+        
+    }
+    
+    .top{
+        border-radius: $base-border-radius;
+        top: 5.12rem;
+        height: fit-content;
+        input{
+            border: 2px solid $orange;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0 ;
+            border-bottom: none;
+        }
+    }
+
+    .search-results{
+        background-color: $white;
+        margin-top: -1px;
+        max-width: 450px;
+        overflow-y: scroll;
+        border: 2px solid $orange;
+        border-top: none;
+        border-bottom-left-radius: $base-border-radius;
+        border-bottom-right-radius: $base-border-radius;
+        max-height: 400px;
+
+            &::before{
+                content : "";
+                
+                position: absolute;
+                left: 50%;
+                top: 39px;
+                height: 1px;
+                width: 90%; 
+                transform: translate(-50%, -50%);
+                border-bottom: 2px solid $gray;
+            }
+
+            .suggestion{
+                padding: 0.5rem 1rem;
+                font-weight: 800;
+                margin: 0;
+            }
+
+            
+            &::-webkit-scrollbar{
+                width: 0.7rem;
+                border-radius: $base-border-radius;
+            } 
+
+            &::-webkit-scrollbar-track{
+                padding-top: 2px;
+                border-radius: $base-border-radius;
+                
+            }
+            &::-webkit-scrollbar-thumb{
+                border-radius: $base-border-radius;
+            }
+
+                
+        ul{
+            padding-bottom: 1rem;
+            border-radius: $base-border-radius;
+            li{
+                position: relative;
+
+                a{
+                    display: flex;
+                    padding: 0.5rem 1rem;
+                    align-items: center;
+
+                    svg{
+                        fill: gray;
+                    }
+
+                    &:hover{
+                        background-color: $gray;
+                    }
+                }
+            }
+
+            .highlight{
+                color: $orange;
+            }
+            
+        }
+        
+        
+    }
+
+} 
