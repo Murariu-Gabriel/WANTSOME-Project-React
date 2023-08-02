@@ -2,6 +2,7 @@ import { Link, Route, Routes, NavLink } from "react-router-dom"
 import {Login, SignUp, Dashboard, CategoryPage, Checkout, ProductPage, SearchPage, NotFound} from "./Pages"
 import NavigationBar from './Components/ReusableComponents/NavigationBar/NavigationBar'
 import "./SCSS/index.scss"
+import Footer from "./Components/ReusableComponents/Footer/Footer"
 
 function App() {
 
@@ -21,6 +22,9 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+
+
+      <Footer/>
     </>
   )
 }

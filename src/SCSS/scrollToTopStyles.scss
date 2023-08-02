@@ -1,0 +1,32 @@
+ @use "./index.scss" as *;
+ 
+ .back-to-top{
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
+      color: white;
+      background: none;
+      height: 48px;
+      width: 48px;
+      border: none;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.7);
+      cursor: pointer;
+      position: fixed;
+      // bottom: 80px;
+      // bottom: 25px;
+      // right: 22px;
+      bottom: 2%;
+      right: 3.5%;
+      z-index: 3;
+      transition: color 0.3s ease-in-out;
+      display: none;
+
+      svg{
+        font-size: 2rem;
+      }
+
+      &:hover{
+        color: $orange;
+      }
+    }

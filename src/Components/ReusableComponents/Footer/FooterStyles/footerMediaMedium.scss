@@ -1,0 +1,30 @@
+@use "../../../../SCSS/abstracts/index" as *;
+
+
+@media screen and (min-width: 550px) {
+    footer {
+        .container {
+            @include flex(flex-start, center, wrap, unset);
+            text-align: unset;
+            padding: $m-spacing 0;
+
+            .back-to-top{
+            bottom: 80px;
+            }
+
+            nav {
+            &:first-of-type {
+                width: 100%;
+                ul {
+                @include flex;
+                gap: $m-spacing;
+                }
+            }
+
+            &:last-of-type {
+                margin-left: auto;
+            }
+            }
+        }
+    }
+}

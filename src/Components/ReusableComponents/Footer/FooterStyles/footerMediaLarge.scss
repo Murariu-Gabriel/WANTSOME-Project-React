@@ -1,0 +1,36 @@
+@use "../../../../SCSS/abstracts/index" as *;
+
+@media screen and (min-width: 980px) {
+  footer {
+    .container {
+      img {
+        order: 1;
+      }
+
+      nav {
+        &:first-of-type {
+          width: min-content;
+          margin-left: auto;
+          order: 2;
+        }
+
+        &:last-of-type {
+          order: 4;
+          align-self: flex-end;
+        }
+      }
+
+      p {
+        width: 70%;
+
+        &:first-of-type {
+          order: 3;
+        }
+        
+        &:last-of-type {
+          order: 5;
+        }
+      }
+    }
+  }
+}
