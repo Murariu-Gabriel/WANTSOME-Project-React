@@ -1,13 +1,9 @@
-import { useEffect } from "react"
 import { useState } from "react"
 
 const Input = ({ htmlFor, label, type, placeholder, event }) => {
   const [inputValue, setInputValue] = useState("")
   const [isError, setIsError] = useState(false)
 
-  //   useEffect(() => {
-
-  // },[])
   const generateErrorMessage = (name, message) => {
 
     if(message){
@@ -22,12 +18,35 @@ const Input = ({ htmlFor, label, type, placeholder, event }) => {
   const validation = (e) => {
     setValue(e)
 
-   setIsError(event(e.target.value))
+    // Think about validation for empty spaces
+   
+    event().forEach((func) => {
+      
+        const functionValue =  func(e.target.value)
+
+        if (functionValue) {
+          setIsError(functionValue)
+
+        } else {
+
+          const checkForError = event().some(
+            (func) => func(e.target.value) === true
+          )
+
+          setIsError(checkForError)
+        }
+
+        
+            
+    })
+  
   }
   
   return (
     <div>
-      <label htmlFor={htmlFor}>{label}</label>
+      <label className={`${isError ? "show" : ""}`} htmlFor={htmlFor}>
+        {label}
+      </label>
       <span className={`${isError ? "show" : "hide"}`}>
         {generateErrorMessage(label)}
       </span>

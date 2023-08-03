@@ -1,10 +1,10 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import Input from "../../Components/ReusableComponents/FormComponents/Input"
 import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
 import "./signUpStyles.scss"
 
 const SignUp = () => {
-  
   const findUser = (user) => {
    const { data, isLoading, isError } = useFetch(`http://localhost:3000/users?email=${user}`)
     if(!isError){
@@ -18,13 +18,23 @@ const SignUp = () => {
     return value.length === 0
   }
 
-  const nameValidation = () => {
 
+  
+  const nameValidations = () => {
+
+    const namesValidation = (name) => {
+      const regex = /[\d!@#$%^&*()\-=_+[\]{};':"\\|,.<>/?]/
+      const test = regex.test(name)
+      return test
+    }
+
+
+    return [verifyIfInputEmpty, namesValidation]
   }
 
 
   const handleSubmit = () => {
-    
+
   }
 
 
@@ -39,7 +49,7 @@ const SignUp = () => {
               label={"First Name"}
               type={"text"}
               placeholder={"First Name"}
-              event={verifyIfInputEmpty}
+              event={nameValidations}
             />
 
             <Input
