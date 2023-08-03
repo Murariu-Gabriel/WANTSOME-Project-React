@@ -1,16 +1,18 @@
 import { useParams } from "react-router-dom"
-import useFetch from "../Components/ReusableComponents/useFetch"
+import useFetch from "../Components/ReusableComponents/Functions/useFetch"
 
 const ProductPage = () => {
-   const { id } = useParams()
-   const { isLoading, isError, data: product } = useFetch(
-     `http://localhost:3000/products/${id}`
-   )
+  const { id } = useParams()
+  const {
+    isLoading,
+    isError,
+    data: product,
+  } = useFetch(`http://localhost:3000/products/${id}`)
 
-  if(isLoading){
+  if (isLoading) {
     return <h2>Loading...</h2>
-  }  
-  if(isError){
+  }
+  if (isError) {
     return <h2>There was an error</h2>
   }
 

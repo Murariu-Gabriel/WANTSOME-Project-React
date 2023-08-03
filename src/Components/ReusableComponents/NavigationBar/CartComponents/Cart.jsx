@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import getCartItems from "../../getCartItems"
+import getCartItems from "../../Functions/getCartItems"
 import "./cartStyles/index.scss"
 
 // you might need to use useMemo or memo in this component

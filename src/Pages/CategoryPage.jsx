@@ -1,7 +1,6 @@
-import { useState, useEffect} from "react"
+import { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
-import useFetch from "../Components/ReusableComponents/useFetch"
-
+import useFetch from "../Components/ReusableComponents/Functions/useFetch"
 
 const CategoryPage = () => {
   const { id } = useParams()
@@ -21,14 +20,15 @@ const CategoryPage = () => {
   return (
     <>
       <div> {id}</div>
-     
 
       {products.map((el) => {
-        const {id, name} = el
-        
-       return <Link key={id} to={`/productPage/${id}`}>
-          {name}
-        </Link>
+        const { id, name } = el
+
+        return (
+          <Link key={id} to={`/productPage/${id}`}>
+            {name}
+          </Link>
+        )
       })}
     </>
   )
@@ -38,6 +38,3 @@ export default CategoryPage
 // Here if you want to generate components that have custom links you will have to use useSearchParams
 
 // i think you will have to make a component that will be looped here based on the data depening on the param id
-
-
-

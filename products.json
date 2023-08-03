@@ -1,3 +1,5 @@
+
+
 {
   "products": [
     {
@@ -550,6 +552,18 @@
           "item": "User Guide"
         }
       ]
+    }
+  ],
+  
+  "users": [
+    {
+      "userName": "Daniel",
+      "email": "some_email.gmail.com"
+    },
+
+    {
+      "userName": "Yan",
+      "email": "another_email.gmail.com"
     }
   ]
 }

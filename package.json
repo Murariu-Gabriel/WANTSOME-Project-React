@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "server-json": "json-server --watch products.json"
+    "server-json": "json-server -p 3000 --watch products.json -s ./node_modules/json-server/public"
   },
   "dependencies": {
     "json-server": "^0.17.3",

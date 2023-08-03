@@ -1,16 +1,21 @@
-import { Link, Route, Routes, NavLink } from "react-router-dom"
+import { useState } from "react"
+import { Link, Route, Routes, NavLink, useLocation } from "react-router-dom"
 import {Login, SignUp, Dashboard, CategoryPage, Checkout, ProductPage, SearchPage, NotFound} from "./Pages"
 import NavigationBar from './Components/ReusableComponents/NavigationBar/NavigationBar'
-import "./SCSS/index.scss"
 import Footer from "./Components/ReusableComponents/Footer/Footer"
+import "./SCSS/index.scss"
 
-function App() {
+const App = () => {
+   const location = useLocation()
 
+   const isSignInPage = location.pathname !== "/login" && location.pathname !== "/registration"
+
+    
   // Right now if you want to render the generated looped items from  categories you need to reload page, you might need to think about another way of doing this
 
   return (
     <>
-      <NavigationBar />
+      {isSignInPage && <NavigationBar />}
 
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -23,8 +28,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-
-      <Footer/>
+      {isSignInPage && <Footer />}
     </>
   )
 }

@@ -1,0 +1,153 @@
+@use "../../SCSS/abstracts/index" as *;
+
+body{
+  @include flex(center, center, unset, column);
+  background-color: $gray;
+}
+
+.login {
+  height: 100vh;
+  @include flex(unset, center, unset, unset);
+
+  .container {
+    border-radius: $base-border-radius;
+    // @include flex(unset, unset, unset, column);
+    background-color: $white;
+
+
+    width: 100vw;
+    height: 100vh;
+    a {
+      color: $black;
+      &:hover {
+        color: $orange;
+      }
+    }
+
+    form {
+
+      .hide{
+        display: none;
+      }
+
+      h2 {
+        text-align: center;
+        margin: 0;
+        text-transform: capitalize;
+        padding-top: $s-padding;
+      }
+
+      div {
+        margin-top: $base-spacing;
+        position: relative;
+        // @include just-flex;
+        // align-items: center; 
+        // flex-direction: column;
+        display: flex;
+        flex-wrap: wrap;
+        gap: $base-spacing - 0.6rem ;
+
+        label{
+         align-self: center;
+        }
+        span{
+          margin: 0 0 0 auto;
+        }
+
+        // .show{
+        //   display: initial;
+        //   color: #CD2C2C;
+        // }
+
+        input{
+          width: 100%;
+          // &:invalid{
+          //   // color: red;
+          //   border-color: red;
+          // }
+
+        }
+
+        .error {
+          border: 2px solid #cd2c2c;
+        }
+      }
+
+      a {
+        margin-left: auto;
+        text-transform: capitalize;
+      }
+
+      .sh-password{
+        position: absolute;
+        top: 42%;
+        right: 4%;
+        padding:0 ;
+        border: none;
+        background: none;
+        // background-color: green;
+        z-index: 1;
+        svg{
+          transition: color 0.3s ease-in-out;
+          cursor: pointer;
+          // pointer-events:none;
+          // background-color: red;
+        
+          &:hover{
+            // cursor: pointer;
+
+            &[stroke]{
+              color: $orange;
+            }
+          }
+
+        }
+      }
+
+      .button-1 {
+        margin-top: $m-spacing;
+        width: 100%;
+      }
+    }
+
+    .socials {
+      text-transform: capitalize;
+
+      ul {
+        @include flex(center, center, unset, unset);
+        gap: $base-spacing;
+
+        a {
+          fill: $black;
+          &:hover {
+            fill: $orange;
+          }
+        }
+      }
+
+      div {
+        text-align: center;
+
+        &:last-of-type {
+          padding: 0 $m-spacing;
+
+          a {
+            text-transform: uppercase;
+            font-size: larger;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 400px) {
+    .login{
+        .container{
+            width: 400px;
+            height: fit-content;
+            padding-bottom: 3rem;
+            box-shadow: 0px 0px 15px -2px rgba(0,0,0,0.65);
+        }
+    }
+}

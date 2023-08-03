@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar/SearchBar"
 import ButtonRender from "./ButtonRender"
 import Cart from "./CartComponents/Cart"
 import LogoToHome from "./LogoToHome"
+import UserOptions from "./UserOptions"
 
 import "./NavigationStyles/index.scss"
 import { useState } from "react"
@@ -12,6 +13,7 @@ import { useState } from "react"
 const NavigationBar = () => {
   const [navToggle, setNavToggle] = useState(false)
   const [cartToggle, setCartToggle] = useState(false)
+  const [userOptionsToggle, setUserOptionsToggle] = useState(false)
 
   const toggleNav = () => {
     setNavToggle(!navToggle)
@@ -41,7 +43,10 @@ const NavigationBar = () => {
             </svg>
           </button>
 
-          <button className="user-account">
+          <button
+            className="user-account"
+            onClick={() => setUserOptionsToggle(!userOptionsToggle)}
+          >
             <svg
               stroke="currentColor"
               strokeWidth="0"
@@ -59,6 +64,11 @@ const NavigationBar = () => {
       </div>
 
       {cartToggle ? <Cart /> : ""}
+      {userOptionsToggle ? (
+        <UserOptions />
+      ) : (
+        ""
+      )}
     </section>
   )
 }

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import useFetch from "../../useFetch"
+import useFetch from "../../Functions/useFetch"
 import "./searchStyles/index.scss"
 
 const SearchBar = () => {
@@ -9,7 +9,6 @@ const SearchBar = () => {
   const [placeholder, setPlaceholder] = useState("")
 
   const navigate = useNavigate()
-
 
   const {
     isLoading,
@@ -36,7 +35,6 @@ const SearchBar = () => {
   const loadSearch = () => {
     navigate(`/search/${searchValue}`)
   }
- 
 
   return (
     <>
