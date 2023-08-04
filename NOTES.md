@@ -1,3 +1,7 @@
+# NOTE
+
+- This project does not contain many libraries because I want to learn by doing most of the work myself. I am aware that libraries are a must and will make everything faster, efficient, are industry standard but I am still learning to code and I think it will help me. I plan to also add library solutions to this project after I finish it so I can compare the result.
+
 ## FETCHING
 
 - Here we have 2 solutions for fetching
