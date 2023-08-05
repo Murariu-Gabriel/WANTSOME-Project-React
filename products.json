@@ -1,5 +1,3 @@
-
-
 {
   "products": [
     {
@@ -433,7 +431,6 @@
       "description": "HUAWEI Watch GT Runner supports a whole host of health monitoring functions, including abnormal heart-rate notifications, 24/7 blood-oxygen monitoring, sleep monitoring, and period management. A personalised health manager on your wrist",
       "features": "\n      Designed for speed and taking inspiration from the grille of a sports car, HUAWEI WATCH GT Runner features a hollowed-out lug build to allow for a more breathable, comfortable wearing experience.\n\n      The durable polymer-fibre case, offset with ceramic finish, and aircraft-grade titanium-alloy crown combine to create a strong, lightweight and comfortable design of around 38.5 g1, helping you achieve better performance.\n       ",
       "shortDescription": "Upgrade to premium heart rate tracking that is designed to deliver truly accurate heart rate monitorization.",
-
       "includes": [
         {
           "quantity": 1,
@@ -554,16 +551,14 @@
       ]
     }
   ],
-  
   "users": [
     {
-      "userName": "Daniel",
-      "email": "some_email.gmail.com"
-    },
-
-    {
-      "userName": "Yan",
-      "email": "another_email.gmail.com"
+      "first_name": "Space",
+      "last_name": "Monkey",
+      "email": "murariugabi23@gmail.com",
+      "signup_password": "!AMoparola12",
+      "condition_terms": "on",
+      "id": 1
     }
   ]
 }

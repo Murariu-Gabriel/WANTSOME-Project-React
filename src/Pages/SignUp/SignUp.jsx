@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { Value } from "sass"
 import Input from "../../Components/ReusableComponents/FormComponents/Input"
 import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
+import RegisterPopup from "./RegisterPopup"
 import "./signUpStyles.scss"
+
 
 const SignUp = () => {
   const [values, setValues] = useState({
@@ -11,7 +12,8 @@ const SignUp = () => {
     last_name: "",
     email: "",
     signup_password: "",
-    confirm_password: ""
+    confirm_password: "",
+    condition_terms: "",
   })
 
   const [errors, setError] = useState({
@@ -20,39 +22,39 @@ const SignUp = () => {
     email: "",
     signup_password: "",
     confirm_password: "",
+    condition_terms: "",
   })
+
+  const [popToggle, setPopToggle] = useState(false)
+
+  // const { data, isLoading, isError } = useFetch(
+  //   `http://localhost:3000/users?email=${errors.email}`
+  // )
+
+  // you might need to make another function for fetching user and be strictly for this
   
-  const findUser = (user) => {
-   const { data, isLoading, isError } = useFetch(`http://localhost:3000/users?email=${user}`)
-    if(!isError){
-      return data
-    }
+  useEffect(() => {
 
-    return !isError
-  }
+  })
 
- 
+
   const verifyIfInputEmpty = (value) => {
     return value.length === 0
   }
-  
+
   const emptyValidation = { func: verifyIfInputEmpty, msg: "Field is required" }
 
-  
   const nameValidations = () => {
-
     const namesValidation = (name) => {
       const regex = /[\d!@#$%^&*()\-=_+[\]{};':"\\|,.<>/?]/
       const test = regex.test(name)
       return test
     }
 
-
     return [emptyValidation, { func: namesValidation, msg: "Wrong format" }]
   }
 
   const emailValidations = () => {
-
     const emailValidation = (string) => {
       const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
       const isValidEmail = emailRegex.test(string)
@@ -64,7 +66,6 @@ const SignUp = () => {
   }
 
   const passwordValidation = () => {
-
     const containsNum = (password) => {
       const regex = /\d/
       const test = regex.test(password)
@@ -109,60 +110,116 @@ const SignUp = () => {
   }
 
   const confirmPasswordValidation = () => {
-
     const checkConfirmation = (value) => {
       return values.signup_password !== value
     }
 
     return [
       { func: checkConfirmation, msg: "Password does not match" },
-      emptyValidation
+      emptyValidation,
     ]
   }
 
+  const termsOfUseValidation = () => {
+    const ifChecked = (e) => {
+      console.log(!e.currentTarget.checked)
+      return !e.currentTarget.checked
+    }
+
+    return [
+      { func: ifChecked, msg: "Accepting terms and conditions is required" },
+    ]
+  }
 
   const addError = (value, key, obj) => {
     const { func, msg } = emptyValidation
+    const { func: fun, msg: ms } = confirmPasswordValidation()[0]
 
-    // validation.forEach((obj, sIndex) => {
-    //   const { func, msg } = obj
+    if (key === "confirm_password"){
+       if (fun(value)) {
+         obj[key] = ms
+       } else {
+         if (func(value)) {
+           obj[key] = ms
+         } else {
+           obj[key] = ""
+         }
+       }
 
-    //    if (fIndex === 0) {
-    if (func(value)) {
-       obj[key] = msg 
     } else {
-      obj[key] = ""
-      console.log(obj[key])
+
+      if (func(value)) {
+        obj[key] = msg
+      } else {
+        obj[key] = ""
+      }
     }
-    //    }
-    // })
   }
 
   const checkValidationForAllInputs = () => {
-    const newErrors = {...errors}
+    const newErrors = { ...errors }
 
     for (const [key, value] of Object.entries(values)) {
       addError(value, key, newErrors)
     }
 
     setError(newErrors)
-
-  }
-
-  
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    checkValidationForAllInputs()
-    console.log(errors)
+    return newErrors
   }
 
   const onChange = (e) => {
-    setValues({...values, [e.target.name]: e.target.value})
+    const ifCheckbox =
+      e.currentTarget.type === "checkbox"
+        ? e.currentTarget.checked
+        : e.currentTarget.value
+    setValues({ ...values, [e.currentTarget.name]: ifCheckbox })
   }
 
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const errorMessages = checkValidationForAllInputs()
+
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get("email")
+    const newUser = Object.fromEntries(formData)
+    delete newUser.confirm_password
+    
+    const hasError = []
+
+
+    for (const [key, value] of Object.entries(errorMessages)) {
+      if (value !== "") {
+        hasError.push("error")
+      }
+    }
+
+    if(hasError.length === 0){
+
+      console.log()
+     
+
+      // setPopToggle(true)
+
+      // fetch("http://localhost:3000/users", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newUser),
+      // })
+    }
+
+
+ 
+
+  }
+  // !AMoparola12
+
   return (
     <section className="signUp">
+      {popToggle && <RegisterPopup />}
+
       <div className="container">
         <form action="" id="form" onSubmit={handleSubmit}>
           <h2>sign up</h2>
@@ -223,7 +280,16 @@ const SignUp = () => {
             errors={errors}
           />
 
-          <div className="terms">
+          <Input
+            htmlFor={"condition_terms"}
+            label={`I agree to the <a href="">terms of user</a>`}
+            type={"checkbox"}
+            event={termsOfUseValidation}
+            update={onChange}
+            errors={errors}
+          />
+
+          {/* <div className="terms">
             <input
               type="checkbox"
               name="condition_terms"
@@ -233,7 +299,7 @@ const SignUp = () => {
               I agree to the <a href="">terms of user</a>
             </label>
             <span className="hide">error</span>
-          </div>
+          </div> */}
 
           <div className="buttons">
             <button type="submit" className="button-1">
