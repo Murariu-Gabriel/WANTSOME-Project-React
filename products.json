@@ -559,6 +559,22 @@
       "signup_password": "!AMoparola12",
       "condition_terms": "on",
       "id": 1
+    },
+    {
+      "first_name": "Space",
+      "last_name": "Monkey",
+      "email": "murariugabi3333333333333@gmail.com",
+      "signup_password": "!AMoparola12",
+      "condition_terms": "on",
+      "id": 2
+    },
+    {
+      "first_name": "Space",
+      "last_name": "Monkey",
+      "email": "masdasdurariugabi23@gmail.com",
+      "signup_password": "!AMoparola12",
+      "condition_terms": "on",
+      "id": 3
     }
   ]
 }

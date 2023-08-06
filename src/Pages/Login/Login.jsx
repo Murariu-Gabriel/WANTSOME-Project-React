@@ -1,39 +1,128 @@
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+import Input from "../../Components/ReusableComponents/FormComponents/Input"
 import "./loginStyles.scss"
+import SimpleInput from "./SimpleInput"
 
 const Login = () => {
+  const [isVisible, setIsVisible] = useState(false)
+
+ const [values, setValues] = useState({
+   email: "",
+   password: "",
+ })
+
+ const [errors, setErrors] = useState({
+   email: "",
+   password: "",
+ })
+
+
+
+
+  const onChange = (e) => {
+    setValues({ ...values, [e.currentTarget.name]: e.target.value })
+  }
+
+  // console.log(values)
+
+  // FOR SOME REASON THIS PART DOES NOT UPDATE CORRECTLY
+
+  const formValidation = () =>  {
+
+    const obj= {...errors}
+
+    for (const [key, value] of Object.entries(errors)) {
+      // console.log(key)
+          if (value === "") {
+       obj[key] = 'Field is required'
+     } else {
+       console.log(obj)
+     }
+
+    }
+    setErrors(obj)
+  }
+
+
+
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    
+    formValidation()
+
+    fetch(`http://localhost:3000/users?email=${values.email}`)
+      .then((response) => {
+        if (response.ok && response.status === 200) {
+          return response.json()
+        }
+
+        return Promise.reject("User does not exist")
+      })
+      .then(data => {
+        if(data.length > 0){
+          setErrors({...errors, ["email"]: "Email is already registered" })
+          console.log(errors)
+        }
+      })
+      .catch((error) => console.log(error))
+
+  }
+ 
   return (
     <section className="login">
-       {/* <div class="img-container">
+      {/* <div class="img-container">
         </div>  */}
 
       <div className="container">
-        <form>
+        <form onSubmit={handleSubmit}>
           <h2>Login</h2>
-          <div>
+          {/* <div>
             <label htmlFor="email">Email</label>
             <span className="hide">error</span>
             <input
               type="text"
               id="email"
               name="email"
+              value={email}
               placeholder="Insert your email"
+              onChange={(e) => setEmail(e.target.value)}
             />
-          </div>
+          </div> */}
+
+          <SimpleInput
+            htmlFor={"email"}
+            label={"Email"}
+            type={"text"}
+            inputValue={values["email"]}
+            placeholder={"Insert your email"}
+            // event={emailValidations}
+            update={onChange}
+            errors={errors}
+          />
 
           <div>
-            <label htmlFor="password">Password</label>
-            <span className="hide">error</span>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Insert your password"
+            <SimpleInput
+              htmlFor={"password"}
+              label={"Password"}
+              type={isVisible ? "text" : "password"}
+              inputValue={values["password"]}
+              placeholder={"Insert your password"}
+              // event={emailValidations}
+              update={onChange}
+              fragment={true}
+              errors={errors}
             />
             <a href="">forgot password?</a>
-        
-            <button type="button" id="eye-button" className="sh-password show-hide">
+
+            <button
+              type="button"
+              className="sh-password show-hide"
+              onClick={() => setIsVisible(!isVisible)}
+            >
               <svg
+                className={isVisible ? "hide" : ""}
                 stroke="currentColor"
                 fill="none"
                 strokeWidth="2"
@@ -48,8 +137,8 @@ const Login = () => {
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
 
-              <svg 
-                className="hide"
+              <svg
+                className={isVisible ? "" : "hide"}
                 stroke="currentColor"
                 fill="none"
                 strokeWidth="2"
@@ -60,15 +149,15 @@ const Login = () => {
                 width="1.5rem"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
-                ></path>
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
                 <line x1="1" y1="1" x2="23" y2="23"></line>
               </svg>
             </button>
           </div>
 
-          <button type="submit" className="button-1">Login</button>
+          <button type="submit" className="button-1">
+            Login
+          </button>
         </form>
         <div className="socials">
           {/* <div>
@@ -120,7 +209,7 @@ const Login = () => {
 
           <div>
             <p>or sign up using</p>
-            <Link to="/registration">sign up</Link >
+            <Link to="/registration">sign up</Link>
           </div>
         </div>
       </div>

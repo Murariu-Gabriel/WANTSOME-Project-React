@@ -13,10 +13,10 @@ const SignUp = () => {
     email: "",
     signup_password: "",
     confirm_password: "",
-    condition_terms: "",
+    condition_terms: false,
   })
 
-  const [errors, setError] = useState({
+  const [errors, setErrors] = useState({
     first_name: "",
     last_name: "",
     email: "",
@@ -26,17 +26,6 @@ const SignUp = () => {
   })
 
   const [popToggle, setPopToggle] = useState(false)
-
-  // const { data, isLoading, isError } = useFetch(
-  //   `http://localhost:3000/users?email=${errors.email}`
-  // )
-
-  // you might need to make another function for fetching user and be strictly for this
-  
-  useEffect(() => {
-
-  })
-
 
   const verifyIfInputEmpty = (value) => {
     return value.length === 0
@@ -122,7 +111,6 @@ const SignUp = () => {
 
   const termsOfUseValidation = () => {
     const ifChecked = (e) => {
-      console.log(!e.currentTarget.checked)
       return !e.currentTarget.checked
     }
 
@@ -131,27 +119,67 @@ const SignUp = () => {
     ]
   }
 
+
+  const checkForError = (func, value, obj, key, msg) => {
+  
+     if (func(value)) {
+       obj[key] = msg
+     } else {
+       obj[key] = ""
+     }
+
+  }
+
   const addError = (value, key, obj) => {
     const { func, msg } = emptyValidation
     const { func: fun, msg: ms } = confirmPasswordValidation()[0]
+    const { func: func2 , msg: msg2 } = emailValidations()[0]
 
-    if (key === "confirm_password"){
-       if (fun(value)) {
-         obj[key] = ms
-       } else {
-         if (func(value)) {
-           obj[key] = ms
-         } else {
-           obj[key] = ""
-         }
-       }
 
-    } else {
-
+    if (key === "email") {
       if (func(value)) {
         obj[key] = msg
       } else {
-        obj[key] = ""
+        checkForError(func2, value, obj, key, msg2)
+      }
+    } else if (key === "signup_password") {
+     
+      passwordValidation().forEach(element => {
+        const {func, msg} = element
+          
+        if (func(value)) {
+            checkForError(func, value, obj, key, msg)
+            
+        } else {
+            const checkForError = passwordValidation().some((element) => {
+              const { func } = element
+
+              return func(value)
+            })
+
+            if(!checkForError){
+            obj[key] = ""
+            }
+        }
+      })
+
+    } else if (key === "confirm_password") {
+
+      if (fun(value)) {
+        obj[key] = ms
+      } else {
+        checkForError(func, value, obj, key, ms)
+      }
+    } else {
+      if (key === "condition_terms"){
+  
+          if (!value) {
+            obj[key] = msg
+          } else {
+            obj[key] = ""
+          }
+      } else {
+        checkForError(func, value, obj, key, msg)
       }
     }
   }
@@ -163,7 +191,7 @@ const SignUp = () => {
       addError(value, key, newErrors)
     }
 
-    setError(newErrors)
+    setErrors(newErrors)
     return newErrors
   }
 
@@ -190,29 +218,47 @@ const SignUp = () => {
 
     for (const [key, value] of Object.entries(errorMessages)) {
       if (value !== "") {
+
         hasError.push("error")
       }
     }
 
+    console.log(hasError)
     if(hasError.length === 0){
 
-      console.log()
-     
+    fetch(`http://localhost:3000/users?email=${email}`)
+      .then((response) => {
+        if (response.ok && response.status === 200) {
+          return response.json()
+        }
 
-      // setPopToggle(true)
-
-      // fetch("http://localhost:3000/users", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(newUser),
-      // })
+        return Promise.reject("User does not exist")
+      })
+      .then((data) => {
+        // console.log(data)
+        if(data.length > 0){
+          console.log(errors)
+          // setErrors({ ...errors, e })
+          setErrors({
+            ...errors,
+            ["email"]: "Email already registered",
+            ["condition_terms"]: "",
+          })
+        } else {
+          setPopToggle(true)
+          fetch("http://localhost:3000/users", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+          })
+        }
+        
+      })
+      .catch((error) => console.log(error))
+  
     }
-
-
- 
-
   }
   // !AMoparola12
 

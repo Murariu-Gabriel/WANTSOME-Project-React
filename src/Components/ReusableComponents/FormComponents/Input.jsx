@@ -28,8 +28,6 @@ const validation = (e) => {
 
       if (functionValue) {
 
-        
-
         setIsError(functionValue)
         setIsErrorMessage(msg)
 
@@ -51,17 +49,20 @@ const validation = (e) => {
  
   useEffect(() => {
      
-    const messageType =
-      htmlFor === "condition_terms"
-        ? "Accepting terms and conditions is required"
-        : errors[htmlFor]
-
+    
+      const messageType =
+        htmlFor === "condition_terms"
+          ? "Accepting terms and conditions is required"
+          : errors[htmlFor]
+  
       if (errors[htmlFor] !== "" ){
-       setIsError(true)
-       setIsErrorMessage(messageType)
+        setIsError(true)
+        setIsErrorMessage(messageType)
       } else {
+        // console.log(errors[htmlFor])
         setIsError(false)
       }
+    
 
   }, [errors])
 
