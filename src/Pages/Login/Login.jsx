@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Input from "../../Components/ReusableComponents/FormComponents/Input"
 import "./loginStyles.scss"
 import SimpleInput from "./SimpleInput"
@@ -17,7 +17,7 @@ const Login = () => {
    password: "",
  })
 
-
+ const navigate = useNavigate()
 
 
   const onChange = (e) => {
@@ -32,14 +32,16 @@ const Login = () => {
 
     const obj= {...errors}
 
-    for (const [key, value] of Object.entries(errors)) {
-      // console.log(key)
-          if (value === "") {
-       obj[key] = 'Field is required'
-     } else {
-       console.log(obj)
-     }
-
+    for (const [key, value] of Object.entries(values)) {
+     
+      if (value.length === 0) {
+        obj[key] = 'Field is required'
+        
+      } else {
+      
+        obj[key] = "" 
+      
+      }
     }
     setErrors(obj)
   }
@@ -52,22 +54,45 @@ const Login = () => {
     
     formValidation()
 
-    fetch(`http://localhost:3000/users?email=${values.email}`)
-      .then((response) => {
-        if (response.ok && response.status === 200) {
-          return response.json()
-        }
+    if (values.email.length > 0 && values.password.length > 0) {
+      fetch(`http://localhost:3000/users?email=${values.email}`)
+        .then((response) => {
+          if (response.ok && response.status === 200) {
+            return response.json()
+          }
 
-        return Promise.reject("User does not exist")
-      })
-      .then(data => {
-        if(data.length > 0){
-          setErrors({...errors, ["email"]: "Email is already registered" })
-          console.log(errors)
-        }
-      })
-      .catch((error) => console.log(error))
+          return Promise.reject("User does not exist")
+        })
+        .then((data) => {
+          // console.log(data[0].email)
+          const user = data[0]
+         
+          if (user?.email === values.email) {
+           
+              if (user.signup_password === values.password) {
+                navigate("/")
 
+                const parsedUser = JSON.stringify(user)
+
+                localStorage.setItem("user", parsedUser)
+                console.log("YES")
+              } else {
+                setErrors({
+                  ...errors,
+                  ["password"]: "Incorrect password",
+                  ["email"]: "",
+                })
+              }
+          } else {
+            console.log(errors)
+            setErrors({ ...errors, ["email"]: "Email is not registered", ["password"]: "" })
+            
+
+          }
+        })
+        .catch((error) => console.log(error))
+    }
+   
   }
  
   return (

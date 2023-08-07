@@ -19,6 +19,12 @@ const NavigationBar = () => {
     setNavToggle(!navToggle)
   }
 
+   const getUser = localStorage.getItem("user")
+
+   const user = getUser ? JSON.parse(getUser) : false
+
+   console.log(user)
+
   return (
     <section className="navigation">
       <div className="container">
@@ -65,7 +71,7 @@ const NavigationBar = () => {
 
       {cartToggle ? <Cart /> : ""}
       {userOptionsToggle ? (
-        <UserOptions />
+        <UserOptions user={user} />
       ) : (
         ""
       )}

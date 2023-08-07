@@ -6,7 +6,7 @@ const SimpleInput = ({htmlFor, label, type, placeholder, inputValue, update, fra
   
   useEffect(() => {
     
-    console.log(errors[htmlFor])
+    // console.log(errors[htmlFor])
     if (errors[htmlFor] !== "") {
       setIsError(true)
       setIsErrorMessage(errors[htmlFor])
@@ -16,7 +16,7 @@ const SimpleInput = ({htmlFor, label, type, placeholder, inputValue, update, fra
     }
   }, [errors])
 
-  console.log(errors)
+  // console.log(errors)
   
   if(fragment){
     return (

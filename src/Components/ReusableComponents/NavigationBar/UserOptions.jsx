@@ -1,12 +1,23 @@
+import { useEffect } from "react"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 
-const UserOptions = ({ setToggleNavigation }) => {
+const UserOptions = ({user}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  
   const handleLogout = () => {
-    setIsLoggedIn(false)
+    setIsLoggedIn(!isLoggedIn)
+    localStorage.removeItem('user')
   }
+
+ useEffect(() => {
+  if(user){
+    setIsLoggedIn(!isLoggedIn)
+  }
+ }, [user])
+
+console.log(user)
 
   return (
     <aside className="user-container overlay">
@@ -36,9 +47,9 @@ const UserOptions = ({ setToggleNavigation }) => {
 
           <div className={`user-options-content  ${isLoggedIn ? "" : "hide"}`}>
             <span>
-              Welcome, <span id="user-name-after-login">user</span>!
+              Welcome, {user.last_name}!
             </span>
-            <button className="button-3" onClick={() => handleLogout}>
+            <button className="button-3" onClick={() => handleLogout()}>
               Logout
             </button>
           </div>
