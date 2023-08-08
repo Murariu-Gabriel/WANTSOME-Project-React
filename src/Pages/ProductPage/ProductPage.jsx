@@ -1,5 +1,7 @@
 import { useParams } from "react-router-dom"
-import useFetch from "../Components/ReusableComponents/Functions/useFetch"
+import About from "../../Components/About/About"
+import Categories from "../../Components/ReusableComponents/Categories/Categories"
+import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
 
 const ProductPage = () => {
   const { id } = useParams()
@@ -18,7 +20,14 @@ const ProductPage = () => {
 
   const { id: dataId } = product
 
-  return <div>ProductPag {dataId} </div>
+  return (
+    <>
+    <div>ProductPag {dataId} </div>
+    <Categories/>
+    <About/>
+    </>
+
+  )
 }
 export default ProductPage
 

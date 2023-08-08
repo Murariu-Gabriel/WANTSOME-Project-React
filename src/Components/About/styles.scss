@@ -1,0 +1,80 @@
+@use "../../SCSS/abstracts/index" as *;
+
+.about {
+  padding-top: $xxl-spacing;
+  padding-bottom: $section-spacing;
+
+  .container {
+    text-align: center;
+    @include flex(center, center, unset, column);
+    div {
+      &:first-of-type {
+        border-radius: $base-border-radius;
+        height: 300px;
+        width: 100%;
+        background-image: url("/assets/Images/Devices/Xiaomi/Smart-Watches/Mi-watch-S1-Pro/presentation-pictures/presentation-1.jpg");
+        background-size: cover;
+        background-position: left;
+      }
+
+      &:last-of-type {
+        h2 {
+          font-size: $l-font;
+        }
+
+        p {
+          color: $out-of-color-palette-gray;
+        }
+        span {
+          color: $orange;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 550px){
+    .about {
+    .container {
+      div {
+        &:last-of-type {
+          h2 {
+            font-size: $h2-font-size;
+          }
+          p {
+            padding: 0 $m-spacing;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 990px){
+     .about {
+    padding-top: $m-section-spacing;
+    .container {
+      flex-direction: row;
+      div {
+        width: 50%;
+        &:first-of-type {
+          height: 588px;
+          width: 50%;
+          background-position: 30%;
+          order: 1;
+        }
+        &:last-of-type {
+          text-align: left;
+          p {
+            padding: 0;
+          }
+
+          h2,
+          p {
+            width: 80%;
+          }
+        }
+      }
+    }
+  }
+}

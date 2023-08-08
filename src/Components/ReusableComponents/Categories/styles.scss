@@ -1,0 +1,110 @@
+@use "../../../SCSS/abstracts/index" as *;
+
+.categories {
+  padding: $section-spacing $base-spacing 0 $base-spacing;
+  
+  .container {
+    @include flex(center, unset, unset, column);
+    gap: $xxl-gap;
+    padding: 0;
+
+    article {
+
+      &:hover {
+        z-index: 1;
+      }
+
+      div {
+        position: relative;
+        transition: transform 0.2s ease-in-out;
+        border: none;
+        &:hover {
+          transform: scale(1.1);
+          box-shadow: 0px 0px 20px 1px rgb(150, 150, 150);
+          border-radius: $base-border-radius;
+        }
+
+        height: 160px;
+        border-radius: $base-border-radius;
+        @include flex(flex-end, center, unset, column);
+        background-color: $gray;
+        
+        .category-image {
+          width: 100px;
+        }
+
+        .subtitle {
+          color: $black;
+          font-size: $s-font;
+        }
+
+        a {
+          &:not(.big-link){
+            position: relative;
+            z-index: 2;
+            background-color: $gray;
+            padding-bottom: $base-padding;
+
+            transition: color 0.3s ease-in-out;  
+          }
+        }
+
+        .big-link{
+          position:absolute; 
+          width:100%;
+          height:100%;
+          top:0;
+          left: 0;
+          
+          z-index: 1;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width:550px) {
+ .categories {
+    padding: 0;
+    padding-top: $section-spacing + 2rem;
+
+    .container {
+      margin: 0 auto;
+      @include flex(space-around, unset, unset, unset);
+      gap: 10px;
+
+      article {
+        div{
+          .subtitle{
+            font-size: $s-font - 0.15rem;
+          }
+        }
+        width: 100%;
+      }
+    }
+  } 
+}
+
+@media screen and (min-width: 990px){
+  .categories {
+    padding-top: $l-section-spacing;
+
+    .container {
+      article {
+        div{
+          height: 200px;
+          .subtitle {
+            font-size: $m-font ;
+            padding-top: $base-spacing;
+          }
+          .category-image {
+            width: 150px;
+          }
+          .button-3{
+            padding-bottom: $m-spacing;
+          }
+        }
+      }
+    }
+  }
+}

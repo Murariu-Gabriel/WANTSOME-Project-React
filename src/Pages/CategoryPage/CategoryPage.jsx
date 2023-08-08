@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
-import useFetch from "../Components/ReusableComponents/Functions/useFetch"
+import About from "../../Components/About/About"
+import Categories from "../../Components/ReusableComponents/Categories/Categories"
+import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
 
 const CategoryPage = () => {
   const { id } = useParams()
@@ -30,6 +32,8 @@ const CategoryPage = () => {
           </Link>
         )
       })}
+      <Categories/>
+      <About/>
     </>
   )
 }
