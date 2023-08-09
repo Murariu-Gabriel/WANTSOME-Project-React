@@ -23,14 +23,16 @@ const Hero = () => {
      console.log(item)
   }, [])
 
+  const {name, heroDescription} = item
+
   return (
     <section className="nav-and-hero">
       <div className="hero">
         <article className="container">
           <p className="overline">featured product</p>
-          <h1>{item.name}</h1>
+          <h1>{name}</h1>
           <p>
-            {item.heroDescription}
+            {heroDescription}
           </p>
           <Link to="/productPage/item-3" className="button-1">
             See Product

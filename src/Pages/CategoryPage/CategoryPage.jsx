@@ -3,9 +3,13 @@ import { Link, useParams } from "react-router-dom"
 import About from "../../Components/About/About"
 import Categories from "../../Components/ReusableComponents/Categories/Categories"
 import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
+import Product from "./Product"
+
+import "./styles.scss"
 
 const CategoryPage = () => {
   const { id } = useParams()
+
   const {
     isLoading,
     isError,
@@ -19,21 +23,43 @@ const CategoryPage = () => {
     return <h2>There was an error</h2>
   }
 
+  const sortedProducts = products.toSorted((a, b) => b.new - a.new)
+  
   return (
     <>
-      <div> {id}</div>
+      <div className="category">
+        <h2>{id.replace("-", "  ")}</h2>
+      </div>
 
-      {products.map((el) => {
-        const { id, name } = el
+      <section className="template-category">
+        <div className="container">
+          <div className="generated-items">
 
-        return (
-          <Link key={id} to={`/productPage/${id}`}>
-            {name}
-          </Link>
-        )
-      })}
-      <Categories/>
-      <About/>
+            {sortedProducts.map((el) => {
+              const {
+                id,
+                name,
+                description,
+                images,
+                discount,
+                new: newProduct,
+              } = el
+
+              return (
+                <Product
+                  key={id}
+                  {...{ id, name, description, discount, newProduct }}
+                  image={images.display.first}
+                />
+              )
+            })}
+          </div>
+          <div className="pagination" id="pagination"></div>
+        </div>
+      </section>
+
+      <Categories />
+      <About />
     </>
   )
 }

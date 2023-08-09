@@ -23,8 +23,6 @@ const NavigationBar = () => {
 
    const user = getUser ? JSON.parse(getUser) : false
 
-   console.log(user)
-
   return (
     <section className="navigation">
       <div className="container">
