@@ -4,6 +4,7 @@ import About from "../../Components/About/About"
 import Categories from "../../Components/ReusableComponents/Categories/Categories"
 import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
 import "./styles.scss"
+import YouMayAlsoLike from "./YouMayAlsoLike"
 
 
 const ProductPage = () => {
@@ -122,6 +123,8 @@ const ProductPage = () => {
           </div>
         </div>
       </section>
+
+      <YouMayAlsoLike id={id}/>
 
       <Categories />
       <About />
