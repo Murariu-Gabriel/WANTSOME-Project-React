@@ -20,7 +20,6 @@ const Hero = () => {
 
   useEffect(() => {
      itemForHero()
-     console.log(item)
   }, [])
 
   const {name, heroDescription} = item

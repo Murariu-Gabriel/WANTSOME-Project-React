@@ -10,7 +10,7 @@ import UserOptions from "./UserOptions"
 import "./NavigationStyles/index.scss"
 import { useState } from "react"
 
-const NavigationBar = () => {
+const NavigationBar = ({ cartCounter, updateCounter }) => {
   const [navToggle, setNavToggle] = useState(false)
   const [cartToggle, setCartToggle] = useState(false)
   const [userOptionsToggle, setUserOptionsToggle] = useState(false)
@@ -19,9 +19,9 @@ const NavigationBar = () => {
     setNavToggle(!navToggle)
   }
 
-   const getUser = localStorage.getItem("user")
+  const getUser = localStorage.getItem("user")
 
-   const user = getUser ? JSON.parse(getUser) : false
+  const user = getUser ? JSON.parse(getUser) : false
 
   return (
     <section className="navigation">
@@ -45,6 +45,7 @@ const NavigationBar = () => {
                 fillRule="nonzero"
               />
             </svg>
+            {cartCounter > 0 ? <span>{cartCounter}</span> : ""}
           </button>
 
           <button
@@ -67,12 +68,12 @@ const NavigationBar = () => {
         </header>
       </div>
 
-      {cartToggle ? <Cart /> : ""}
-      {userOptionsToggle ? (
-        <UserOptions user={user} />
+      {cartToggle ? (
+        <Cart updateCounter={updateCounter} cartCounter={cartCounter} />
       ) : (
         ""
       )}
+      {userOptionsToggle ? <UserOptions user={user} /> : ""}
     </section>
   )
 }

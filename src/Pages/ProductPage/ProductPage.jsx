@@ -3,18 +3,21 @@ import { useNavigate, useParams } from "react-router-dom"
 import About from "../../Components/About/About"
 import Categories from "../../Components/ReusableComponents/Categories/Categories"
 import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
-import "./styles.scss"
 import YouMayAlsoLike from "./YouMayAlsoLike"
 
+import updateCartItems from "../../Components/ReusableComponents/Functions/updateCartItems"
 
-const ProductPage = () => {
+import "./styles.scss"
+
+
+const ProductPage = ({ updateCounter }) => {
   const [count, setCount] = useState(1)
   const { id } = useParams()
 
   const navigate = useNavigate()
 
   const minus = (e) => {
-    if(count > 1){
+    if (count > 1) {
       setCount(count - 1)
     } else {
       e.preventDefault()
@@ -22,11 +25,17 @@ const ProductPage = () => {
   }
 
   const plus = (e) => {
-     if (count < 10) {
-       setCount(count + 1)
-     } else {
-       e.preventDefault()
-     }
+    if (count < 10) {
+      setCount(count + 1)
+    } else {
+      e.preventDefault()
+    }
+  }
+
+  const handleAddToCart = () => {
+    updateCounter(count)
+    setCount(1)
+    updateCartItems(id, count, "+")
   }
 
   const {
@@ -42,12 +51,18 @@ const ProductPage = () => {
     return <h2>There was an error</h2>
   }
 
- 
-  const {name, id:productId, images, description, price, features, includes } = product
+  const {
+    name,
+    id: productId,
+    images,
+    description,
+    price,
+    features,
+    includes,
+  } = product
 
   return (
     <>
-    
       <section className="product">
         <div className="container">
           <p className="link">
@@ -84,7 +99,11 @@ const ProductPage = () => {
                     +
                   </button>
                 </div>
-                <button type="button" className="button-1" id="add-to-cart">
+                <button
+                  type="button"
+                  className="button-1"
+                  onClick={handleAddToCart}
+                >
                   add to cart
                 </button>
               </form>
@@ -124,7 +143,7 @@ const ProductPage = () => {
         </div>
       </section>
 
-      <YouMayAlsoLike id={id}/>
+      <YouMayAlsoLike id={id} />
 
       <Categories />
       <About />
