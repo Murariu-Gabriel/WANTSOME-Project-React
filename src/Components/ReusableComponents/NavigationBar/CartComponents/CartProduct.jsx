@@ -1,47 +1,60 @@
 import { useEffect, useState } from "react"
+import updateCartItems from "../../Functions/updateCartItems"
 
-const CartProduct = () => {
-    const [count, setCount] = useState(0)
 
-    // here we need to pass props from the cart, the item with all the information necessary for setting it up  
+const CartProduct = ({
+  slug,
+  price,
+  image,
+  itemCount,
+  id,
+  updateCounter,
+  ifZeroUpdate,
+}) => {
+  const [count, setCount] = useState(itemCount)
 
-    // useEffect(() => {
-    //     setCount(productCount)
-    // }, [])
+ 
+  // here we need to pass props from the cart, the item with all the information necessary for setting it up
+
+  const handleMinus = () => {
+    setCount(count - 1)
+    updateCartItems(id, 1, "-")
+    updateCounter(1, "-")
+   
+    // ifZeroUpdate(count, id) 
+  }
+
+  const handlePlus = () => {
+    setCount(count + 1)
+    updateCartItems(id, 1, "+")
+    updateCounter(1)
+  }
 
   return (
-    <li>
-      <div class="img-container">
-        <img src={productImg} alt={productAlt} />
+    <li key={id}>
+      <div className="img-container">
+        <img src={image} alt={slug} />
       </div>
 
       <p>
-        <strong>{productName}</strong>
+        <strong>{slug}</strong>
         <span>$</span>
-        <span>{productPrice}</span>
+        <span>{price}</span>
       </p>
 
-      <div class="input-stepper">
-        <button
-          id="decrement"
-          type="button"
-          onClick={() => setCount(count - 1)}
-        >
+      <div className="input-stepper">
+        <button id="decrement" type="button" onClick={() => handleMinus()}>
           -
         </button>
         <input
           type="number"
-          class="product-counter"
+          className="product-counter"
           value={count}
           min="0"
           max="100"
-          readonly
+          readOnly
         />
-        <button
-          id="increment"
-          type="button"
-          onClick={() => setCount(count + 1)}
-        >
+        <button id="increment" type="button" onClick={() => handlePlus()}>
           +
         </button>
       </div>

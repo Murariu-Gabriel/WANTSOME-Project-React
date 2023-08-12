@@ -16,8 +16,14 @@ const App = () => {
     setCartCounter(getCartLength())
   }, [])
 
-  const updateCounter = (num) => {
-    setCartCounter(cartCounter + num)
+  const updateCounter = (num, operation) => {
+
+    if(operation === "-"){
+      setCartCounter(cartCounter - num)
+
+    } else {
+      setCartCounter(cartCounter + num)
+    }
   }
     
   // Right now if you want to render the generated looped items from  categories you need to reload page, you might need to think about another way of doing this

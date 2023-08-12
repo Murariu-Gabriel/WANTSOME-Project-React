@@ -5,7 +5,7 @@ const updateCartItems = (item, count, operation) => {
 
     const ifNull = cartItems[item] === undefined ? 0 : cartItems[item]
 
-    console.log( ifNull)
+    // console.log( ifNull)
 
     if(operation === "+"){
         cartItems[item] = ifNull + count

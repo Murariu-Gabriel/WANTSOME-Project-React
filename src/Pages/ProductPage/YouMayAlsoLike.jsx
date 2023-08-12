@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import SuggestedProduct from "./SuggestedProduct"
+import generateProducts from "../../Components/ReusableComponents/Functions/generateProducts"
 
 const YouMayAlsoLike = ({id}) => {
     const [products, setProducts] = useState([])
@@ -22,36 +23,14 @@ const YouMayAlsoLike = ({id}) => {
       return numbers
     }
 
+    const uniqueNumbers = generateUniqueNumbers(12, 3)
+
+
     // I loop over with map and replace the number with respective fetched object
-    const generateRandomProducts = async () => {
-
-        const uniqueNumbers = generateUniqueNumbers(12, 3)
-
-        try {
-            const getProducts = await Promise.all(uniqueNumbers.map(async element => {
-            const response = await fetch(`http://localhost:3000/products/item-${element}`)
-
-            if (response.ok && response.status === 200) {
-              return response.json()
-            }
-
-            return Promise.reject("ERROR")
-
-            }))
-
-            return getProducts.reduce((accumulator, data) => accumulator.concat(data), [])
-
-        } catch (error) {
-            console.log(error)
-
-            return []
-            
-        }
-  
-    }
+    
 
     useEffect(() => {
-        generateRandomProducts()
+        generateProducts(uniqueNumbers)
         .then(products => {
             setProducts(products)
         })
