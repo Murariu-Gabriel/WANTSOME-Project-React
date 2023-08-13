@@ -10,25 +10,32 @@ const CartProduct = ({
   id,
   updateCounter,
   ifZeroUpdate,
+  setTotal,
 }) => {
   const [count, setCount] = useState(itemCount)
 
- 
   // here we need to pass props from the cart, the item with all the information necessary for setting it up
 
   const handleMinus = () => {
-    setCount(count - 1)
+    const currentCount = count - 1
+    setCount(currentCount)
     updateCartItems(id, 1, "-")
     updateCounter(1, "-")
-   
-    // ifZeroUpdate(count, id) 
+    ifZeroUpdate(currentCount, id)
+    setTotal(currentState => currentState - price)
   }
 
   const handlePlus = () => {
-    setCount(count + 1)
+    setCount((currentState) => currentState + 1)
     updateCartItems(id, 1, "+")
     updateCounter(1)
+    setTotal((currentState) => currentState + price)
+
   }
+
+  useEffect(() => {
+    setTotal( currentState => currentState + (price * itemCount))
+  },[])
 
   return (
     <li key={id}>

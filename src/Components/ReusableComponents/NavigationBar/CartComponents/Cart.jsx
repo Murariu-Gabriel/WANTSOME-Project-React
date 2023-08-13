@@ -8,17 +8,12 @@ import "./cartStyles/index.scss"
 
 // you might need to use useMemo or memo in this component
 
-const Cart = memo(({ updateCounter, cartCounter }) => {
+const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
   const [cartItems, setCartItems] = useState([])
+  const [total, setTotal] = useState(0)
 
-  // will have to figure out if i can just loop through these and render them
   const items = getCartItems()
-
   const counts = getCounts(items)
-
-  console.log(items)
-  console.log(counts)
-  console.log(cartItems)
 
   const getItemsInfo = (object) => {
     const objectEntries = Object.entries(object).reduce(
@@ -33,14 +28,18 @@ const Cart = memo(({ updateCounter, cartCounter }) => {
     return getProducts
   }
 
-
-  // Here we have a problem this does not trigger and the list does not update
   const ifZeroUpdate = (count, id) => {
-    if (count <= 0) {
+    if (count === 0) {
       const newList = cartItems.filter((item) => item.id !== id)
       setCartItems(newList)
-      console.log(newList)
     }
+  }
+
+  const deleteItemsFromCart = (e) => {
+    e.preventDefault()
+    setCartItems([])
+    localStorage.removeItem("cart-products")
+    setCartCounter(0)
   }
 
   useEffect(() => {
@@ -57,9 +56,8 @@ const Cart = memo(({ updateCounter, cartCounter }) => {
                 <h6>
                   Cart (<span>{cartCounter}</span>)
                 </h6>
-                <button className="button">
+                <button className="button" onClick={deleteItemsFromCart}>
                   Remove all
-                  {/* here we will delete state items */}
                 </button>
               </div>
 
@@ -75,6 +73,8 @@ const Cart = memo(({ updateCounter, cartCounter }) => {
                       itemCount={counts[index][1]}
                       updateCounter={updateCounter}
                       ifZeroUpdate={ifZeroUpdate}
+                      setTotal={setTotal}
+                     
                     />
                   )
                 })}
@@ -82,8 +82,7 @@ const Cart = memo(({ updateCounter, cartCounter }) => {
               <p>
                 <span>total</span>
                 <strong>
-                  $ <span>0</span>
-                  {/* Here the count will be updated based on cartItems prices and cart items count*/}
+                  $ <span>{total}</span>
                 </strong>
               </p>
 

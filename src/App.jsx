@@ -34,6 +34,7 @@ const App = () => {
         <NavigationBar
           cartCounter={cartCounter}
           updateCounter={updateCounter}
+          setCartCounter={setCartCounter}
         />
       )}
 

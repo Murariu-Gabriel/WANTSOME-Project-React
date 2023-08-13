@@ -10,7 +10,7 @@ import UserOptions from "./UserOptions"
 import "./NavigationStyles/index.scss"
 import { useState } from "react"
 
-const NavigationBar = ({ cartCounter, updateCounter }) => {
+const NavigationBar = ({ cartCounter, updateCounter, setCartCounter }) => {
   const [navToggle, setNavToggle] = useState(false)
   const [cartToggle, setCartToggle] = useState(false)
   const [userOptionsToggle, setUserOptionsToggle] = useState(false)
@@ -69,7 +69,11 @@ const NavigationBar = ({ cartCounter, updateCounter }) => {
       </div>
 
       {cartToggle ? (
-        <Cart updateCounter={updateCounter} cartCounter={cartCounter} />
+        <Cart
+          updateCounter={updateCounter}
+          cartCounter={cartCounter}
+          setCartCounter={setCartCounter}
+        />
       ) : (
         ""
       )}

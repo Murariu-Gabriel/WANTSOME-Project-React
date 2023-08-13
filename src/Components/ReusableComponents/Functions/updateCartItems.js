@@ -16,7 +16,7 @@ const updateCartItems = (item, count, operation) => {
 
     }
 
-     if (cartItems[item] <= 0) {
+     if (cartItems[item] === 0) {
        delete cartItems[item]
      }
    
