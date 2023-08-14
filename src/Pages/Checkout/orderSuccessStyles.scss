@@ -1,0 +1,146 @@
+@use "../../SCSS/abstracts/index" as *;
+
+.popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .success-popup {
+        margin: 1.5rem;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        border-radius: $base-border-radius;
+        gap: $m-gap;
+        width: 100%;
+        max-width: 540px;
+        background-color: white;
+
+    
+
+        >strong {
+        font-size: 1.5rem;
+        text-transform: uppercase;
+
+        }
+        >p{
+            margin: 0;
+            color: $out-of-color-palette-gray;
+        }
+
+        .order{
+            background-color: $gray;
+            border-radius: $base-border-radius;
+            
+            .order-total, .order-container{
+                    padding: 1.5rem;
+                }
+
+                .order-container{
+
+                    ul{
+                        border-bottom: 0.5px solid $out-of-color-palette-gray;
+                        padding-bottom: 1rem;
+                            li{
+                                display: flex;
+                                gap: $s-spacing;
+                                align-items: center;
+            
+                                .img-container{
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    width: 64px;
+                                    height: 64px;
+                                    background-color: $gray;
+                                    border-radius: $base-border-radius ;
+            
+                                    img{
+                                        width: 50px;
+                                    }
+                                    
+                                }
+            
+                                p{
+                                    margin: 0;
+                                    strong{
+                                        display: block;
+                                    }
+                                }
+
+                                span{
+                                    margin-top: 0.4rem;
+                                    align-self: flex-start;
+                                    margin-left: auto;
+                                }
+                            }
+                        }
+
+                    >p{
+                        margin: 1rem 0 0 0;
+                        text-align: center;
+                        color: $out-of-color-palette-gray;
+                    }
+                }
+        
+                .order-total{
+                    background-color: $black;
+                    border-radius: 0 0  $base-border-radius  $base-border-radius;
+                    color: white;
+        
+                span{
+                    &:first-of-type{
+                        text-transform: uppercase;
+                        display: block;
+                        color: $out-of-color-palette-gray;
+                        padding-bottom: 0.5rem;
+                    }
+                    &:last-of-type{
+                        font-size: $m-font;
+                    }
+
+                }
+            }
+        }
+        
+        .button-1{
+            text-align: center;
+        }
+    }
+}
+
+@media screen and (min-width: 550px){
+    .popup {
+        
+        .success-popup {
+        
+        padding: 2.5rem;
+        gap: $l-gap;
+
+            >strong{
+                font-size: 2rem;
+                line-height: 2.25rem;
+            }
+
+            .order {
+                display: flex;
+
+                .order-total, .order-container{
+                padding: 1rem;
+                }
+
+                .order-total{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border-radius: 0 $base-border-radius  $base-border-radius 0;
+                width: 40%;
+                }
+                .order-container{
+                width: 60%
+
+                }
+            }
+        }
+    }
+}

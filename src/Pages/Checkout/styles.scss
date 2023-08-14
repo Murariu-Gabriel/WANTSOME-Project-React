@@ -1,0 +1,319 @@
+@use "../../SCSS/abstracts/index" as *;
+
+
+.checkout{
+    .container{
+         padding-bottom: $xxl-spacing; 
+        p{
+            margin-top: $l-spacing;
+            margin-bottom: $g-back-margin-bootom;
+            a{
+                color: $out-of-color-palette-gray;   
+                cursor: pointer; 
+                transition: color 0.3s ease-in-out;
+
+                &:hover{
+                    color: $orange;
+                }
+            }
+
+        }
+
+        .message{
+            text-align: center;
+            height: 50vh;
+        }
+
+        form{
+            .about-payment{
+                border-radius: $base-border-radius;
+                background-color: $white;
+                padding: $m-spacing 5%;
+                
+                .payment{
+                    display: flex;
+                    flex-direction: column;
+                    gap: $m-gap;
+                    
+                    div{
+                        &:not(.payment-method){
+                            display: flex;
+                            flex-wrap: wrap;
+                            flex-direction: row;
+                        }
+                        .subtitle{
+                            margin: $m-spacing 0 $base-spacing 0;
+                            width: 100%;
+                        }
+                        
+
+                        span{
+                        margin-left: auto;
+                        }
+
+                        .show{
+                            display: initial;
+                            color: #CD2C2C;
+                        }
+
+                        .hide{
+                            display: none;
+                        }
+
+                        .error{
+                            border: 2px solid #CD2C2C;
+                        }
+
+                    }
+    
+                    
+                    .payment-method{
+
+                        label{
+                            
+                            width: 100%;
+                            height: 25px;
+                        }
+
+                        .subtitle-extra{
+                            align-items: center;
+                            p{
+                                margin: 0;
+                                font-weight: 700;
+                                text-transform: capitalize;
+                              
+                            }
+                        }
+                        .radio-button{
+                            margin-top: $base-padding;
+                            display: flex;
+                            align-items: center;
+                            flex-wrap: nowrap;
+                            // padding: 0;
+                            input{
+                                width: 5px;
+                                margin: 0 $s-spacing;
+                                padding: 0.3rem 0.3rem;
+                                appearance: none;
+                                -webkit-appearance: none;
+                                border-radius: 50%;
+                                /* The border will be the spacing between the dot and the outer circle */
+                                border: 4px solid #FFF;
+                                /* And by creating a box-shadow with no offset and no blur, we have an outer circle */
+                                box-shadow: 0 0 0 1px $out-of-color-palette-gray;
+    
+                                &:checked{
+                                    background-color: $orange;
+                                }
+                            }
+                          
+                            
+                        }
+                        
+                        .checked{
+                            border-color: $orange;
+                        }
+
+                    }
+                    
+                    div.on-delivery-message{
+                        width: unset;
+                        // gap: 40px;
+                        // flex-wrap: nowrap;
+                        flex-direction: unset;
+                        justify-content: center;
+                        svg{
+                            margin: $base-spacing;
+                        }
+
+                        p{
+                            width: unset;
+                            margin: 0;
+                        }
+                    }
+
+                      div.display{
+                        background-color: red;
+                        display: none;
+                    }
+                  
+                }
+            }
+
+            .summary{
+                background-color: $white;
+                border-radius: $base-border-radius;
+                padding: 0 5% $m-spacing 5%;
+                margin: $m-spacing 0 0 0;
+                display: flex;
+                flex-direction: column;
+                gap: $m-gap;
+
+                h2{
+                    font-size: $m-font;
+                }
+
+                .summary-list{
+                      display: flex;
+                        flex-direction: column;
+                        gap: 1rem;
+                        overflow-y: scroll;
+                        max-height: 864px;
+                        &::-webkit-scrollbar {
+                            display: none;
+                        }
+                        
+                      
+        
+                        li{
+                            display: flex;
+                            gap: $s-spacing;
+                            align-items: center;
+        
+                            .img-container{
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 64px;
+                                height: 64px;
+                                background-color: $gray;
+                                border-radius: $base-border-radius ;
+        
+                                img{
+                                    width: 50px;
+                                }
+                                
+                            }
+        
+                            p{
+                                margin: 0;
+                                strong{
+                                    display: block;
+                                }
+                            }
+
+                            span{
+                                margin-top: 0.4rem;
+                                align-self: flex-start;
+                                margin-left: auto;
+                            }
+                        }
+                }
+            }
+
+            .total{
+                div{
+                    display: flex;
+                    p{
+                        margin: 0.625rem 0;
+
+                        &:nth-of-type(1){
+                            text-transform: uppercase;
+                            color: $out-of-color-palette-gray;
+                        }
+                        
+                        &:nth-of-type(2){
+                            margin-left: auto;
+                            font-weight: 700;
+                        }
+                    }
+
+                    &:last-of-type{
+                        p{
+                            &:last-of-type{
+                                color: $orange;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 550px){
+    .checkout {
+    .container {
+      form {
+        .about-payment {
+          .payment {
+            @include flex(unset, flex-end, wrap, unset);
+            gap: 2%;
+            div {
+              margin-top: 1.5rem;
+              &:not(.on-delivery-message) {
+                width: 49%;
+              }
+            }
+
+            &:nth-of-type(2) {
+              div {
+                &:first-of-type {
+                  width: 100%;
+                }
+              }
+            }
+
+            &:nth-of-type(3) {
+              .payment-method {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+
+                .subtitle-extra {
+                  width: 100%;
+                }
+
+                .radio-button {
+                  align-self: flex-end;
+                  align-items: center;
+                }
+              }
+
+              div.on-delivery-message {
+                flex-wrap: nowrap;
+                // flex-direction: row;
+                // justify-content: unset;
+                align-items: center;
+                gap: $base-spacing;
+                svg {
+                  width: 150px;
+                  margin: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 990px){
+    .checkout{
+        .container{
+            form{
+                display: flex;
+                gap: $l-gap;
+
+                .about-payment{
+                    max-width: 750px;
+                    padding: inherit $base-padding ;
+                    
+                }
+
+                .summary{
+                    margin: 0;
+                    min-width: 350px;
+                    // max-width: 350px;
+                    height: 100%;
+                    padding: $m-spacing 1.875rem;
+
+                    h2{
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}
