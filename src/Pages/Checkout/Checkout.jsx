@@ -1,15 +1,26 @@
 import { useForm } from "react-hook-form"
 import { DevTool } from "@hookform/devtools"
-import "./styles.scss"
 import { useState } from "react"
 import OrderSuccessful from "./OrderSuccessful"
+import "./styles.scss"
 
 const Checkout = () => {
   const [togglePopUp, setTogglePopUp] = useState(false)
   const form = useForm()
 
-  const {register, control, handleSubmit} = form
+  const {register, control, handleSubmit, formState} = form
 
+  const {errors} = formState
+
+
+  // You need to figure out a more dynamic way to add these classes
+
+  const addError = errors["fullName"]?.message && "error"
+  const addShowError = errors.fullName?.message && "show"
+
+  const emptyValidation = (fieldValue) => {
+    return fieldValue.length !== 0 || `Field is required`
+  }
 
   const handelForm = (data) => {
     console.log("form submited", data)
@@ -24,43 +35,67 @@ const Checkout = () => {
             <a id="go-back">go back</a>
           </p>
 
-          <form onSubmit={handleSubmit(handelForm)}>
+          <form onSubmit={handleSubmit(handelForm)} noValidate>
             <div className="about-payment">
               <h2>checkout</h2>
 
               <div className="payment">
                 <div>
                   <p className="subtitle">billing details</p>
-                  <label htmlFor="fullName">name</label>
-                  <span className="hide">error</span>
+                  <label className={addShowError} htmlFor="fullName">
+                    name
+                  </label>
+                  <span className="show">{errors.fullName?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="text"
                     id="fullName"
                     placeholder="Alex Johnson"
-                    {...register("fullName")}
+                    {...register("fullName", {
+                      required: "Field is required",
+                    })}
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="email">email address</label>
-                  <span className="hide">error</span>
+                <div className={`${errors.fullName?.message && "error"}`}>
+                  <label className={addShowError} htmlFor="email">
+                    email address
+                  </label>
+                  <span className="show">{errors.email?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="text"
                     id="email"
                     placeholder="alexander_12@gmail.com"
-                    {...register("email")}
+                    {...register("email", {
+                      validate: {
+                        notEmpty: (fieldValue) => emptyValidation(fieldValue),
+                      },
+                      pattern: {
+                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                        message: "Invalid Email",
+                      },
+                    })}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="phoneNumber">phone number</label>
-                  <span className="hide">error</span>
+                  <label className={addShowError} htmlFor="phoneNumber">
+                    phone number
+                  </label>
+                  <span className="show">{errors.phoneNumber?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="tel"
                     id="phoneNumber"
                     inputMode="numeric"
                     placeholder="1202-555-0136"
-                    {...register("phoneNumber")}
+                    {...register("phoneNumber", {
+                      validate: {
+                        notEmpty: (fieldValue) =>
+                          emptyValidation(fieldValue, "Phone Number"),
+                      },
+                    })}
                   />
                 </div>
               </div>
@@ -68,46 +103,78 @@ const Checkout = () => {
               <div className="payment">
                 <div>
                   <p className="subtitle">shipping info</p>
-                  <label htmlFor="address">your address</label>
-                  <span className="hide">error</span>
+                  <label className={addShowError} htmlFor="address">
+                    your address
+                  </label>
+                  <span className="show">{errors.address?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="text"
                     id="address"
                     placeholder="1137 Avenue"
-                    {...register("address")}
+                    {...register("address", {
+                      validate: {
+                        notEmpty: (fieldValue) =>
+                          emptyValidation(fieldValue, "Phone Number"),
+                      },
+                    })}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="zipCode">ZIP code</label>
-                  <span className="hide">error</span>
+                  <label className={addShowError} htmlFor="zipCode">
+                    ZIP code
+                  </label>
+                  <span className="show">{errors.zipCode?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="text"
                     id="zipCode"
                     placeholder="12011"
-                    {...register("zipCode")}
+                    {...register("zipCode", {
+                      validate: {
+                        notEmpty: (fieldValue) =>
+                          emptyValidation(fieldValue, "Phone Number"),
+                      },
+                    })}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="city">city</label>
-                  <span className="hide">error</span>
+                  <label className={addShowError} htmlFor="city">
+                    city
+                  </label>
+                  <span className="show">{errors.city?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="text"
                     id="city"
                     placeholder="San Diego"
-                    {...register("city")}
+                    {...register("city", {
+                      validate: {
+                        notEmpty: (fieldValue) =>
+                          emptyValidation(fieldValue, "Phone Number"),
+                      },
+                    })}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="country">country</label>
-                  <span className="hide">error</span>
+                  <label className={addShowError} htmlFor="country">
+                    country
+                  </label>
+                  <span className="show">{errors.country?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="text"
                     id="country"
                     placeholder="United States"
-                    {...register("country")}
+                    {...register("country", {
+                      validate: {
+                        notEmpty: (fieldValue) =>
+                          emptyValidation(fieldValue, "Phone Number"),
+                      },
+                    })}
                   />
                 </div>
               </div>
@@ -120,7 +187,7 @@ const Checkout = () => {
                     <span className="hide">error</span>
                   </div>
 
-                  <div className="radio-button checked" id="e-money-container">
+                  <div className="radio-button checked">
                     <input
                       type="radio"
                       name="payment-method"
@@ -131,7 +198,7 @@ const Checkout = () => {
                     <label htmlFor="e-money">e-money</label>
                   </div>
 
-                  <div className="radio-button" id="on-delivery-container">
+                  <div className="radio-button">
                     <input
                       type="radio"
                       name="payment-method"
@@ -144,26 +211,40 @@ const Checkout = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="cardNumber">e-money number</label>
-                  <span className="hide">error</span>
+                  <label className={addShowError} htmlFor="cardNumber">
+                    e-money number
+                  </label>
+                  <span className="show">{errors.cardNumber?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="text"
                     id="cardNumber"
-                    className="card"
                     placeholder="343219987"
-                    {...register("cardNumber")}
+                    {...register("cardNumber", {
+                      validate: {
+                        notEmpty: (fieldValue) =>
+                          emptyValidation(fieldValue, "Phone Number"),
+                      },
+                    })}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="cardPin">e-money PIN</label>
-                  <span className="hide">error</span>
+                  <label className={addShowError} htmlFor="cardPin">
+                    e-money PIN
+                  </label>
+                  <span className="show">{errors.cardPin?.message}</span>
                   <input
+                    className={`${addError}`}
                     type="text"
                     id="cardPin"
-                    className="card"
                     placeholder="0912"
-                    {...register("cardPin")}
+                    {...register("cardPin", {
+                      validate: {
+                        notEmpty: (fieldValue) =>
+                          emptyValidation(fieldValue, "Phone Number"),
+                      },
+                    })}
                   />
                 </div>
                 <div className="on-delivery-message display">
