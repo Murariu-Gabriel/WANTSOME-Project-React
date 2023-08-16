@@ -711,6 +711,7 @@
     {
       "first_name": "Space",
       "last_name": "Monkey",
+      "full_name": "Space Monkey",
       "email": "murariugabi23@gmail.com",
       "signup_password": "!AMoparola12",
       "condition_terms": "on",
@@ -719,6 +720,7 @@
     {
       "first_name": "Daniel",
       "last_name": "Creanga",
+      "full_name": "Daniel Creanga",
       "email": "cevaEmail@gmail.com",
       "signup_password": "!amparola12A",
       "condition_terms": "on",

@@ -211,6 +211,7 @@ const SignUp = () => {
     const formData = new FormData(e.currentTarget)
     const email = formData.get("email")
     const newUser = Object.fromEntries(formData)
+    newUser.full_name = newUser.first_name + " " + newUser.last_name
     delete newUser.confirm_password
     
     const hasError = []
