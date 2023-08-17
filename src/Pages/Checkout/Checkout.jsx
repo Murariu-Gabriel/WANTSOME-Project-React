@@ -2,74 +2,114 @@ import { useForm } from "react-hook-form"
 import { DevTool } from "@hookform/devtools"
 import { useState, useEffect } from "react"
 import OrderSuccessful from "./OrderSuccessful"
-import { emptyValidation, namesValidation} from "../../Components/ReusableComponents/Functions/validationFunctions"
-import "./styles.scss"
+import { lengthValidation, namesValidation} from "../../Components/ReusableComponents/Functions/validationFunctions"
+import getCartItems from "../../Components/ReusableComponents/Functions/getCartItems"
+import generateProducts from "../../Components/ReusableComponents/Functions/generateProducts"
+import getCounts from "../../Components/ReusableComponents/Functions/getEntries"
+import getItemsInfo from "../../Components/ReusableComponents/Functions/getItemsInfo"
+import SummaryItem from "./SummaryItem"
+import TotalPaymentListElement from "./TotalPaymentListElement"
 
+import "./styles.scss"
 
 const Checkout = () => {
   const [togglePopUp, setTogglePopUp] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState("e-money")
+  const [summaryItems, setSummaryItems] = useState([])
+  const [total, setTotal] = useState(0)
+
+  const items = getCartItems()
+  const counts = getCounts(items)
 
   const form = useForm({
     defaultValues: async () => {
-
-      const user = JSON.parse(localStorage.getItem("user")) 
+      const user = JSON.parse(localStorage.getItem("user"))
       console.log(user)
 
       try {
         const response = await fetch(`http://localhost:3000/users/${user.id}`)
         const data = await response.json()
 
-        // You have to wtrite default values for all inputs
-
         return {
           fullName: data.full_name,
           email: data.email,
+          phoneNumber: "",
+          address: "",
+          zipCode: "",
+          city: "",
+          country: "",
           cardNumber: "",
-          cardPin: ""
+          cardPin: "",
         }
       } catch (error) {
-          
         console.log(error)
       }
-
-   
-    }
+    },
   })
 
-  const {register, control, handleSubmit, formState} = form
+  const { register, control, handleSubmit, formState, reset, clearErrors } = form
+  const { errors, isDirty, isValid } = formState
 
-  const {errors} = formState
+  console.log(isDirty, isValid)
 
+  const revertError = (errors) => {
+
+    if (paymentMethod !== "e-money") {
+  
+      clearErrors("cardNumber")
+      clearErrors("cardPin")
+    }
+    
+    console.log("formErrors", errors)
+  }
+
+  useEffect(() => {
+    getItemsInfo(items, generateProducts).then((products) =>
+      setSummaryItems(products)
+    )
+  }, [])
 
   useEffect(() => {
     document.getElementById(paymentMethod).checked = true
   }, [paymentMethod])
-  
+
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.id)
   }
-  
-  const showErrorInfo = () => {
-    console.log(errors)
-  }
-  
+
+
   const handelForm = (data) => {
     console.log("form submited", data)
     setTogglePopUp(true)
+   
+    console.log(errors)
   }
 
- // ALL INPUTS NEED VALIDATIONS
+ // MAYBE YOU SHOULD ADD SOME MORE VALIDATION AT NUMBER INPUTS
+
+ // MAYBE YOU SHOULD MAKE A POST TO THE USER WITH THE ORDER
+ 
+ // OBVIOUSLY YOU WILL HAVE TO CLEAN THE CODE IT REPEATS TO MUCH
+
+ // WHEN CAT EMPTY CHECKOUT NEEDS TO SHOW CART EMPTY
+
+ // WHEN A CART ITEM IS DELETED WHILE BEING IN CHECKOUT THE PAGE WILL RERENDER AND ERROR THE SAME WAY IT DID IN CART, SOME FUNCTIONALITY IS MISSING
+
+  const shippingCosts = total > 300 ? "free" : 40
+
+  const grandTotal = total + (typeof shippingCosts === "string" ? 0 : shippingCosts)
 
   return (
     <>
       <section className="checkout">
-        <div className="container" id="checkout-container">
+        <div className="container">
           <p>
-            <a id="go-back">go back</a>
+
+            {/* THiS NEEDS FIXING */}
+            <a>go back</a>
           </p>
 
-          <form onSubmit={handleSubmit(handelForm)} noValidate>
+          <form onSubmit={handleSubmit(handelForm, revertError)} noValidate>
             <div className="about-payment">
               <h2>checkout</h2>
 
@@ -112,9 +152,7 @@ const Checkout = () => {
                     id="email"
                     placeholder="alexander_12@gmail.com"
                     {...register("email", {
-                      validate: {
-                        notEmpty: (fieldValue) => emptyValidation(fieldValue),
-                      },
+                      required: "Field is required",
                       pattern: {
                         value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                         message: "Invalid Email",
@@ -133,14 +171,19 @@ const Checkout = () => {
                   <span className="show">{errors.phoneNumber?.message}</span>
                   <input
                     className={errors.phoneNumber?.message && "error"}
-                    type="tel"
+                    type="number"
                     id="phoneNumber"
                     inputMode="numeric"
                     placeholder="1202-555-0136"
                     {...register("phoneNumber", {
+                      valueAsNumber: true,
+                      required: {
+                        value: true,
+                        message: "Field is required",
+                      },
                       validate: {
-                        notEmpty: (fieldValue) =>
-                          emptyValidation(fieldValue, "Phone Number"),
+                        checkLength: (fieldValue) =>
+                          lengthValidation(fieldValue, 12),
                       },
                     })}
                   />
@@ -163,10 +206,7 @@ const Checkout = () => {
                     id="address"
                     placeholder="1137 Avenue"
                     {...register("address", {
-                      validate: {
-                        notEmpty: (fieldValue) =>
-                          emptyValidation(fieldValue, "Phone Number"),
-                      },
+                      required: "Field is required",
                     })}
                   />
                 </div>
@@ -181,13 +221,14 @@ const Checkout = () => {
                   <span className="show">{errors.zipCode?.message}</span>
                   <input
                     className={errors.zipCode?.message && "error"}
-                    type="text"
+                    type="number"
                     id="zipCode"
                     placeholder="12011"
                     {...register("zipCode", {
+                      required: "Field is required",
                       validate: {
-                        notEmpty: (fieldValue) =>
-                          emptyValidation(fieldValue, "Phone Number"),
+                        checkLength: (fieldValue) =>
+                          lengthValidation(fieldValue, 5),
                       },
                     })}
                   />
@@ -207,9 +248,10 @@ const Checkout = () => {
                     id="city"
                     placeholder="San Diego"
                     {...register("city", {
+                      required: "Field is required",
                       validate: {
-                        notEmpty: (fieldValue) =>
-                          emptyValidation(fieldValue, "Phone Number"),
+                        wrongFormat: (fieldValue) =>
+                          namesValidation(fieldValue),
                       },
                     })}
                   />
@@ -229,9 +271,10 @@ const Checkout = () => {
                     id="country"
                     placeholder="United States"
                     {...register("country", {
+                      required: "Field is required",
                       validate: {
-                        notEmpty: (fieldValue) =>
-                          emptyValidation(fieldValue, "Phone Number"),
+                        wrongFormat: (fieldValue) =>
+                          namesValidation(fieldValue),
                       },
                     })}
                   />
@@ -309,13 +352,14 @@ const Checkout = () => {
                       <span className="show">{errors.cardNumber?.message}</span>
                       <input
                         className={errors.cardNumber?.message && "error"}
-                        type="text"
+                        type="number"
                         id="cardNumber"
                         placeholder="343219987"
                         {...register("cardNumber", {
+                          required: "Field is required",
                           validate: {
-                            notEmpty: (fieldValue) =>
-                              emptyValidation(fieldValue),
+                            checkLength: (fieldValue) =>
+                              lengthValidation(fieldValue, 9),
                           },
                         })}
                       />
@@ -331,13 +375,14 @@ const Checkout = () => {
                       <span className="show">{errors.cardPin?.message}</span>
                       <input
                         className={errors.cardPin?.message && "error"}
-                        type="text"
+                        type="number"
                         id="cardPin"
                         placeholder="0912"
                         {...register("cardPin", {
+                          required: "Field is required",
                           validate: {
-                            notEmpty: (fieldValue) =>
-                              emptyValidation(fieldValue, "Phone Number"),
+                            checkLength: (fieldValue) =>
+                              lengthValidation(fieldValue, 4),
                           },
                         })}
                       />
@@ -350,36 +395,42 @@ const Checkout = () => {
             <div className="summary">
               <h2>summary</h2>
 
-              <ul className="summary-list" id="summary-list"></ul>
+              <ul className="summary-list">
+                {summaryItems.map((item, index) => {
+                  console.log(item, counts[index][1])
+
+                  const { slug, price, images, id } = item
+
+                  return (
+                    <SummaryItem
+                      key={id}
+                      img={images.display.first}
+                      name={slug}
+                      price={price}
+                      count={counts[index][1]}
+                      setTotal={setTotal}
+                    />
+                  )
+                })}
+              </ul>
 
               <div className="total">
-                <div>
-                  <p>total</p>
-                  <p>
-                    $<span id="total">0</span>
-                  </p>
-                </div>
+                <TotalPaymentListElement priceElement={"total"} price={total} />
 
-                <div>
-                  <p>shipping</p>
-                  <p>
-                    <span id="shipping">$0</span>
-                  </p>
-                </div>
+                <TotalPaymentListElement
+                  priceElement={"shipping"}
+                  price={total > 300 ? "free" : 40}
+                />
 
-                <div>
-                  <p>vat (included)</p>
-                  <p>
-                    $ <span id="vat">0</span>
-                  </p>
-                </div>
+                <TotalPaymentListElement
+                  priceElement={"vat (included)"}
+                  price={Math.floor(total * 0.1)}
+                />
 
-                <div>
-                  <p>grand total</p>
-                  <p>
-                    $ <span id="grand-total">0</span>
-                  </p>
-                </div>
+                <TotalPaymentListElement
+                  priceElement={"grand total"}
+                  price={grandTotal}
+                />
               </div>
 
               <button className="button-1" type="submit">
@@ -388,11 +439,21 @@ const Checkout = () => {
             </div>
           </form>
           <DevTool control={control} />
+
+
         </div>
 
         {/* You need to pass information to this component so it can display bought products and total price */}
-        {togglePopUp && <OrderSuccessful />}
       </section>
+      {togglePopUp && (
+        <OrderSuccessful
+          grandTotal={grandTotal}
+          name={summaryItems[0].slug}
+          img={summaryItems[0].images.display.first}
+          count={counts[0][1]}
+          price={summaryItems[0].price}
+        />
+      )}
     </>
   )
 }

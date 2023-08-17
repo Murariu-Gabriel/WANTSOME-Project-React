@@ -1,9 +1,12 @@
 @use "../../SCSS/abstracts/index" as *;
 
+
+
 .popup {
     display: flex;
     align-items: center;
     justify-content: center;
+   
     
     .success-popup {
         margin: 1.5rem;
@@ -14,15 +17,15 @@
         gap: $m-gap;
         width: 100%;
         max-width: 540px;
-        background-color: white;
+        background-color: $white;
 
-    
 
         >strong {
         font-size: 1.5rem;
         text-transform: uppercase;
 
         }
+
         >p{
             margin: 0;
             color: $out-of-color-palette-gray;
@@ -106,6 +109,8 @@
         .button-1{
             text-align: center;
         }
+
+
     }
 }
 

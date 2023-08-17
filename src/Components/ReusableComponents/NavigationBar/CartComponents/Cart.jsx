@@ -4,9 +4,10 @@ import getCartItems from "../../Functions/getCartItems"
 import generateProducts from "../../Functions/generateProducts"
 import CartProduct from "./CartProduct"
 import getCounts from "../../Functions/getEntries"
+import getItemsInfo from "../../Functions/getItemsInfo"
 import "./cartStyles/index.scss"
 
-// you might need to use useMemo or memo in this component
+// you might need to use useMemo or memo in this component or figure if it works correctly 
 
 const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
   const [cartItems, setCartItems] = useState([])
@@ -15,18 +16,6 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
   const items = getCartItems()
   const counts = getCounts(items)
 
-  const getItemsInfo = (object) => {
-    const objectEntries = Object.entries(object).reduce(
-      (accumulator, currentValue) => {
-        return accumulator.concat(currentValue[0].replace("item-", ""))
-      },
-      []
-    )
-
-    const getProducts = generateProducts(objectEntries)
-
-    return getProducts
-  }
 
   const ifZeroUpdate = (count, id) => {
     if (count === 0) {
@@ -43,7 +32,7 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
   }
 
   useEffect(() => {
-    getItemsInfo(items).then((products) => setCartItems(products))
+    getItemsInfo(items, generateProducts).then((products) => setCartItems(products))
   }, [])
 
   return (

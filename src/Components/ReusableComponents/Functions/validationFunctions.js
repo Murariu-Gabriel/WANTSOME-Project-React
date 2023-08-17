@@ -1,8 +1,8 @@
 
 
-export const emptyValidation = (fieldValue) => {
-  
-  return fieldValue.length !== 0 || `Field is required`
+export const lengthValidation = (fieldValue, length) => {
+    const value = fieldValue.toString().length
+  return value >= length && value <= length || `Field should have ${length} characters`
 }
 
 export const namesValidation = (name) => {

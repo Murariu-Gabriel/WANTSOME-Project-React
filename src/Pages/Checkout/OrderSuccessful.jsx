@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom"
+import SummaryItem from "./SummaryItem"
+import getCartLength from "../../Components/ReusableComponents/Functions/getCartLength"
+
 import "./orderSuccessStyles.scss"
 
-const OrderSuccessful = () => {
+const OrderSuccessful = ({ grandTotal, name, img, price, count }) => {
+
+  const carrItems = getCartLength()
+  const items = carrItems - count
+
   return (
-    <div className="popup overlay3" id="order-success">
+    <div className="popup overlay3">
       <div className="success-popup">
         <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" fillRule="evenodd">
@@ -15,6 +22,7 @@ const OrderSuccessful = () => {
             />
           </g>
         </svg>
+
         <strong>
           Thank you <br />
           for your order!
@@ -22,20 +30,29 @@ const OrderSuccessful = () => {
 
         <p>You will receive an email confirmation shortly.</p>
 
-        <div className="order" id="order">
+        <div className="order">
           <div className="order-container">
-            <ul id="order-item-list"></ul>
+            <ul>
+              <SummaryItem {...{ name, img, price, count }} />
+            </ul>
             <p>
-              and <span id="items-ordered">2</span> other
-              <span id="plural">items</span>
+              and <span>{items}</span> other
+              <span> {items > 1 ? "items" : "item"}</span>
             </p>
           </div>
+
           <div className="order-total">
             <span>Grand total</span>
-            <span id="order-grand-total">123</span>
+            <span>{grandTotal}</span>
           </div>
         </div>
-        <Link className="button-1" to="/">
+
+        <Link
+          reloadDocument
+          className="button-1"
+          to="/"
+          onClick={() => localStorage.removeItem("cart-products")}
+        >
           back to home
         </Link>
       </div>

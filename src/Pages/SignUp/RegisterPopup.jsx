@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const RegisterPopup = () => {
   return (
-    <aside className="popup overlay">
+    <aside className="popup1 overlay">
       <div className="success-popup ">
         <strong>Register successful!</strong>
         <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
