@@ -9,6 +9,7 @@ import getCounts from "../../Components/ReusableComponents/Functions/getEntries"
 import getItemsInfo from "../../Components/ReusableComponents/Functions/getItemsInfo"
 import SummaryItem from "./SummaryItem"
 import TotalPaymentListElement from "./TotalPaymentListElement"
+import GoBack from "../../Components/ReusableComponents/GoBack"
 
 import "./styles.scss"
 
@@ -21,10 +22,10 @@ const Checkout = () => {
   const items = getCartItems()
   const counts = getCounts(items)
 
+  const user = JSON.parse(localStorage.getItem("user"))
+
   const form = useForm({
     defaultValues: async () => {
-      const user = JSON.parse(localStorage.getItem("user"))
-      console.log(user)
 
       try {
         const response = await fetch(`http://localhost:3000/users/${user.id}`)
@@ -47,19 +48,18 @@ const Checkout = () => {
     },
   })
 
-  const { register, control, handleSubmit, formState, reset, clearErrors } = form
+  const { register, control, handleSubmit, formState, reset, clearErrors } =
+    form
   const { errors, isDirty, isValid } = formState
 
   console.log(isDirty, isValid)
 
   const revertError = (errors) => {
-
     if (paymentMethod !== "e-money") {
-  
       clearErrors("cardNumber")
       clearErrors("cardPin")
     }
-    
+
     console.log("formErrors", errors)
   }
 
@@ -70,44 +70,67 @@ const Checkout = () => {
   }, [])
 
   useEffect(() => {
-    document.getElementById(paymentMethod).checked = true
+    if (Object.keys(items).length !== 0){
+      document.getElementById(paymentMethod).checked = true
+    }
   }, [paymentMethod])
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.id)
   }
 
-
   const handelForm = (data) => {
     console.log("form submited", data)
     setTogglePopUp(true)
-   
+
+    
+
+    //  fetch(`http://localhost:3000/users/${user.id}`, {
+    //    method: "POST",
+    //    headers: {
+    //      "Content-Type": "application/json",
+    //    },
+    //    body: JSON.stringify(newUser),
+    //  })
+
     console.log(errors)
   }
 
- // MAYBE YOU SHOULD ADD SOME MORE VALIDATION AT NUMBER INPUTS
+  // MAYBE YOU SHOULD ADD SOME MORE VALIDATION AT NUMBER INPUTS
 
- // MAYBE YOU SHOULD MAKE A POST TO THE USER WITH THE ORDER
- 
- // OBVIOUSLY YOU WILL HAVE TO CLEAN THE CODE IT REPEATS TO MUCH
+  // MAYBE YOU SHOULD MAKE A POST TO THE USER WITH THE ORDER
 
- // WHEN CAT EMPTY CHECKOUT NEEDS TO SHOW CART EMPTY
+  // OBVIOUSLY YOU WILL HAVE TO CLEAN THE CODE IT REPEATS TO MUCH
 
- // WHEN A CART ITEM IS DELETED WHILE BEING IN CHECKOUT THE PAGE WILL RERENDER AND ERROR THE SAME WAY IT DID IN CART, SOME FUNCTIONALITY IS MISSING
 
   const shippingCosts = total > 300 ? "free" : 40
+  const grandTotal =
+    total + (typeof shippingCosts === "string" ? 0 : shippingCosts)
 
-  const grandTotal = total + (typeof shippingCosts === "string" ? 0 : shippingCosts)
+  console.log(user)
+
+  if (Object.keys(items).length <= 0){
+    return(
+    
+    <section className="checkout">
+        <div className="container">
+          <GoBack />
+
+          <div className="message">
+            <h2>Sorry your cart is empty</h2>
+
+          </div>
+        </div>  
+    </section>
+    
+    )
+  }
 
   return (
     <>
       <section className="checkout">
         <div className="container">
-          <p>
-
-            {/* THiS NEEDS FIXING */}
-            <a>go back</a>
-          </p>
+          <GoBack />
 
           <form onSubmit={handleSubmit(handelForm, revertError)} noValidate>
             <div className="about-payment">
@@ -396,8 +419,8 @@ const Checkout = () => {
               <h2>summary</h2>
 
               <ul className="summary-list">
+                
                 {summaryItems.map((item, index) => {
-                  console.log(item, counts[index][1])
 
                   const { slug, price, images, id } = item
 
@@ -439,8 +462,6 @@ const Checkout = () => {
             </div>
           </form>
           <DevTool control={control} />
-
-
         </div>
 
         {/* You need to pass information to this component so it can display bought products and total price */}

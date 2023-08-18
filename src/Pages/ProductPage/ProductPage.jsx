@@ -1,11 +1,12 @@
 import { useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import About from "../../Components/About/About"
 import Categories from "../../Components/ReusableComponents/Categories/Categories"
 import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
 import YouMayAlsoLike from "./YouMayAlsoLike"
 
 import updateCartItems from "../../Components/ReusableComponents/Functions/updateCartItems"
+import GoBack from "../../Components/ReusableComponents/GoBack"
 
 import "./styles.scss"
 
@@ -14,7 +15,7 @@ const ProductPage = ({ updateCounter }) => {
   const [count, setCount] = useState(1)
   const { id } = useParams()
 
-  const navigate = useNavigate()
+ 
 
   const minus = (e) => {
     if (count > 1) {
@@ -65,9 +66,8 @@ const ProductPage = ({ updateCounter }) => {
     <>
       <section className="product">
         <div className="container">
-          <p className="link">
-            <a onClick={() => navigate(-1)}>go back</a>
-          </p>
+        
+        <GoBack/>
 
           <article>
             <div className="image-container">

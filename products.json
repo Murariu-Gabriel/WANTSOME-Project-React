@@ -715,7 +715,10 @@
       "email": "murariugabi23@gmail.com",
       "signup_password": "!AMoparola12",
       "condition_terms": "on",
-      "id": 1
+      "id": 1,
+      "personal_information":{
+        "1": 1
+      }
     },
     {
       "first_name": "Daniel",
