@@ -552,7 +552,6 @@
       ]
     }
   ],
-
   "categories": [
     {
       "id": "item-10",
@@ -706,7 +705,6 @@
       ]
     }
   ],
-
   "users": [
     {
       "first_name": "Space",
@@ -716,7 +714,7 @@
       "signup_password": "!AMoparola12",
       "condition_terms": "on",
       "id": 1,
-      "personal_information":{
+      "personal_information": {
         "1": 1
       }
     },
@@ -727,7 +725,18 @@
       "email": "cevaEmail@gmail.com",
       "signup_password": "!amparola12A",
       "condition_terms": "on",
-      "id": 2
+      "id": 2,
+      "personal_information": {
+        "fullName": "Daniel Creanga",
+        "email": "cevaEmail@gmail.com",
+        "phoneNumber": 222222222221,
+        "address": "22",
+        "zipCode": "22222",
+        "city": "2",
+        "country": "2",
+        "cardNumber": "222222222",
+        "cardPin": "2222"
+      }
     }
   ]
 }

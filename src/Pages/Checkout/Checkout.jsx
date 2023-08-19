@@ -12,6 +12,7 @@ import TotalPaymentListElement from "./TotalPaymentListElement"
 import GoBack from "../../Components/ReusableComponents/GoBack"
 
 import "./styles.scss"
+import InputForCheckout from "./InputForCheckout"
 
 const Checkout = () => {
   const [togglePopUp, setTogglePopUp] = useState(false)
@@ -83,25 +84,16 @@ const Checkout = () => {
     console.log("form submited", data)
     setTogglePopUp(true)
 
-    
-
-    //  fetch(`http://localhost:3000/users/${user.id}`, {
-    //    method: "POST",
-    //    headers: {
-    //      "Content-Type": "application/json",
-    //    },
-    //    body: JSON.stringify(newUser),
-    //  })
+     fetch(`http://localhost:3000/users/${user.id}`, {
+       method: "PATCH",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({personal_information: data}),
+     })
 
     console.log(errors)
   }
-
-  // MAYBE YOU SHOULD ADD SOME MORE VALIDATION AT NUMBER INPUTS
-
-  // MAYBE YOU SHOULD MAKE A POST TO THE USER WITH THE ORDER
-
-  // OBVIOUSLY YOU WILL HAVE TO CLEAN THE CODE IT REPEATS TO MUCH
-
 
   const shippingCosts = total > 300 ? "free" : 40
   const grandTotal =
@@ -137,171 +129,118 @@ const Checkout = () => {
               <h2>checkout</h2>
 
               <div className="payment">
-                <div>
-                  <p className="subtitle">billing details</p>
-                  <label
-                    className={errors.fullName?.message && "show"}
-                    htmlFor="fullName"
-                  >
-                    name
-                  </label>
-                  <span className="show">{errors.fullName?.message}</span>
-                  <input
-                    className={`${errors.fullName?.message && "error"}`}
-                    type="text"
-                    id="fullName"
-                    placeholder="Alex Johnson"
-                    {...register("fullName", {
-                      required: "Field is required",
-                      validate: {
-                        wrongFormat: (fieldValue) =>
-                          namesValidation(fieldValue),
-                      },
-                    })}
-                  />
-                </div>
+                <InputForCheckout
+                  htmlFor={"fullName"}
+                  label={"name"}
+                  type={"text"}
+                  placeholder={"Alex Johnson"}
+                  errors={errors}
+                  register={register}
+                  title={<p className="subtitle">billing details</p>}
+                  validation={{
+                    required: "Field is required",
+                    validate: {
+                      wrongFormat: (fieldValue) => namesValidation(fieldValue),
+                    },
+                  }}
+                />
 
-                <div>
-                  <label
-                    className={errors.email?.message && "show"}
-                    htmlFor="email"
-                  >
-                    email address
-                  </label>
-                  <span className="show">{errors.email?.message}</span>
-                  <input
-                    className={`${errors.email?.message && "error"}`}
-                    type="text"
-                    id="email"
-                    placeholder="alexander_12@gmail.com"
-                    {...register("email", {
-                      required: "Field is required",
-                      pattern: {
-                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                        message: "Invalid Email",
-                      },
-                    })}
-                  />
-                </div>
+                <InputForCheckout
+                  htmlFor={"email"}
+                  label={"email address"}
+                  type={"text"}
+                  placeholder={"alexander_12@gmail.com"}
+                  errors={errors}
+                  register={register}
+                  validation={{
+                    required: "Field is required",
+                    pattern: {
+                      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                      message: "Invalid Email",
+                    },
+                  }}
+                />
 
-                <div>
-                  <label
-                    className={`${errors.phoneNumber?.message && "show"}`}
-                    htmlFor="phoneNumber"
-                  >
-                    phone number
-                  </label>
-                  <span className="show">{errors.phoneNumber?.message}</span>
-                  <input
-                    className={errors.phoneNumber?.message && "error"}
-                    type="number"
-                    id="phoneNumber"
-                    inputMode="numeric"
-                    placeholder="1202-555-0136"
-                    {...register("phoneNumber", {
-                      valueAsNumber: true,
-                      required: {
-                        value: true,
-                        message: "Field is required",
-                      },
-                      validate: {
-                        checkLength: (fieldValue) =>
-                          lengthValidation(fieldValue, 12),
-                      },
-                    })}
-                  />
-                </div>
+                <InputForCheckout
+                  htmlFor={"phoneNumber"}
+                  label={"phone number"}
+                  type={"number"}
+                  placeholder={"1202-555-0136"}
+                  errors={errors}
+                  register={register}
+                  validation={{
+                    valueAsNumber: true,
+                    required: {
+                      value: true,
+                      message: "Field is required",
+                    },
+                    validate: {
+                      checkLength: (fieldValue) =>
+                        lengthValidation(fieldValue, 12),
+                    },
+                  }}
+                />
               </div>
 
               <div className="payment">
-                <div>
-                  <p className="subtitle">shipping info</p>
-                  <label
-                    className={errors.address?.message && "show"}
-                    htmlFor="address"
-                  >
-                    your address
-                  </label>
-                  <span className="show">{errors.address?.message}</span>
-                  <input
-                    className={errors.address?.message && "error"}
-                    type="text"
-                    id="address"
-                    placeholder="1137 Avenue"
-                    {...register("address", {
-                      required: "Field is required",
-                    })}
-                  />
-                </div>
+                <InputForCheckout
+                  htmlFor={"address"}
+                  label={"your address"}
+                  type={"text"}
+                  placeholder={"1137 Avenue"}
+                  errors={errors}
+                  register={register}
+                  title={<p className="subtitle">shipping info</p>}
+                  validation={{
+                    required: "Field is required",
+                  }}
+                />
 
-                <div>
-                  <label
-                    className={errors.zipCode?.message && "show"}
-                    htmlFor="zipCode"
-                  >
-                    ZIP code
-                  </label>
-                  <span className="show">{errors.zipCode?.message}</span>
-                  <input
-                    className={errors.zipCode?.message && "error"}
-                    type="number"
-                    id="zipCode"
-                    placeholder="12011"
-                    {...register("zipCode", {
-                      required: "Field is required",
-                      validate: {
-                        checkLength: (fieldValue) =>
-                          lengthValidation(fieldValue, 5),
-                      },
-                    })}
-                  />
-                </div>
+                <InputForCheckout
+                  htmlFor={"zipCode"}
+                  label={"zip code"}
+                  type={"number"}
+                  placeholder={"12011"}
+                  errors={errors}
+                  register={register}
+                  validation={{
+                    required: "Field is required",
+                    validate: {
+                      checkLength: (fieldValue) =>
+                        lengthValidation(fieldValue, 5),
+                    },
+                  }}
+                />
 
-                <div>
-                  <label
-                    className={errors.city?.message && "show"}
-                    htmlFor="city"
-                  >
-                    city
-                  </label>
-                  <span className="show">{errors.city?.message}</span>
-                  <input
-                    className={errors.city?.message && "error"}
-                    type="text"
-                    id="city"
-                    placeholder="San Diego"
-                    {...register("city", {
-                      required: "Field is required",
-                      validate: {
-                        wrongFormat: (fieldValue) =>
-                          namesValidation(fieldValue),
-                      },
-                    })}
-                  />
-                </div>
+                <InputForCheckout
+                  htmlFor={"city"}
+                  label={"city"}
+                  type={"text"}
+                  placeholder={"San Diego"}
+                  errors={errors}
+                  register={register}
+                  validation={{
+                    required: "Field is required",
+                    validate: {
+                      wrongFormat: (fieldValue) => namesValidation(fieldValue),
+                    },
+                  }}
+                />
 
-                <div>
-                  <label
-                    className={errors.country?.message && "show"}
-                    htmlFor="country"
-                  >
-                    country
-                  </label>
-                  <span className="show">{errors.country?.message}</span>
-                  <input
-                    className={errors.country?.message && "error"}
-                    type="text"
-                    id="country"
-                    placeholder="United States"
-                    {...register("country", {
-                      required: "Field is required",
-                      validate: {
-                        wrongFormat: (fieldValue) =>
-                          namesValidation(fieldValue),
-                      },
-                    })}
-                  />
-                </div>
+                <InputForCheckout
+                  htmlFor={"country"}
+                  label={"country"}
+                  type={"text"}
+                  placeholder={"United States"}
+                  errors={errors}
+                  register={register}
+                  validation={{
+                    required: "Field is required",
+                    validate: {
+                      wrongFormat: (fieldValue) => namesValidation(fieldValue),
+                    },
+                  }}
+                />
               </div>
 
               <div className="payment">
@@ -365,51 +304,39 @@ const Checkout = () => {
                   </div>
                 ) : (
                   <>
-                    <div>
-                      <label
-                        className={errors.cardNumber?.message && "show"}
-                        htmlFor="cardNumber"
-                      >
-                        e-money number
-                      </label>
-                      <span className="show">{errors.cardNumber?.message}</span>
-                      <input
-                        className={errors.cardNumber?.message && "error"}
-                        type="number"
-                        id="cardNumber"
-                        placeholder="343219987"
-                        {...register("cardNumber", {
-                          required: "Field is required",
-                          validate: {
-                            checkLength: (fieldValue) =>
-                              lengthValidation(fieldValue, 9),
-                          },
-                        })}
-                      />
-                    </div>
+                    <InputForCheckout
+                      htmlFor={"cardNumber"}
+                      label={"e-money number"}
+                      type={"number"}
+                      placeholder={"343219987"}
+                      errors={errors}
+                      register={register}
+                      validation={{
+                        required: "Field is required",
+                        validate: {
+                          checkLength: (fieldValue) =>
+                            lengthValidation(fieldValue, 9),
+                        },
+                      }}
+                    />
 
-                    <div>
-                      <label
-                        className={errors.cardPin?.message && "show"}
-                        htmlFor="cardPin"
-                      >
-                        e-money PIN
-                      </label>
-                      <span className="show">{errors.cardPin?.message}</span>
-                      <input
-                        className={errors.cardPin?.message && "error"}
-                        type="number"
-                        id="cardPin"
-                        placeholder="0912"
-                        {...register("cardPin", {
-                          required: "Field is required",
-                          validate: {
-                            checkLength: (fieldValue) =>
-                              lengthValidation(fieldValue, 4),
-                          },
-                        })}
-                      />
-                    </div>
+                    <InputForCheckout
+                      htmlFor={"cardPin"}
+                      label={"e-money PIN"}
+                      type={"number"}
+                      placeholder={"0912"}
+                      errors={errors}
+                      register={register}
+                      validation={{
+                        required: "Field is required",
+                        validate: {
+                          checkLength: (fieldValue) =>
+                            lengthValidation(fieldValue, 4),
+                        },
+                      }}
+                    />
+
+  
                   </>
                 )}
               </div>
@@ -419,9 +346,7 @@ const Checkout = () => {
               <h2>summary</h2>
 
               <ul className="summary-list">
-                
                 {summaryItems.map((item, index) => {
-
                   const { slug, price, images, id } = item
 
                   return (
@@ -464,7 +389,6 @@ const Checkout = () => {
           <DevTool control={control} />
         </div>
 
-        {/* You need to pass information to this component so it can display bought products and total price */}
       </section>
       {togglePopUp && (
         <OrderSuccessful
