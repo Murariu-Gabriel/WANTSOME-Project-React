@@ -1,0 +1,395 @@
+@use "../../../../SCSS/abstracts/index" as *;
+
+.products-display {
+  padding-top: $section-spacing;
+
+  
+  .container {
+
+    >h2{
+        margin-top: 0;
+
+        &:last-of-type{
+          margin-top: $xl-spacing;
+        }
+      }
+    
+    .carousel{
+      position: relative;
+      transition: box-shadow 0.3s ease-in-out;
+      height: 100%;
+      z-index: 2;
+      transform: scale(1);
+      height: 650px;
+
+      background-color: $orange;
+      background-image: url("/assets/from-project-assets/home/desktop/pattern-circles.svg");
+      background-repeat: no-repeat;
+      background-position-x: 50%;
+      background-position-y: -100px;
+      background-size: 170%;
+
+      border-radius: $base-border-radius;
+  
+      padding: $m-spacing $base-spacing;
+      color: $white;
+
+      
+      
+      .carousel-track-container{
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+        
+        
+        .carousel-track{
+          position: relative;
+          // width: 100%;
+          height: 100%;
+          transition: transform 300ms ease-in;
+          
+          
+          .carousel-slide{
+            width: 100%;
+            position: absolute;
+            text-align: center;
+            
+            @include flex(center, center, unset, column);
+          
+            div{
+              @include flex(center, center, unset, column);
+            }
+
+            img {
+              width: 200px;
+            }
+  
+            p {
+              padding: $base-padding;
+            }
+  
+            h2 {
+              margin: 2.5rem 0.625rem 0.625rem 0.625rem;
+              font-size: $xl-font;
+            }
+  
+  
+          }
+
+        }
+
+        .carousel-button{
+          position: absolute;
+          z-index: 3;
+          border: none;
+          background: none;
+          color: $white;
+          top: 20%;
+          
+
+          cursor: pointer;
+          transition: color 0.3s ease-in-out;
+
+          svg{
+            font-size: 5rem;
+           path{
+             text-align: end;
+
+           }
+          }
+
+          &:hover{
+            color: $black;
+          }
+        }
+
+        .button-right{
+          right: 0;
+        }
+
+        .carousel-nav{
+          position: fixed;
+          z-index: 3;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          gap: 0.5rem;
+
+          .carousel-indicator{
+            border: 0;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: $gray ;
+            transition: background-color 0.3s ease-in-out;
+
+            cursor: pointer;
+
+            &:hover{
+              background-color: $black;
+            }
+          }
+
+          .current-slide{
+            background-color: $black
+          }
+        }
+   
+      }
+
+      &:hover {
+        box-shadow: 0px 0px 20px 1px rgb(150, 150, 150);
+      }
+    }
+    
+    article {
+      margin-top: $m-spacing;
+      border-radius: $base-border-radius;
+      transition: box-shadow 0.3s ease-in-out;
+
+      position: relative;
+     
+
+        .subtitle{
+          color: $white;
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          top: 0px;
+          left: 20px;
+          transform: translate(-50%, -50%);
+          width: 120px;
+          height: 120px;
+          background-color: rgb(99, 129, 250);
+          border-radius: 50% 50% 50% 50%;
+          
+          span{
+            font-size: 1.3rem;
+            position: absolute;
+            bottom: 18%;
+            right: 15%;
+          }
+        }
+      
+    
+      &:first-of-type {
+        height: 320px;
+        @include flex(flex-start, center, unset, unset);
+        background-image: url("/assets/Images/Devices/Xiaomi/Smart-Watches/Mi-Watch/presentation-pictures/mi-watch-display.jpg");
+        background-size: cover;
+        background-position: 30%;
+        overflow: hidden;
+
+        div {
+          position: relative;
+          padding: 0 $m-spacing;
+          h4 {
+            margin-top: 0;
+            width: 60%;
+          }
+          
+        }
+      }
+
+      &:last-of-type {
+        //  height: 500px; // Pentru desktop
+        // position: relative;
+        
+        div {
+          height: 200px;
+          margin-top: $m-spacing;
+          position: relative;
+          overflow: hidden;
+
+          &:first-of-type {
+            border-radius: $base-border-radius;
+            background-image: url("/assets/Images/Devices/Garmin/Garmin-vivomove/presentation-pictures/presentation-dashboard.jpg");
+            background-size: cover;
+            background-position: center;
+            margin-top: 0;
+            
+          }
+
+          &:last-of-type {
+            border-radius: $base-border-radius;
+            background-color: $gray;
+            transition: box-shadow 0.3s ease-in-out;
+            // padding: 0 $base-spacing;
+            @include flex(center, flex-start, unset, column);
+           
+
+            h4 {
+              padding: 0 0 $m-spacing $m-spacing;
+              margin: 0;
+              width: 90%;
+            }
+
+            a {
+              margin: 0 0 0 $m-spacing;
+            }
+
+            &:hover {
+              box-shadow: 0px 0px 20px 1px rgb(150, 150, 150);
+            }
+          }
+        }
+      }
+      &:not(:last-of-type) {
+        &:hover {
+          box-shadow: 0px 0px 20px 1px rgb(150, 150, 150);
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 550px) {
+    .products-display {
+    padding-top: $section-spacing;
+
+    .container {
+
+      .carousel{
+        height: 750px;
+        background-position-x: 50%;
+        background-position-y: -300px;
+        background-size: 150%;
+
+        .carousel-track-container{
+          .carousel-track{
+            .carousel-slide{
+              width: 100%;
+
+              img {
+              width: 230px;
+              }
+
+              h2 {
+                font-size: $h1-font-size;
+                line-height: $h1-line-height;
+              }
+
+              h2,
+              p {
+                width: 70%;
+              }
+            }
+          }
+        }  
+      }  
+
+      article {
+        &:first-of-type {
+          height: 320px;
+          // background-position: -10%;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: left;
+          div{
+              h4{
+              width: 100%;
+            }
+          }
+          
+        }
+
+        &:last-of-type {
+          display: flex;
+          gap: $m-gap;
+          
+          div {
+            height: 320px;
+            margin-top: 0;
+            width: 50%;
+
+            &:first-of-type {
+              background-position: 60%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 990px) {
+    .products-display {
+    padding-top: $m-section-spacing;
+
+        .container {
+
+        .carousel{
+            height: 550px;
+            background-position-x: -250px;
+            background-position-y: 50%;
+            background-size: 100%;
+
+
+            .carousel-track-container{
+            .carousel-track{
+
+                .carousel-slide{
+
+                @include flex(space-around, center, unset, unset);
+                
+                
+                text-align: left;
+                
+                
+                img {
+                    width: 400px;
+                }
+
+                div {
+                    width: 35%;
+                    align-items: flex-start;
+                    gap: $m-spacing;
+
+                    h2 {
+                    font-size: $h1-font-size;
+                    }
+
+                    h2,
+                    p {
+                    margin: 0;
+                    padding: 0;
+                    width: 90%;
+                    }
+                }
+                }
+            }
+
+            .carousel-button{
+                top: 43%;
+            }
+            }
+        }
+
+        article {
+            &:first-of-type {
+            background-position: center;
+            // background-size: contain;
+            div {
+                padding: 0 $xl-spacing;
+            }
+            }
+
+            &:last-of-type {
+            div {
+                &:last-of-type {
+                h4 {
+                    padding: 0 0 $m-spacing $xl-spacing;
+                    margin: 0;
+                }
+
+                a {
+                    margin: 0 0 0 $xl-spacing;
+                }
+                }
+            }
+            }
+        }
+        }
+  }
+}

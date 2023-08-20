@@ -1,7 +1,6 @@
-import { useEffect } from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import "./styles.scss"
+import "./heroStyles.scss"
 
 
 const Hero = () => {
