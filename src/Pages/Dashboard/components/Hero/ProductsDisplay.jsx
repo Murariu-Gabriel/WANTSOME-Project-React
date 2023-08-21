@@ -1,22 +1,58 @@
+import { useState, useRef, useEffect } from "react"
 import { Link } from "react-router-dom"
 import useFetch from "../../../../Components/ReusableComponents/Functions/useFetch"
 import CarouselSlide from "./CarouselSlide"
 import "./productDisplayStyles.scss"
 
 const ProductsDisplay = () => {
+const [items, setItems] = useState([])
+const [carouselWidth, setCarouselWidth] = useState(0)
+const trackRef = useRef(null)
+
 
   const {
     isLoading,
     isError,
     data: products,
-  } =  useFetch("http://localhost:3000/products?new=true")
+  } = useFetch("http://localhost:3000/products?new=true")
 
-   if (isLoading) {
-     return <h2>Loading...</h2>
-   }
-   if (isError) {
-     return <h2>There was an error</h2>
-   }
+    //   const length = products.length
+    // .getBoundingClientRect().width
+
+
+
+  const placeItem = (position, slideWidth) => {
+    const item = {
+      styles: {
+        transform: `translateX(${position * slideWidth}px)`,
+      }
+    }
+
+    const {styles} = item
+
+    return styles
+  }
+
+  // next step is to make functionality to move the slides 
+  
+  useEffect(() => {
+    if(trackRef.current){
+        setCarouselWidth(trackRef.current.offsetWidth)
+        const keys = Array.from(Array(products.length - 1).keys())
+        setItems(keys)
+    }
+
+    
+}, [products])
+
+console.log(items)
+
+  if (isLoading) {
+    return <h2>Loading...</h2>
+  }
+  if (isError) {
+    return <h2>There was an error</h2>
+  }
 
   return (
     <section className="products-display">
@@ -39,20 +75,21 @@ const ProductsDisplay = () => {
               </svg>
             </button>
 
-            {/* Here maybe you can make use of id and somehow move slides */}
-
-            <ul className="carousel-track" id="carousel-track">
-              {products.map((product) => {
+            <ul ref={trackRef} className="carousel-track" id="carousel-track">
+              {products.filter(product => product.id !== "item-3").map((product, index) => {
                 console.log(product)
                 const { id, description, name, images } = product
 
-                return (
-                  <CarouselSlide
-                    key={id}
-                    {...{ description, name, id }}
-                    image={images.productDisplay}
-                  />
-                )
+                
+                  return (
+                    <CarouselSlide
+                      key={id}
+                      {...{ description, name, id }}
+                      image={images.productDisplay}
+                      styles={placeItem(index, carouselWidth)}
+                    />
+                  )
+                
               })}
             </ul>
 

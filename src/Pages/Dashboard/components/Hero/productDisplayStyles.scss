@@ -1,5 +1,8 @@
 @use "../../../../SCSS/abstracts/index" as *;
 
+$slide-count: 5;
+$slide-width: 30rem;
+
 .products-display {
   padding-top: $section-spacing;
 
