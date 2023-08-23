@@ -5,10 +5,10 @@ import CarouselSlide from "./CarouselSlide"
 import "./productDisplayStyles.scss"
 
 const ProductsDisplay = () => {
-const [items, setItems] = useState([])
-const [carouselWidth, setCarouselWidth] = useState(0)
-const trackRef = useRef(null)
-
+  const [items, setItems] = useState([])
+  const [moveSlide, setMoveSlide] = useState({})
+  const [carouselWidth, setCarouselWidth] = useState(0)
+  const trackRef = useRef(null)
 
   const {
     isLoading,
@@ -16,36 +16,51 @@ const trackRef = useRef(null)
     data: products,
   } = useFetch("http://localhost:3000/products?new=true")
 
-    //   const length = products.length
-    // .getBoundingClientRect().width
-
-
+  //   const length = products.length
+  // .getBoundingClientRect().width
 
   const placeItem = (position, slideWidth) => {
     const item = {
       styles: {
         transform: `translateX(${position * slideWidth}px)`,
-      }
+      },
     }
 
-    const {styles} = item
+    const { styles } = item
 
     return styles
   }
 
-  // next step is to make functionality to move the slides 
-  
-  useEffect(() => {
-    if(trackRef.current){
-        setCarouselWidth(trackRef.current.offsetWidth)
-        const keys = Array.from(Array(products.length - 1).keys())
-        setItems(keys)
+  // I need to figure out a way to make this work based on current item, to track current position and to add the current position plus the amount of pixels to move
+
+  const moveItem = (slideWidth, operator) => {
+    const operations = {
+      "+": `translateX(${operator}${slideWidth}px)`,
+      "-": `translateX(${operator}${slideWidth}px)`,
     }
 
-    
-}, [products])
+    const item = {
+      styles: {
+        transform: `translateX(-${slideWidth}px)`,
+      },
+    }
 
-console.log(items)
+    const { styles } = item
+    console.log(item)
+    setMoveSlide((prev) => ({ ...prev, styles }))
+  }
+
+  // next step is to make functionality to move the slides
+
+  useEffect(() => {
+    if (trackRef.current) {
+      setCarouselWidth(trackRef.current.offsetWidth)
+      // const keys = Array.from(Array(products.length - 1).keys())
+      // setItems(keys)
+    }
+  }, [products])
+
+  // console.log(items)
 
   if (isLoading) {
     return <h2>Loading...</h2>
@@ -75,12 +90,18 @@ console.log(items)
               </svg>
             </button>
 
-            <ul ref={trackRef} className="carousel-track" id="carousel-track">
-              {products.filter(product => product.id !== "item-3").map((product, index) => {
-                console.log(product)
-                const { id, description, name, images } = product
+            <ul
+              ref={trackRef}
+              className="carousel-track"
+              id="carousel-track"
+              style={moveSlide.styles}
+            >
+              {products
+                .filter((product) => product.id !== "item-3")
+                .map((product, index) => {
+                  // console.log(product)
+                  const { id, description, name, images } = product
 
-                
                   return (
                     <CarouselSlide
                       key={id}
@@ -89,11 +110,13 @@ console.log(items)
                       styles={placeItem(index, carouselWidth)}
                     />
                   )
-                
-              })}
+                })}
             </ul>
 
-            <button className="carousel-button button-right">
+            <button
+              className="carousel-button button-right"
+              onClick={() => moveItem(carouselWidth)}
+            >
               <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -148,6 +171,5 @@ console.log(items)
     </section>
   )
 }
-
 
 export default ProductsDisplay
