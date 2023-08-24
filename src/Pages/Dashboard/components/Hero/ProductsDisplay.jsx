@@ -6,8 +6,9 @@ import "./productDisplayStyles.scss"
 
 const ProductsDisplay = () => {
   const [items, setItems] = useState([])
-  const [moveSlide, setMoveSlide] = useState({})
+  const [isTicking, setIsTicking] = useState(false)
   const [carouselWidth, setCarouselWidth] = useState(0)
+  const bigLength = items.length
   const trackRef = useRef(null)
 
   const {
@@ -19,48 +20,63 @@ const ProductsDisplay = () => {
   //   const length = products.length
   // .getBoundingClientRect().width
 
+  const sleep = (ms = 0) => {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
+
   const placeItem = (position, slideWidth) => {
+
+    const filter = (products) => {
+        return products.filter((product) => product.id !== "item-3")
+    }
+
     const item = {
       styles: {
         transform: `translateX(${position * slideWidth}px)`,
       },
+      product: filter(products)[items[position]],
     }
 
-    const { styles } = item
 
-    return styles
+
+    return item
   }
 
-  // I need to figure out a way to make this work based on current item, to track current position and to add the current position plus the amount of pixels to move
-
-  const moveItem = (slideWidth, operator) => {
-    const operations = {
-      "+": `translateX(${operator}${slideWidth}px)`,
-      "-": `translateX(${operator}${slideWidth}px)`,
-    }
-
-    const item = {
-      styles: {
-        transform: `translateX(-${slideWidth}px)`,
-      },
-    }
-
-    const { styles } = item
-    console.log(item)
-    setMoveSlide((prev) => ({ ...prev, styles }))
-  }
 
   // next step is to make functionality to move the slides
 
   useEffect(() => {
     if (trackRef.current) {
       setCarouselWidth(trackRef.current.offsetWidth)
-      // const keys = Array.from(Array(products.length - 1).keys())
-      // setItems(keys)
+      const keys = Array.from(Array(products.length - 1).keys())
+      setItems(keys)
     }
   }, [products])
 
-  // console.log(items)
+
+  console.log(items)
+
+  const jumperFactory = (jump) => {
+    return () => {
+      if (!isTicking) {
+        setIsTicking(true)
+        setItems((prev) => {
+          return prev.map((_, i) => {
+            const nextPosition = i + jump
+            const nextJump = jump < 1 ? nextPosition + bigLength : nextPosition
+            return prev[nextJump % bigLength]
+          })
+        })
+      }
+    }
+  }
+
+  const moveRight = jumperFactory(1)
+  const moveLeft = jumperFactory(-1)
+
+   useEffect(() => {
+     if (isTicking) sleep(300).then(() => setIsTicking(false))
+   }, [isTicking])
 
   if (isLoading) {
     return <h2>Loading...</h2>
@@ -76,7 +92,11 @@ const ProductsDisplay = () => {
 
         <div className="carousel">
           <div className="carousel-track-container">
-            <button className="carousel-button button-left">
+            <button
+              className="carousel-button button-left"
+              onClick={() => moveLeft()}
+              //   moveItem(carouselWidth, "+")
+            >
               <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -94,20 +114,19 @@ const ProductsDisplay = () => {
               ref={trackRef}
               className="carousel-track"
               id="carousel-track"
-              style={moveSlide.styles}
+            //   style={moveSlide.styles}
             >
-              {products
-                .filter((product) => product.id !== "item-3")
+              {items
                 .map((product, index) => {
                   // console.log(product)
-                  const { id, description, name, images } = product
+                //   const { id, description, name, images } = product
 
                   return (
                     <CarouselSlide
-                      key={id}
-                      {...{ description, name, id }}
-                      image={images.productDisplay}
-                      styles={placeItem(index, carouselWidth)}
+                      key={crypto.randomUUID()}
+                    //   {...{ description, name, id }}
+                    //   image={images.productDisplay}
+                      styles={placeItem(product, carouselWidth)}
                     />
                   )
                 })}
@@ -115,7 +134,7 @@ const ProductsDisplay = () => {
 
             <button
               className="carousel-button button-right"
-              onClick={() => moveItem(carouselWidth)}
+              onClick={() => moveRight()}
             >
               <svg
                 stroke="currentColor"
@@ -173,3 +192,25 @@ const ProductsDisplay = () => {
 }
 
 export default ProductsDisplay
+
+
+
+
+// const moveItem = (slideWidth, operator) => {
+//   // setCarouselWidth(prev => prev + slideWidth)
+
+//   const operations = {
+//     "+": `translateX(${slideWidth - slideWidth}px)`,
+//     "-": `translateX(-${slideWidth}px)`,
+//   }
+
+//   const item = {
+//     styles: {
+//       transform: operations[operator],
+//     },
+//   }
+
+//   const { styles } = item
+//   console.log(item)
+//   setMoveSlide((prev) => ({ ...prev, styles }))
+// }

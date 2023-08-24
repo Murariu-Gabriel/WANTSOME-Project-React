@@ -49,13 +49,14 @@ $slide-width: 30rem;
           position: relative;
           // width: 100%;
           height: 100%;
-          transition: transform 300ms ease-in;
           
           
           .carousel-slide{
-            width: 100%;
-            position: absolute;
-            text-align: center;
+              width: 100%;
+              position: absolute;
+              text-align: center;
+                transition: all 0.3s;
+            //   transition: transform 300ms ease-in;
             
             @include flex(center, center, unset, column);
           
