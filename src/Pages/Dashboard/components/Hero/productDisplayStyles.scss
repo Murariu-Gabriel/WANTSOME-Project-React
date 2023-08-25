@@ -3,6 +3,7 @@
 $slide-count: 5;
 $slide-width: 30rem;
 
+
 .products-display {
   padding-top: $section-spacing;
 
@@ -55,7 +56,7 @@ $slide-width: 30rem;
               width: 100%;
               position: absolute;
               text-align: center;
-                transition: all 0.3s;
+              transition: all 0.3s;
             //   transition: transform 300ms ease-in;
             
             @include flex(center, center, unset, column);
