@@ -7,6 +7,7 @@ const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("")
   const [searchToggle, setSearchToggle] = useState(false)
   const [placeholder, setPlaceholder] = useState("")
+  const [items, setItems] = useState([])
 
   const navigate = useNavigate()
 
@@ -15,6 +16,31 @@ const SearchBar = () => {
     isError,
     data: products,
   } = useFetch(`http://localhost:3000/products`)
+
+  // console.log(products)
+
+  // main functionalities
+
+  // - first inside the ul it needs to return list elements with the name of the product suggested by search
+  // console.log(searchValue)
+  console.log(items)
+
+
+
+  // The first found item must appear in the placeholder and be uppercase proof
+
+
+
+
+  // while I write the text written must be highlighted in the search
+
+
+ 
+
+
+
+
+
 
   if (isLoading) {
     return <h2>Loading...</h2>
@@ -30,6 +56,13 @@ const SearchBar = () => {
 
   const handleSearch = (value) => {
     setSearchValue(value)
+
+    // This part might need to be move in the Search result component, maybe I should put all the functionality with the search there
+    console.log(value)
+    const currentSearch = products.filter(product => product.name.includes(value.toLowerCase()))
+
+    setItems(currentSearch)
+
   }
 
   const loadSearch = () => {
@@ -101,10 +134,12 @@ const SearchBar = () => {
               className={`search-results  ${searchToggle ? "" : "hide"} `}
               id="search-results"
             >
-              <p className="suggestion" id="search-title">
+              <p className="suggestion">
                 Recent searches
               </p>
-              <ul></ul>
+              <ul>
+
+              </ul>
             </div>
           </div>
         </div>

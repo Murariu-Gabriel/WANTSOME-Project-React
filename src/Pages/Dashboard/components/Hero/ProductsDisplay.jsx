@@ -91,7 +91,7 @@ const ProductsDisplay = () => {
     }, 2000)
   }
 
-
+ // I need to figure out a way to call this function on render so the carousel slides itself but when this function is called the states are not fully updated so the state containing activeIndex will be null
 
   const resetAutomaticSwitch = () => {
     clearInterval(carouselTimeout)
