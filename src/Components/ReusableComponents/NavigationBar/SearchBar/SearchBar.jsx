@@ -1,12 +1,14 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import useFetch from "../../Functions/useFetch"
+import SearchResultElement from "./SearchResultElement"
+import SearchResults from "./SearchResults"
 import "./searchStyles/index.scss"
 
 const SearchBar = () => {
-  const [searchValue, setSearchValue] = useState("")
   const [searchToggle, setSearchToggle] = useState(false)
   const [placeholder, setPlaceholder] = useState("")
+  const [query, setQuery] = useState("")
   const [items, setItems] = useState([])
 
   const navigate = useNavigate()
@@ -32,10 +34,12 @@ const SearchBar = () => {
 
 
 
-  // while I write the text written must be highlighted in the search
+  // ------------while I write the text written must be highlighted in the search
 
 
- 
+  // - here I think i need to pass into the result element the query so i can make some functionality that will highlight the entered text
+
+  // - Somehow I need to make categories appear along the items not just items
 
 
 
@@ -50,23 +54,39 @@ const SearchBar = () => {
   }
 
   const closeSearchToggle = () => {
-    setSearchValue("")
+    setQuery("")
     setSearchToggle(false)
+    setItems([])
   }
 
   const handleSearch = (value) => {
-    setSearchValue(value)
+    setQuery(value)
 
     // This part might need to be move in the Search result component, maybe I should put all the functionality with the search there
     console.log(value)
-    const currentSearch = products.filter(product => product.name.includes(value.toLowerCase()))
+    const currentSearch = products.filter(
+      (product) =>
+        product.name.includes(value.toLowerCase()) ||
+        product.category.includes(value.toLowerCase())
+    )
 
-    setItems(currentSearch)
+    if(value.length >= 2){
+      setItems(currentSearch)
+      setPlaceholder(currentSearch[0].name)
+    } else {
+      setItems([])
+      setPlaceholder("")
+    }
 
   }
 
+  const handleSearchButton = (e) => {
+    loadSearch(e)
+    closeSearchToggle()
+  }
+
   const loadSearch = () => {
-    navigate(`/search/${searchValue}`)
+    navigate(`/search/${query}`)
   }
 
   return (
@@ -84,13 +104,13 @@ const SearchBar = () => {
               id="search-input"
               autoComplete="off"
               type="text"
-              value={searchValue}
+              value={query}
               onChange={(e) => handleSearch(e.target.value)}
               onClick={() => setSearchToggle(true)}
             />
 
-            <p className="place-holder hide" id="place-holder">
-              placeholder
+            <p className="place-holder" id="place-holder">
+              {placeholder}
             </p>
 
             <button
@@ -113,10 +133,7 @@ const SearchBar = () => {
 
             <button
               id="search-button"
-              onClick={(e) => {
-                loadSearch(e)
-                closeSearchToggle()
-              }}
+              onClick={handleSearchButton}
             >
               <svg
                 stroke="currentColor"
@@ -137,9 +154,9 @@ const SearchBar = () => {
               <p className="suggestion">
                 Recent searches
               </p>
-              <ul>
 
-              </ul>
+              <SearchResults items={items}/>
+             
             </div>
           </div>
         </div>
