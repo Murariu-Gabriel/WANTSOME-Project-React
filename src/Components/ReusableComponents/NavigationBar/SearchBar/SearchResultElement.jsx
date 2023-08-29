@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const SearchResultElement = ({name, id}) => {
+const SearchResultElement = ({name}) => {
 
   return (
     <li>

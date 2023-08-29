@@ -1,7 +1,9 @@
-import getCartItems from "./getCartItems";
+import getLocalStorageItems from "./getLocalStorageItems";
+
 
 const updateCartItems = (item, count, operation) => {
-    const cartItems = getCartItems()
+
+    const cartItems = getLocalStorageItems("cart-products") 
 
     const ifNull = cartItems[item] === undefined ? 0 : cartItems[item]
 

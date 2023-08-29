@@ -1,7 +1,7 @@
-import getCartItems from "./getCartItems"
+import getLocalStorageItems from "./getLocalStorageItems"
 
 const getCartLength = () => {
-    const cartItems = getCartItems()
+    const cartItems = getLocalStorageItems("cart-products")
  
     const values = Object.values(cartItems)
 

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import SimpleNav from "./SimpleNav"
 import NavToggle from "./NavToggle"
 import SearchBar from "./SearchBar/SearchBar"

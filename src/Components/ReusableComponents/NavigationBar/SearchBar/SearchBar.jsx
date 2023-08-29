@@ -1,7 +1,9 @@
+import { useEffect } from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import getCounts from "../../Functions/getEntries"
+import getLocalStorageItems from "../../Functions/getLocalStorageItems"
 import useFetch from "../../Functions/useFetch"
-import SearchResultElement from "./SearchResultElement"
 import SearchResults from "./SearchResults"
 import "./searchStyles/index.scss"
 
@@ -19,13 +21,27 @@ const SearchBar = () => {
     data: products,
   } = useFetch(`http://localhost:3000/products`)
 
-  // console.log(products)
+
+  const recentSearches = getLocalStorageItems("recent-searches", [])
+
+
+  
+  if (isLoading) {
+    return <h2>Loading...</h2>
+  }
+  if (isError) {
+    return <h2>There was an error</h2>
+  }
+
 
   // main functionalities
 
-  // - first inside the ul it needs to return list elements with the name of the product suggested by search
-  // console.log(searchValue)
-  console.log(items)
+  // when recent search empty it should display no recent searches
+
+  // when search is not found display the current search on screen
+
+
+
 
 
 
@@ -43,26 +59,44 @@ const SearchBar = () => {
 
 
 
+  const updateRecentSearches = (item) => {
+    const recentSearches = getLocalStorageItems("recent-searches", [])
 
+    const currentItem = {
+      name: item,
+      id: crypto.randomUUID()
+    }
 
+    console.log(recentSearches)
+    
+    recentSearches.push(currentItem)
 
-  if (isLoading) {
-    return <h2>Loading...</h2>
+    if(recentSearches.length >= 5){
+      recentSearches.shift()
+    }
+
+    const searches = JSON.stringify(recentSearches)
+    localStorage.setItem("recent-searches", searches)
+
   }
-  if (isError) {
-    return <h2>There was an error</h2>
-  }
+
+
+
+  useEffect(() => {
+    setItems(recentSearches)
+  }, [searchToggle])
+
 
   const closeSearchToggle = () => {
     setQuery("")
     setSearchToggle(false)
     setItems([])
+    setPlaceholder("")
   }
 
   const handleSearch = (value) => {
     setQuery(value)
 
-    // This part might need to be move in the Search result component, maybe I should put all the functionality with the search there
     console.log(value)
     const currentSearch = products.filter(
       (product) =>
@@ -72,17 +106,24 @@ const SearchBar = () => {
 
     if(value.length >= 2){
       setItems(currentSearch)
-      setPlaceholder(currentSearch[0].name)
+      console.log(items.length, "items.length")
+
+      if(items.length >= 2){
+        setPlaceholder(currentSearch[0]?.name)
+      }
+
     } else {
       setItems([])
       setPlaceholder("")
+      setItems(recentSearches)
     }
 
   }
 
-  const handleSearchButton = (e) => {
-    loadSearch(e)
+  const handleSearchButton = () => {
+    loadSearch()
     closeSearchToggle()
+    updateRecentSearches(query)
   }
 
   const loadSearch = () => {
@@ -91,7 +132,7 @@ const SearchBar = () => {
 
   return (
     <>
-      <div className={`dummy ${searchToggle ? "" : "hide"}`} id="dummy"></div>
+      <div className={`dummy ${searchToggle ? "" : "hide"}`}></div>
       <section className={`search-container ${searchToggle ? "overlay2" : ""}`}>
         <div className={`form-content ${searchToggle ? "content-width" : ""}`}>
           <div
@@ -115,7 +156,6 @@ const SearchBar = () => {
 
             <button
               className={`close-search ${searchToggle ? "" : "hide"}`}
-              id="close-search"
               onClick={() => closeSearchToggle()}
             >
               <svg
@@ -132,7 +172,6 @@ const SearchBar = () => {
             </button>
 
             <button
-              id="search-button"
               onClick={handleSearchButton}
             >
               <svg
@@ -149,10 +188,10 @@ const SearchBar = () => {
 
             <div
               className={`search-results  ${searchToggle ? "" : "hide"} `}
-              id="search-results"
+              
             >
               <p className="suggestion">
-                Recent searches
+                {query.length >= 2 ? "Search suggestions" : "Recent searches"}
               </p>
 
               <SearchResults items={items}/>
@@ -165,5 +204,3 @@ const SearchBar = () => {
   )
 }
 export default SearchBar
-
-// Here the place holder need to update based on the first option generated from the search

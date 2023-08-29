@@ -3,7 +3,7 @@ import { DevTool } from "@hookform/devtools"
 import { useState, useEffect } from "react"
 import OrderSuccessful from "./OrderSuccessful"
 import { lengthValidation, namesValidation} from "../../Components/ReusableComponents/Functions/validationFunctions"
-import getCartItems from "../../Components/ReusableComponents/Functions/getCartItems"
+import getLocalStorageItems from "../../Components/ReusableComponents/Functions/getLocalStorageItems"
 import generateProducts from "../../Components/ReusableComponents/Functions/generateProducts"
 import getCounts from "../../Components/ReusableComponents/Functions/getEntries"
 import getItemsInfo from "../../Components/ReusableComponents/Functions/getItemsInfo"
@@ -20,7 +20,7 @@ const Checkout = () => {
   const [summaryItems, setSummaryItems] = useState([])
   const [total, setTotal] = useState(0)
 
-  const items = getCartItems()
+  const items = getLocalStorageItems("cart-products")
   const counts = getCounts(items)
 
   const user = JSON.parse(localStorage.getItem("user"))

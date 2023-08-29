@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from "react"
 import { Link } from "react-router-dom"
-import getCartItems from "../../Functions/getCartItems"
+import getLocalStorageItems from "../../Functions/getLocalStorageItems"
 import generateProducts from "../../Functions/generateProducts"
 import CartProduct from "./CartProduct"
 import getCounts from "../../Functions/getEntries"
@@ -13,7 +13,7 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
   const [cartItems, setCartItems] = useState([])
   const [total, setTotal] = useState(0)
 
-  const items = getCartItems()
+  const items = getLocalStorageItems("cart-products")
   const counts = getCounts(items)
 
 
