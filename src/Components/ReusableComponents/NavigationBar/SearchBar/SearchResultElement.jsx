@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom"
+import updateRecentSearches from "../../Functions/updateRecentSearches"
 
 const SearchResultElement = ({name}) => {
 
+  const handleClick = () => {
+    updateRecentSearches(name)
+  }
+
   return (
     <li>
-      <Link reloadDocument to={`search/${name}`}>
+      <Link reloadDocument to={`search/${name}`} onClick={handleClick}>
         <svg
           stroke="currentColor"
           strokeWidth="0"

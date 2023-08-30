@@ -1,8 +1,7 @@
-import { useEffect } from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import getCounts from "../../Functions/getEntries"
 import getLocalStorageItems from "../../Functions/getLocalStorageItems"
+import updateRecentSearches from "../../Functions/updateRecentSearches"
 import useFetch from "../../Functions/useFetch"
 import SearchResults from "./SearchResults"
 import "./searchStyles/index.scss"
@@ -26,28 +25,30 @@ const SearchBar = () => {
 
 
   
-  if (isLoading) {
-    return <h2>Loading...</h2>
+  const placeHolderAssist = (text, value) => {
+    const splitWord = text.split("")
+    splitWord.splice(0, value.length, value)
+    
+    return splitWord.join("")
   }
-  if (isError) {
-    return <h2>There was an error</h2>
+  
+  const cutBehindWord = (sentence, word) => {
+    const startingWord = " " + word
+    const start = sentence.indexOf(startingWord)
+    if (start < 0) {
+      return ""
+    }
+    
+    const restOfSentence = sentence.substring(start, sentence.length)
+    
+    return restOfSentence
   }
-
-
+  
+  
+  
+  
+  
   // main functionalities
-
-  // when recent search empty it should display no recent searches
-
-  // when search is not found display the current search on screen
-
-
-
-
-
-
-  // The first found item must appear in the placeholder and be uppercase proof
-
-
 
 
   // ------------while I write the text written must be highlighted in the search
@@ -55,30 +56,13 @@ const SearchBar = () => {
 
   // - here I think i need to pass into the result element the query so i can make some functionality that will highlight the entered text
 
+  // ??? check the old projects way of highlighting
+
   // - Somehow I need to make categories appear along the items not just items
 
 
 
-  const updateRecentSearches = (item) => {
-    const recentSearches = getLocalStorageItems("recent-searches", [])
 
-    const currentItem = {
-      name: item,
-      id: crypto.randomUUID()
-    }
-
-    console.log(recentSearches)
-    
-    recentSearches.push(currentItem)
-
-    if(recentSearches.length >= 5){
-      recentSearches.shift()
-    }
-
-    const searches = JSON.stringify(recentSearches)
-    localStorage.setItem("recent-searches", searches)
-
-  }
 
 
 
@@ -86,6 +70,15 @@ const SearchBar = () => {
     setItems(recentSearches)
   }, [searchToggle])
 
+
+
+
+  if (isLoading) {
+    return <h2>Loading...</h2>
+  }
+  if (isError) {
+    return <h2>There was an error</h2>
+  }
 
   const closeSearchToggle = () => {
     setQuery("")
@@ -95,35 +88,59 @@ const SearchBar = () => {
   }
 
   const handleSearch = (value) => {
-    setQuery(value)
 
-    console.log(value)
+    const currentQuerySearch = value.toLowerCase()
+
+    setQuery(currentQuerySearch)
+
+    console.log(currentQuerySearch)
+
     const currentSearch = products.filter(
       (product) =>
-        product.name.includes(value.toLowerCase()) ||
-        product.category.includes(value.toLowerCase())
+        product.name.includes(currentQuerySearch) ||
+        product.category.includes(currentQuerySearch)
     )
 
-    if(value.length >= 2){
+    if (value.length >= 2 && currentSearch.length > 0) {
       setItems(currentSearch)
       console.log(items.length, "items.length")
 
-      if(items.length >= 2){
-        setPlaceholder(currentSearch[0]?.name)
-      }
+      if (currentSearch.length >= 1) {
+        console.log(currentQuerySearch, "currentQuerySearch")
 
-    } else {
+        const cutWord = cutBehindWord(
+          currentSearch[0]?.name,
+          currentQuerySearch
+        )
+
+        const placeholderOptions = currentSearch[0]?.name.startsWith(
+          currentQuerySearch
+        )
+          ? placeHolderAssist(currentSearch[0]?.name, value) || ""
+          : placeHolderAssist(cutWord.replace(" ", ""), value)
+
+        setPlaceholder(placeholderOptions)
+      }
+     
+      
+    } else if (value.length < 2){
+      setItems(recentSearches)
+      setPlaceholder("")
+    }
+     else {
       setItems([])
       setPlaceholder("")
-      setItems(recentSearches)
+     
     }
 
   }
 
   const handleSearchButton = () => {
-    loadSearch()
-    closeSearchToggle()
-    updateRecentSearches(query)
+    if(query.length >= 2){
+      loadSearch()
+      closeSearchToggle()
+      updateRecentSearches(query)
+    }
   }
 
   const loadSearch = () => {
@@ -194,7 +211,7 @@ const SearchBar = () => {
                 {query.length >= 2 ? "Search suggestions" : "Recent searches"}
               </p>
 
-              <SearchResults items={items}/>
+              <SearchResults {...{items, query}}/>
              
             </div>
           </div>
