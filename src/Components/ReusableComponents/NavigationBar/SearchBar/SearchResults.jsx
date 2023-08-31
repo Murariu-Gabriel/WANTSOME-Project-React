@@ -18,7 +18,7 @@ const SearchResults = ({items, query}) => {
         items.map((item) => {
           console.log(item.name)
           const { name, id } = item
-          return <SearchResultElement key={id} {...{ name }} />
+          return <SearchResultElement key={id} {...{ name, query }} />
         })
       )}
     </ul>

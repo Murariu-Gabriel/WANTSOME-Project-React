@@ -51,16 +51,9 @@ const SearchBar = () => {
   // main functionalities
 
 
-  // ------------while I write the text written must be highlighted in the search
-
-
-  // - here I think i need to pass into the result element the query so i can make some functionality that will highlight the entered text
-
-  // ??? check the old projects way of highlighting
-
   // - Somehow I need to make categories appear along the items not just items
 
-
+  // naive IDEA, I could have them stored in the database
 
 
 
@@ -94,6 +87,9 @@ const SearchBar = () => {
     setQuery(currentQuerySearch)
 
     console.log(currentQuerySearch)
+
+
+    // Probably I can think about something in this part
 
     const currentSearch = products.filter(
       (product) =>
