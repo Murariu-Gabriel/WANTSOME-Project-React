@@ -89,13 +89,34 @@ const SearchBar = () => {
     console.log(currentQuerySearch)
 
 
-    // Probably I can think about something in this part
+    // Probably I can think about something whil 
 
-    const currentSearch = products.filter(
-      (product) =>
-        product.name.includes(currentQuerySearch) ||
-        product.category.includes(currentQuerySearch)
-    )
+    const currentSearch = products.map((product) => {
+    if (product.name.includes(currentQuerySearch)) {
+      return product;
+
+    } else if (product.category.includes(currentQuerySearch)) {
+      return {
+        name: product.category,
+        id: crypto.randomUUID(),
+      };
+    }
+
+     return null; // Return null for non-matching items
+    }).filter((item) => item !== null).reduce((accumulator, currentObject) => {
+
+      const existingItem = accumulator.find((obj) => obj.name === currentObject.name)
+
+      if(!existingItem){
+        accumulator.push(currentObject)
+      }
+
+      return accumulator
+
+    }, [])
+        
+        
+    
 
     if (value.length >= 2 && currentSearch.length > 0) {
       setItems(currentSearch)

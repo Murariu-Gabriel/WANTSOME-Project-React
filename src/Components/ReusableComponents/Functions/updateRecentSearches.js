@@ -7,16 +7,18 @@ const updateRecentSearches = (item) => {
     name: item,
     id: crypto.randomUUID(),
   }
+  const filteredSearches = recentSearches.filter(search => search.name !== item)
 
-  console.log(recentSearches)
+  // console.log(recentSearches)
 
-  recentSearches.push(currentItem)
+  filteredSearches.push(currentItem)
 
-  if (recentSearches.length >= 5) {
-    recentSearches.shift()
+  if (filteredSearches.length >= 5) {
+    filteredSearches.shift()
   }
 
-  const searches = JSON.stringify(recentSearches)
+
+  const searches = JSON.stringify(filteredSearches)
   localStorage.setItem("recent-searches", searches)
 }
 
