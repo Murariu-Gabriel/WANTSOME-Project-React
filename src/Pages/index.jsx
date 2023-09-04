@@ -4,7 +4,7 @@ import Dashboard from "./Dashboard/Dashboard"
 import CategoryPage from "./CategoryPage/CategoryPage"
 import Checkout from "./Checkout/Checkout"
 import ProductPage from "./ProductPage/ProductPage"
-import SearchPage from "./SearchPage"
+import SearchPage from "./SearchPage/SearchPage"
 import NotFound from "./NotFound"
 
 export {
