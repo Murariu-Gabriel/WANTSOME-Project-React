@@ -1,10 +1,51 @@
-const Filters = () => {
+import { useEffect } from "react"
+import { useState } from "react"
+import FilterContainer from "./FilterContainer"
 
+const Filters = () => {
+    const [checkedItems, setCheckedItems] = useState({})
+
+
+    // you will have to use this so you keep track of the currently clicked filters
+    const handleCheckboxChange = (obj, item, isChecked) => {
+      setCheckedItems({
+        ...checkedItems,
+        [obj]: {
+          ...checkedItems[obj],
+          [item]: isChecked
+        },
+      })
+    }
+
+
+    // useEffect(() => {
+    //   handleCheckboxChange("categories", "smart-band", false)
+      
+
+    // }, [])
+
+    
   // Here I need up update count based on a products array
 
   // I need to update or generate filters based on items categories, brand and price ranges
 
   // might need to make system that remembers, and stores what filters have been applied
+
+  // might need to take all products and refactor them in a way that categories brands and price ranges can be accessed individually and given to certain components
+
+
+
+
+
+  
+
+  // THE BIG IDEA IN FILTERS AND THEIR UPDATE SYSTEM
+  
+  // - the filters have to work like a cascade and re-render only the filters (you can do that maybe by somehow having a useEffects dependencies in all filters that update somehow in cascade)
+  //    - when categories is accessed only brands and price change (maybe you need different functions for each category or a function that chooses which to update)
+  //    - when brands is accessed only price changes
+
+
 
 
   return (
@@ -37,20 +78,38 @@ const Filters = () => {
           </div>
         </div>
 
-        <div className="filter-container">
-          <span id="filter-container-name">Category</span>
-          <aside></aside>
-        </div>
+        {/* In all of these you will have to pass processed arrays */}
 
-        <div className="filter-container">
+        <FilterContainer span={"category"} />
+        {/* <div className="filter-container">
+          <span id="filter-container-name">Category</span>
+          <aside>
+
+       
+            <div>
+                <input id='${editName}' type="checkbox" autocomplete="off" />
+              <label for='${editName}' name={editName}>
+                ${name}
+                <span>({count})</span> 
+              </label>
+            </div>
+          </aside>
+        </div> */}
+
+        <FilterContainer span={"brand"} />
+        {/* <div className="filter-container">
           <span id="filter-container-name">Brand</span>
           <aside></aside>
-        </div>
+        </div> */}
 
+
+        
+        <FilterContainer span={"price"} />
         <div className="filter-container">
           <span id="filter-container-name">price</span>
           <aside>
             <div>
+              {/* here there will be again a map generating multiple price ranges */}
               <input id="0-50" type="checkbox" />
               <label htmlFor="0-50" name="0-50">
                 0 - 50 <span id="filter-product-count">(2)</span>{" "}
