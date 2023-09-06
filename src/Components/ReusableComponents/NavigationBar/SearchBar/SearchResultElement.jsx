@@ -15,7 +15,6 @@ const SearchResultElement = ({name, query}) => {
 
       splitWord.splice(wordStart, query.length, wordConversion)
 
-      console.log(splitWord)
       return splitWord.join("")
     } else {
       return name

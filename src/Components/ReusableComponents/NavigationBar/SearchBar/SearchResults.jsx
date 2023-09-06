@@ -2,9 +2,6 @@ import SearchResultElement from "./SearchResultElement"
 
 const SearchResults = ({items, query}) => {
 
-  console.log(items)
-
-
   if(items.length < 2 && query.length < 2){
     return <p className = "no-searches">No recent searches</p>
   }
@@ -16,7 +13,6 @@ const SearchResults = ({items, query}) => {
         <SearchResultElement key={crypto.randomUUID()} name={query} />
       ) : (
         items.map((item) => {
-          console.log(item.name)
           const { name, id } = item
           return <SearchResultElement key={id} {...{ name, query }} />
         })
