@@ -1,11 +1,10 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
-const FilterElement = ({ name, count, handleChange }) => {
+const FilterElement = ({ name, count, handleChange, span, checkedItems }) => {
   const [isChecked, setIsChecked] = useState(false)
 
   const handleCheckbox = () => {
     setIsChecked(!isChecked)
-    handleChange(name, isChecked)
   }
   // on click these need to run a function that will re-render everything depending on clicked elements
   // the function must be passed down here from chain of command
@@ -14,6 +13,15 @@ const FilterElement = ({ name, count, handleChange }) => {
 
 
 
+  // this might be a way to check if something is clicked if it is then we need to make checked true by default
+  console.log(checkedItems?.[span])
+
+  useEffect(() => {
+    if (isChecked) {
+      handleChange(name, isChecked)
+    }
+  }, [isChecked])
+
   return (
     <div>
       <input
@@ -21,9 +29,9 @@ const FilterElement = ({ name, count, handleChange }) => {
         type="checkbox"
         checked={isChecked}
         onChange={handleCheckbox}
-        autocomplete="off"
+        autoComplete="off"
       />
-      <label for={name} name={name}>
+      <label htmlFor={name} name={name}>
         {name}
         <span>({count})</span>
       </label>

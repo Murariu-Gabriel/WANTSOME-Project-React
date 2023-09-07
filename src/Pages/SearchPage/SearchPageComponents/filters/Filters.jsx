@@ -1,117 +1,133 @@
 import { useEffect } from "react"
 import { useState } from "react"
+import getFromDataBase from "../../../../Components/ReusableComponents/Functions/getFromDataBase"
 import getLocalStorageItems from "../../../../Components/ReusableComponents/Functions/getLocalStorageItems"
 import FilterContainer from "./FilterContainer"
 
 
 const filters = getLocalStorageItems("filters")
 
+const priceRanges = getFromDataBase("http://localhost:3000/price-ranges")
+
+priceRanges.then(data => {
+
+  const ranges = JSON.stringify(data)
+
+  localStorage.setItem("price-ranges", ranges)
+})
+
 
 
 const Filters = ({currentItems}) => {
-    const [checkedItems, setCheckedItems] = useState(filters)
+  const [checkedItems, setCheckedItems] = useState(filters)
 
 
-    // you will have to use this so you keep track of the currently clicked filters
-    const handleCheckboxChange = (obj, item, isChecked) => {
-      setCheckedItems({
-        ...checkedItems,
-        [obj]: {
-          ...checkedItems[obj],
-          [item]: isChecked
-        },
-      })
-    }
+  // Maybe this needs to also be stored in local storage so I can access
+  const handleCheckboxChange = (obj, item, isChecked) => {
+    setCheckedItems({
+      ...checkedItems,
+      [obj]: {
+        ...checkedItems[obj],
+        [item]: isChecked
+      },
+    })
+  }
 
-    console.log(checkedItems)
 
-    //   handleCheckboxChange("categories", "smart-band", false)
-      
+  // console.log(checkedItems)
 
-    //1. might need to take all products and refactor them in a way that categories brands and price ranges can be accessed individually and given to certain components
-
-    /* here I need to take current items and using a reduce to refactor it as an object containing 3 other objects keys containing arrays with the products which I am going to pass to each filter
-
-      - category
-      - brand
-      - price
+  //   handleCheckboxChange("categories", "smart-band", false)
     
-    */
+
+  //1. might need to take all products and refactor them in a way that categories brands and price ranges can be accessed individually and given to certain components
+
+  /* here I need to take current items and using a reduce to refactor it as an object containing 3 other objects keys containing arrays with the products which I am going to pass to each filter
+
+    - category
+    - brand
+    - price
+  
+  */
 
 
-    // Will need to check and adapt this function
+  // Will need to check and adapt this function
 
-    const returnFromSearch = (list, fromList) => {
+  const returnFromSearch = (list, fromList) => {
 
-      const uniqueCategories = list.reduce((accumulator, currentValue) => {
+    const uniqueCategories = list.reduce((accumulator, currentValue) => {
 
-        if (fromList !== "price") {
-          const value = accumulator.find(element => element.name === currentValue[fromList])
+      if (fromList !== "price") {
+        const value = accumulator.find(element => element.name === currentValue[fromList])
 
-          if (!value) {
-            accumulator.push({
-              name: currentValue[fromList],
-              count: 0,
-              products: [],
-            })
-          }
-
-          accumulator.forEach((element) => {
-            if (element.name === currentValue[fromList]) {
-              element.count++
-              element.products.push(currentValue)
-            }
-          })
-
-        } else {
-          // here rages needs to be fetched from the db and used
-          const ranges = localStorage.getItem("price-ranges")
-          const priceRanges = JSON.parse(ranges)
-
-          const filter = priceRanges.find(element => 
-            element.rangeMin <= currentValue[fromList] &&
-            currentValue[fromList] < element.rangeMax
-
-          )
-
-          const rangeString = filter.priceRange
-          const minRange = filter.rangeMin
-
-          const value = accumulator.find(
-            (element) => element.name === rangeString
-          )
-
-          if (!value) {
-            accumulator.push({
-              name: rangeString,
-              count: 0,
-              products: [],
-              min: minRange,
-            })
-          }
-
-          accumulator.forEach((element) => {
-            if (element.name === rangeString) {
-              element.count++
-              element.products.push(currentValue)
-            }
+        if (!value) {
+          accumulator.push({
+            name: currentValue[fromList],
+            count: 0,
+            products: [],
           })
         }
 
-        return accumulator
-      }, [])
+        accumulator.forEach((element) => {
+          if (element.name === currentValue[fromList]) {
+            element.count++
+            element.products.push(currentValue)
+          }
+        })
 
-      if (fromList === "price") {
-        const sortedRanges = uniqueCategories.sort((a, b) => a.min - b.min)
-        return sortedRanges
+      } else {
+      
+        const priceRanges = getLocalStorageItems("price-ranges")
+       
+
+        const filter = priceRanges.find(element => 
+          element.rangeMin <= currentValue[fromList] &&
+          currentValue[fromList] < element.rangeMax
+
+        )
+
+        const rangeString = filter.priceRange
+        const minRange = filter.rangeMin
+
+        const value = accumulator.find(
+          (element) => element.name === rangeString
+        )
+
+        if (!value) {
+          accumulator.push({
+            name: rangeString,
+            count: 0,
+            products: [],
+            min: minRange,
+          })
+        }
+
+        accumulator.forEach((element) => {
+          if (element.name === rangeString) {
+            element.count++
+            element.products.push(currentValue)
+          }
+        })
       }
-      return uniqueCategories
+
+      return accumulator
+    }, [])
+
+    if (fromList === "price") {
+      const sortedRanges = uniqueCategories.sort((a, b) => a.min - b.min)
+      return sortedRanges
     }
+    return uniqueCategories
+  }
 
 
-    console.log(returnFromSearch(currentItems, "category"))
-    console.log(checkedItems)
-
+  // console.log(returnFromSearch(currentItems, "category"))
+  console.log(checkedItems)
+  
+  const totalFilters = {
+    category: returnFromSearch(currentItems, "category"),
+    brand: returnFromSearch(currentItems, "brand"),
+    price: returnFromSearch(currentItems, "price")
+  }
 
 
 
@@ -124,8 +140,8 @@ const Filters = ({currentItems}) => {
 
     
 
+  // console.log(currentItems)
 
-    
   // Here I need up update count based on a products array
 
   // THE BIG IDEA IN FILTERS AND THEIR UPDATE SYSTEM
@@ -155,7 +171,17 @@ const Filters = ({currentItems}) => {
           </button>
         </div>
 
-        <FilterContainer span={"all available products"} {...{handleCheckboxChange}}/>
+        <FilterContainer
+          span={"all available products"}
+          items={[
+            {
+              currentItems,
+              name: "all available products",
+              count: currentItems.length,
+            },
+          ]}
+          {...{ handleCheckboxChange, checkedItems }}
+        />
         {/* <div className="filter-container">
           <span id="filter-container-name" itemID="all-products-label">
             All available products
@@ -170,7 +196,11 @@ const Filters = ({currentItems}) => {
 
         {/* In all of these you will have to pass processed arrays */}
 
-        <FilterContainer span={"category"} {...{handleCheckboxChange}}/>
+        <FilterContainer
+          span={"category"}
+          items={totalFilters.category}
+          {...{ handleCheckboxChange, checkedItems }}
+        />
         {/* <div className="filter-container">
           <span id="filter-container-name">Category</span>
           <aside>
@@ -186,15 +216,21 @@ const Filters = ({currentItems}) => {
           </aside>
         </div> */}
 
-        <FilterContainer span={"brand"} {...{handleCheckboxChange}}/>
+        <FilterContainer
+          span={"brand"}
+          items={totalFilters.brand}
+          {...{ handleCheckboxChange, checkedItems }}
+        />
         {/* <div className="filter-container">
           <span id="filter-container-name">Brand</span>
           <aside></aside>
         </div> */}
 
-
-        
-        <FilterContainer span={"price"} {...{handleCheckboxChange}}/>
+        <FilterContainer
+          span={"price"}
+          items={totalFilters.price}
+          {...{ handleCheckboxChange, checkedItems }}
+        />
         {/* <div className="filter-container">
           <span id="filter-container-name">price</span>
           <aside>
