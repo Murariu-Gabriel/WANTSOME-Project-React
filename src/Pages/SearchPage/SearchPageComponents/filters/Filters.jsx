@@ -50,8 +50,6 @@ const Filters = ({currentItems}) => {
   */
 
 
-  // Will need to check and adapt this function
-
   const returnFromSearch = (list, fromList) => {
 
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
@@ -129,17 +127,6 @@ const Filters = ({currentItems}) => {
     price: returnFromSearch(currentItems, "price")
   }
 
-
-
-
-
-
-
-   
-    
-
-    
-
   // console.log(currentItems)
 
   // Here I need up update count based on a products array
@@ -151,6 +138,10 @@ const Filters = ({currentItems}) => {
   //    - when brands is accessed only price changes
 
 
+
+ // !!!!!!!!!!!!!!!!!!!!
+
+  // Current IDEEA now you have to think about how are you going to generate an array of items based on the clicked filters
 
 
   return (

@@ -34,6 +34,7 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
   const products = getProducts()
 
   useEffect(() => {
+    // maybe this could be put in a function in case I need to reset to initial search
     products.then((data) => {
       const filteredData = data.filter(
         (product) =>
