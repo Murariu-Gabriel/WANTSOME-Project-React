@@ -39,17 +39,6 @@ const Filters = ({currentItems}) => {
   //   handleCheckboxChange("categories", "smart-band", false)
     
 
-  //1. might need to take all products and refactor them in a way that categories brands and price ranges can be accessed individually and given to certain components
-
-  /* here I need to take current items and using a reduce to refactor it as an object containing 3 other objects keys containing arrays with the products which I am going to pass to each filter
-
-    - category
-    - brand
-    - price
-  
-  */
-
-
   const returnFromSearch = (list, fromList) => {
 
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
@@ -119,7 +108,7 @@ const Filters = ({currentItems}) => {
 
 
   // console.log(returnFromSearch(currentItems, "category"))
-  console.log(checkedItems)
+  // console.log(checkedItems)
   
   const totalFilters = {
     category: returnFromSearch(currentItems, "category"),
@@ -127,21 +116,62 @@ const Filters = ({currentItems}) => {
     price: returnFromSearch(currentItems, "price")
   }
 
-  // console.log(currentItems)
-
+  
   // Here I need up update count based on a products array
-
+  
   // THE BIG IDEA IN FILTERS AND THEIR UPDATE SYSTEM
   
   // - the filters have to work like a cascade and re-render only the filters (you can do that maybe by somehow having a useEffects dependencies in all filters that update somehow in cascade)
   //    - when categories is accessed only brands and price change (maybe you need different functions for each category or a function that chooses which to update)
   //    - when brands is accessed only price changes
+  
+  
 
 
 
- // !!!!!!!!!!!!!!!!!!!!
 
+
+  
+  // !!!!!!!!!!!!!!!!!!!!
+  
   // Current IDEEA now you have to think about how are you going to generate an array of items based on the clicked filters
+  // console.log(checkedItems, totalFilters)
+  
+  const returnCheckedItems = () => {
+// checkedItems, totalFilters
+
+    for(const key in totalFilters){
+      // console.log(totalFilters[key])
+      if(checkedItems[key]){
+        // console.log(checkedItems[key])
+        const data = totalFilters[key].map(el => {
+
+          for(const secKey in checkedItems[key]){
+
+          if (el.name === secKey && checkedItems[key][secKey]) {
+            // console.log(checkedItems[key][secKey])
+            // console.log(el.products)
+            return el.products
+          }
+          }
+
+          // checkedItems.map(secEl => {
+          //   if (el.name === secEl) {
+          //     console.log(secEl)
+          //   }
+          // })
+          
+        })
+
+        console.log(data)
+      }
+    }
+
+
+  }
+  returnCheckedItems()
+ // This function needs to return the arrays of the selected filters
+
 
 
   return (

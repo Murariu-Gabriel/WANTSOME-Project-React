@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+import { useState } from "react"
 import FilterElement from "./FilterElement"
 
 const FilterContainer = ({
@@ -6,17 +8,26 @@ const FilterContainer = ({
   items,
   checkedItems,
 }) => {
-  // each generated item needs to be passed down different arrays of items
+
+  const [currentItems, setCurrentItems] = useState([])
 
   const handleChange = (name, status) => {
     handleCheckboxChange(span, name, status)
   }
 
+
+  useEffect(() => {
+    setCurrentItems(items)
+  }, [items])
+
+  // console.log(checkedItems?.[span])
+  // console.log(currentItems)
+
   return (
     <div className="filter-container">
       <span>{span}</span>
       <aside>
-        {items.map((item) => {
+        {currentItems.map((item) => {
           const { count, name } = item
 
           return (
