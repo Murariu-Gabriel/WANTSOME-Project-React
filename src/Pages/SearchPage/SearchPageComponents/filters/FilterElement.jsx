@@ -1,21 +1,30 @@
 import { useEffect, useState } from "react"
+import getProducts from "../../../../Components/ReusableComponents/Functions/getProducts"
 
-const FilterElement = ({ name, count, handleChange, span, checkedItems }) => {
-  const [isChecked, setIsChecked] = useState( checkedItems?.[span]?.[name] || false )
+const FilterElement = ({
+  name,
+  count,
+  handleChange,
+  span,
+  checkedItems,
+  products,
+  passCurrentItems,
+}) => {
+  const [isChecked, setIsChecked] = useState(
+    checkedItems?.[span]?.[name] || false
+  )
+
+  // const editedName = name.replace(/-/g, " ")
 
   const handleCheckbox = () => {
-      setIsChecked(!isChecked)
-      handleChange(name, !isChecked)
-
-   
- 
+    passCurrentItems(products)
+    setIsChecked(!isChecked)
+    handleChange(name, !isChecked)
   }
 
-
+  // console.log(checkedItems)
   // on click these need to run a function that will re-render everything depending on clicked elements
   // the function must be passed down here from chain of command
-
-
 
   return (
     <div>

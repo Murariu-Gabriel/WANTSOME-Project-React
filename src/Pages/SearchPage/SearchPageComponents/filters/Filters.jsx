@@ -18,33 +18,44 @@ priceRanges.then(data => {
 
 
 
-const Filters = ({currentItems}) => {
+const Filters = ({ currentItems, setCurrentItems }) => {
   const [checkedItems, setCheckedItems] = useState(filters)
-
 
   // Maybe this needs to also be stored in local storage so I can access
   const handleCheckboxChange = (obj, item, isChecked) => {
-    setCheckedItems({
+
+    const touchedItems = {
       ...checkedItems,
       [obj]: {
         ...checkedItems[obj],
-        [item]: isChecked
+        [item]: isChecked,
       },
-    })
-  }
+    }
 
+    setCheckedItems(touchedItems)
+    // this works but when redered it remains clicked but array changes don t work
+     const stringItems = JSON.stringify(touchedItems)
+     localStorage.setItem("filters", stringItems)
+  }
 
   // console.log(checkedItems)
 
   //   handleCheckboxChange("categories", "smart-band", false)
-    
+
+  // THE BIG IDEA IN FILTERS AND THEIR UPDATE SYSTEM
+
+  // - the filters have to work like a cascade and re-render only the filters (you can do that maybe by somehow having a useEffects dependencies in all filters that update somehow in cascade)
+  //    - when categories is accessed only brands and price change (maybe you need different functions for each category or a function that chooses which to update)
+  //    - when brands is accessed only price changes
 
   const returnFromSearch = (list, fromList) => {
+    console.log(list)
 
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
-
       if (fromList !== "price") {
-        const value = accumulator.find(element => element.name === currentValue[fromList])
+        const value = accumulator.find(
+          (element) => element.name === currentValue[fromList]
+        )
 
         if (!value) {
           accumulator.push({
@@ -60,16 +71,13 @@ const Filters = ({currentItems}) => {
             element.products.push(currentValue)
           }
         })
-
       } else {
-      
         const priceRanges = getLocalStorageItems("price-ranges")
-       
 
-        const filter = priceRanges.find(element => 
-          element.rangeMin <= currentValue[fromList] &&
-          currentValue[fromList] < element.rangeMax
-
+        const filter = priceRanges.find(
+          (element) =>
+            element.rangeMin <= currentValue[fromList] &&
+            currentValue[fromList] < element.rangeMax
         )
 
         const rangeString = filter.priceRange
@@ -106,53 +114,30 @@ const Filters = ({currentItems}) => {
     return uniqueCategories
   }
 
-
-  // console.log(returnFromSearch(currentItems, "category"))
-  // console.log(checkedItems)
-  
   const totalFilters = {
     category: returnFromSearch(currentItems, "category"),
     brand: returnFromSearch(currentItems, "brand"),
-    price: returnFromSearch(currentItems, "price")
+    price: returnFromSearch(currentItems, "price"),
   }
 
-  
-  // Here I need up update count based on a products array
-  
-  // THE BIG IDEA IN FILTERS AND THEIR UPDATE SYSTEM
-  
-  // - the filters have to work like a cascade and re-render only the filters (you can do that maybe by somehow having a useEffects dependencies in all filters that update somehow in cascade)
-  //    - when categories is accessed only brands and price change (maybe you need different functions for each category or a function that chooses which to update)
-  //    - when brands is accessed only price changes
-  
-  
+  // console.log(totalFilters.brand)
 
-
-
-
-
-  
   // !!!!!!!!!!!!!!!!!!!!
-  
-  // Current IDEEA now you have to think about how are you going to generate an array of items based on the clicked filters
-  // console.log(checkedItems, totalFilters)
-  
-  const returnCheckedItems = () => {
-// checkedItems, totalFilters
 
-    for(const key in totalFilters){
-      // console.log(totalFilters[key])
-      if(checkedItems[key]){
-        // console.log(checkedItems[key])
-        const data = totalFilters[key].map(el => {
+  // Current IDEEA now you have to figure out how to return to previous state when uncheck
 
-          for(const secKey in checkedItems[key]){
+  const returnCheckedItems = (array) => {
+    // checkedItems, totalFilters
 
-          if (el.name === secKey && checkedItems[key][secKey]) {
-            // console.log(checkedItems[key][secKey])
-            // console.log(el.products)
-            return el.products
-          }
+    for (const key in array) {
+      if (checkedItems[key]) {
+        const data = array[key].reduce((accumulator, currentItem) => {
+          for (const secKey in checkedItems[key]) {
+            if (currentItem.name === secKey && checkedItems[key][secKey]) {
+              console.log(currentItem.name, secKey, checkedItems[key][secKey])
+
+              return accumulator.concat(currentItem.products)
+            }
           }
 
           // checkedItems.map(secEl => {
@@ -160,19 +145,23 @@ const Filters = ({currentItems}) => {
           //     console.log(secEl)
           //   }
           // })
-          
-        })
-
+          return accumulator
+        }, [])
         console.log(data)
+        return data
       }
     }
-
-
+    return array
   }
-  returnCheckedItems()
- // This function needs to return the arrays of the selected filters
 
 
+  const passCurrentItems = (array) => {
+    setCurrentItems(returnCheckedItems(array))
+  }
+
+ 
+
+ 
 
   return (
     <div className="filters">
@@ -193,15 +182,15 @@ const Filters = ({currentItems}) => {
         </div>
 
         <FilterContainer
-          span={"all available products"}
+          span={"all-available-products"}
           items={[
             {
               currentItems,
-              name: "all available products",
+              name: "all-available-products",
               count: currentItems.length,
             },
           ]}
-          {...{ handleCheckboxChange, checkedItems }}
+          {...{ handleCheckboxChange, checkedItems, passCurrentItems }}
         />
         {/* <div className="filter-container">
           <span id="filter-container-name" itemID="all-products-label">
@@ -220,7 +209,7 @@ const Filters = ({currentItems}) => {
         <FilterContainer
           span={"category"}
           items={totalFilters.category}
-          {...{ handleCheckboxChange, checkedItems }}
+          {...{ handleCheckboxChange, checkedItems, passCurrentItems }}
         />
         {/* <div className="filter-container">
           <span id="filter-container-name">Category</span>
@@ -240,7 +229,7 @@ const Filters = ({currentItems}) => {
         <FilterContainer
           span={"brand"}
           items={totalFilters.brand}
-          {...{ handleCheckboxChange, checkedItems }}
+          {...{ handleCheckboxChange, checkedItems, passCurrentItems }}
         />
         {/* <div className="filter-container">
           <span id="filter-container-name">Brand</span>
@@ -250,7 +239,7 @@ const Filters = ({currentItems}) => {
         <FilterContainer
           span={"price"}
           items={totalFilters.price}
-          {...{ handleCheckboxChange, checkedItems }}
+          {...{ handleCheckboxChange, checkedItems, passCurrentItems }}
         />
         {/* <div className="filter-container">
           <span id="filter-container-name">price</span>

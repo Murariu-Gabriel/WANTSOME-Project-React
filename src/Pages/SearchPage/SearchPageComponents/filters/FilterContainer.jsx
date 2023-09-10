@@ -7,14 +7,15 @@ const FilterContainer = ({
   handleCheckboxChange,
   items,
   checkedItems,
+  passCurrentItems,
 }) => {
-
   const [currentItems, setCurrentItems] = useState([])
+
+  // const editedSpan = span.replace(/-/g, " ")
 
   const handleChange = (name, status) => {
     handleCheckboxChange(span, name, status)
   }
-
 
   useEffect(() => {
     setCurrentItems(items)
@@ -28,12 +29,21 @@ const FilterContainer = ({
       <span>{span}</span>
       <aside>
         {currentItems.map((item) => {
-          const { count, name } = item
+          const { count, name, products } = item
 
+          
           return (
             <FilterElement
               key={crypto.randomUUID()}
-              {...{ count, name, handleChange, span, checkedItems }}
+              {...{
+                count,
+                name,
+                handleChange,
+                span,
+                checkedItems,
+                products,
+                passCurrentItems,
+              }}
             />
           )
         })}
