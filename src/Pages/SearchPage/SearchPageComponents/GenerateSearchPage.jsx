@@ -6,6 +6,7 @@ import Filters from "./filters/Filters"
 
 const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
   const [currentItems, setCurrentItems] = useState([])
+  const [allItems, setAllItems] = useState([])
 
   
   // and have a function that is passed into filters so when I activate a filter to update the display results and filters so they can be re-rendered
@@ -42,16 +43,17 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
        )
        
        setCurrentItems(filteredData)
+       setAllItems(data)
       })
     }, [])
     
     
-    console.log(currentItems)
+    // console.log(currentItems)
     
   return (
     <section className="generated-search-result ">
       <div className="container ">
-        <Filters {...{ currentSearch, currentItems, setCurrentItems }} />
+        <Filters {...{ currentSearch, currentItems, allItems, setCurrentItems }} />
 
         <DisplayResults {...{ updateCounter, currentSearch, currentItems }} />
       </div>

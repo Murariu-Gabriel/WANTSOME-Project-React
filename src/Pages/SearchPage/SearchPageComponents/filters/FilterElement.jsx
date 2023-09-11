@@ -21,10 +21,14 @@ const FilterElement = ({
     setIsChecked(!isChecked)
     handleChange(name, !isChecked)
   }
+  
+  // useEffect(() => {
+  //   if (checkedItems?.[span]?.[name]) {
+  //   }
 
-  // console.log(checkedItems)
-  // on click these need to run a function that will re-render everything depending on clicked elements
-  // the function must be passed down here from chain of command
+  // }, [])
+
+  // I need to find a way to make call this functionality if the the checkbox is true from the stored savedFilters
 
   return (
     <div>

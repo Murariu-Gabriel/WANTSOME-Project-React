@@ -8,22 +8,19 @@ import FilterContainer from "./FilterContainer"
 const filters = getLocalStorageItems("filters")
 
 const priceRanges = getFromDataBase("http://localhost:3000/price-ranges")
-
 priceRanges.then(data => {
-
   const ranges = JSON.stringify(data)
-
   localStorage.setItem("price-ranges", ranges)
 })
 
 
 
-const Filters = ({ currentItems, setCurrentItems }) => {
+const Filters = ({ currentItems, setCurrentItems, allItems }) => {
   const [checkedItems, setCheckedItems] = useState(filters)
 
-  // Maybe this needs to also be stored in local storage so I can access
-  const handleCheckboxChange = (obj, item, isChecked) => {
+ 
 
+  const handleCheckboxChange = (obj, item, isChecked) => {
     const touchedItems = {
       ...checkedItems,
       [obj]: {
@@ -34,13 +31,11 @@ const Filters = ({ currentItems, setCurrentItems }) => {
 
     setCheckedItems(touchedItems)
     // this works but when redered it remains clicked but array changes don t work
-     const stringItems = JSON.stringify(touchedItems)
-     localStorage.setItem("filters", stringItems)
+    const stringItems = JSON.stringify(touchedItems)
+    localStorage.setItem("filters", stringItems)
   }
 
-  // console.log(checkedItems)
 
-  //   handleCheckboxChange("categories", "smart-band", false)
 
   // THE BIG IDEA IN FILTERS AND THEIR UPDATE SYSTEM
 
@@ -48,8 +43,9 @@ const Filters = ({ currentItems, setCurrentItems }) => {
   //    - when categories is accessed only brands and price change (maybe you need different functions for each category or a function that chooses which to update)
   //    - when brands is accessed only price changes
 
+
   const returnFromSearch = (list, fromList) => {
-    console.log(list)
+    // console.log(list)
 
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
       if (fromList !== "price") {
@@ -115,26 +111,31 @@ const Filters = ({ currentItems, setCurrentItems }) => {
   }
 
   const totalFilters = {
-    category: returnFromSearch(currentItems, "category"),
+    category: returnFromSearch(allItems, "category"),
     brand: returnFromSearch(currentItems, "brand"),
     price: returnFromSearch(currentItems, "price"),
   }
 
-  // console.log(totalFilters.brand)
+
 
   // !!!!!!!!!!!!!!!!!!!!
 
-  // Current IDEEA now you have to figure out how to return to previous state when uncheck
+  // Current IDEA now you have to figure out how to return to previous state when uncheck
+
+  // Somewhere in the code something does not update immediately the current array of filtered checked items
+  // but that actually needs to be fixed from the filterElement itself
+
+
 
   const returnCheckedItems = (array) => {
-    // checkedItems, totalFilters
+    // console.log(checkedItems, totalFilters, currentItems)
 
-    for (const key in array) {
+    for (const key in totalFilters) {
       if (checkedItems[key]) {
-        const data = array[key].reduce((accumulator, currentItem) => {
+        const data = totalFilters[key].reduce((accumulator, currentItem) => {
           for (const secKey in checkedItems[key]) {
             if (currentItem.name === secKey && checkedItems[key][secKey]) {
-              console.log(currentItem.name, secKey, checkedItems[key][secKey])
+              // console.log(currentItem.name, secKey, checkedItems[key][secKey])
 
               return accumulator.concat(currentItem.products)
             }
@@ -154,14 +155,13 @@ const Filters = ({ currentItems, setCurrentItems }) => {
     return array
   }
 
+  console.log(returnCheckedItems())
 
   const passCurrentItems = (array) => {
-    setCurrentItems(returnCheckedItems(array))
+    setCurrentItems(prevState => {
+      console.log(prevState, "previous state")
+      return returnCheckedItems(array)})
   }
-
- 
-
- 
 
   return (
     <div className="filters">
@@ -185,57 +185,28 @@ const Filters = ({ currentItems, setCurrentItems }) => {
           span={"all-available-products"}
           items={[
             {
-              currentItems,
+              products: allItems,
               name: "all-available-products",
-              count: currentItems.length,
+              count: allItems.length,
             },
           ]}
           {...{ handleCheckboxChange, checkedItems, passCurrentItems }}
         />
-        {/* <div className="filter-container">
-          <span id="filter-container-name" itemID="all-products-label">
-            All available products
-          </span>
-          <div>
-            <input id="all-items" type="checkbox" autoComplete="off" />
-            <label htmlFor="all-items" name="all-items">
-              products(<span id="all-items-count"></span>){" "}
-            </label>
-          </div>
-        </div> */}
-
-        {/* In all of these you will have to pass processed arrays */}
+     
 
         <FilterContainer
           span={"category"}
           items={totalFilters.category}
           {...{ handleCheckboxChange, checkedItems, passCurrentItems }}
         />
-        {/* <div className="filter-container">
-          <span id="filter-container-name">Category</span>
-          <aside>
-
-       
-            <div>
-                <input id='${editName}' type="checkbox" autocomplete="off" />
-              <label for='${editName}' name={editName}>
-                ${name}
-                <span>({count})</span> 
-              </label>
-            </div>
-          </aside>
-        </div> */}
+      
 
         <FilterContainer
           span={"brand"}
           items={totalFilters.brand}
           {...{ handleCheckboxChange, checkedItems, passCurrentItems }}
         />
-        {/* <div className="filter-container">
-          <span id="filter-container-name">Brand</span>
-          <aside></aside>
-        </div> */}
-
+     
         <FilterContainer
           span={"price"}
           items={totalFilters.price}
