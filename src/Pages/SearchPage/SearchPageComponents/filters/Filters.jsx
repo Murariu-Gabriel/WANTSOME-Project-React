@@ -125,12 +125,15 @@ const Filters = ({ currentItems, setCurrentItems, allItems }) => {
   // Somewhere in the code something does not update immediately the current array of filtered checked items
   // but that actually needs to be fixed from the filterElement itself
 
+  // On the first click return checked items returns an empty array instead of the clicked items
 
 
+ // THIS FUNCTION MIGHT NEED RETHINKING
   const returnCheckedItems = (array) => {
     // console.log(checkedItems, totalFilters, currentItems)
 
     for (const key in totalFilters) {
+      console.log(checkedItems[key])
       if (checkedItems[key]) {
         const data = totalFilters[key].reduce((accumulator, currentItem) => {
           for (const secKey in checkedItems[key]) {
@@ -148,19 +151,18 @@ const Filters = ({ currentItems, setCurrentItems, allItems }) => {
           // })
           return accumulator
         }, [])
-        console.log(data)
+        // console.log(data)
         return data
       }
     }
     return array
   }
 
-  console.log(returnCheckedItems())
+  // console.log(returnCheckedItems())
 
   const passCurrentItems = (array) => {
-    setCurrentItems(prevState => {
-      console.log(prevState, "previous state")
-      return returnCheckedItems(array)})
+    // console.log(returnCheckedItems(array))
+    setCurrentItems(returnCheckedItems(array))
   }
 
   return (
