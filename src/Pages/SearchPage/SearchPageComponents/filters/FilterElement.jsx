@@ -6,29 +6,58 @@ const FilterElement = ({
   count,
   handleChange,
   span,
-  checkedItems,
+  filters,
   products,
   passCurrentItems,
 }) => {
-  const [isChecked, setIsChecked] = useState(
-    checkedItems?.[span]?.[name] || false
-  )
+  const [isChecked, setIsChecked] = useState(filters?.[span]?.[name] || false)
 
   // const editedName = name.replace(/-/g, " ")
 
+  // when I click on all available products all filters under should be unselected
+
+  // when I click on category all filters under should be unselected
+
+  // when I click on brand all filters under should be unselected
+
+  // when price is selected all other price selections should be unselected
+
+
+
+  //this function should check which filter category has been selected
+  // then it should delete all the checked filters under it
+  const deleteCheckedFiltersUnder = (name, obj) => {
+
+    for(const key in obj){
+      if(name === key){
+        console.log(key)
+
+      } else {
+        delete obj[key]
+      }
+    }
+ 
+    // localStorage.removeItem("filters")
+    console.log(obj)
+  }
+
+  
+  // deleteCheckedFiltersUnder(span ,filters)
+  
+  
+  // this is to do after I figure out the function above
+  // if span == brand then update price
+  
+  
   const handleCheckbox = () => {
-    passCurrentItems(products)
+    // if(span !== "brand" && span !== "price"){
     setIsChecked(!isChecked)
     handleChange(name, !isChecked)
+    passCurrentItems(products)
+    // }
+    deleteCheckedFiltersUnder(span ,filters)
+    console.log(span, filters)
   }
-  
-  // useEffect(() => {
-  //   if (checkedItems?.[span]?.[name]) {
-  //   }
-
-  // }, [])
-
-  // I need to find a way to make call this functionality if the the checkbox is true from the stored savedFilters
 
   return (
     <div>

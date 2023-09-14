@@ -6,7 +6,7 @@ const FilterContainer = ({
   span,
   handleCheckboxChange,
   items,
-  checkedItems,
+  filters,
   passCurrentItems,
 }) => {
   const [currentItems, setCurrentItems] = useState([])
@@ -40,7 +40,7 @@ const FilterContainer = ({
                 name,
                 handleChange,
                 span,
-                checkedItems,
+                filters,
                 products,
                 passCurrentItems,
               }}
