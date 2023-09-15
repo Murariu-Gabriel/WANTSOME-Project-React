@@ -124,9 +124,17 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     return true
   }
 
-  const returnCheckedItems = (array) => {
+
+  // IMPORTANT - THIS PART BE BROKEN IN MULTIPLE FUNCTIONS
+  // - it seems like this function returns all checked items like intended but it doesn't take in account the fact that it must return checked items based on filter containers
+
+
+  // Idea, you could use this function multiple times and somehow check for last used filter category
+  const returnCheckedItems = () => {
     const filters = getLocalStorageItems("filters")
 
+    console.log(filters)
+    // This part does't work as intended it returns only what has been checked inside category it needs re-working
     for (const key in totalFilters) {
       const data = totalFilters[key].reduce((accumulator, currentItem) => {
         for (const secKey in filters[key]) {
@@ -137,23 +145,34 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
         return accumulator
       }, [])
-    
-      if (data.length !== 0) {
-        return data
-      }
+      return data
+    }
+  }
+
+ 
+
+  // A problem of this function is that it checks for the fact that on click the first data obtained is an empty array and this affects the flow
+
+  const handleFilters = (array) => {
+
+    if (returnCheckedItems().length !== 0) {
+      return returnCheckedItems()
     }
 
     if (checkIfAllFiltersFalse(filters)) {
-      return currentSearchedItems
-    } else {
+      console.log(array)
       return array
+    } else {
+      return currentSearchedItems
     }
   }
 
   // console.log(returnCheckedItems())
 
   const passCurrentItems = (array) => {
-    setCurrentItems(returnCheckedItems(array))
+    setCurrentItems(handleFilters(array))
+    console.log(handleFilters(array), filters)
+     console.log(returnCheckedItems())
   }
 
   return (

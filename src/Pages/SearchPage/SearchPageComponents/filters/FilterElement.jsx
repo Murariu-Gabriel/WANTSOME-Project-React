@@ -30,7 +30,7 @@ const FilterElement = ({
 
     for(const key in obj){
       if(name === key){
-        console.log(key)
+        // console.log(key)
 
       } else {
         delete obj[key]
@@ -38,7 +38,7 @@ const FilterElement = ({
     }
  
     // localStorage.removeItem("filters")
-    console.log(obj)
+    // console.log(obj)
   }
 
   
@@ -51,12 +51,12 @@ const FilterElement = ({
   
   const handleCheckbox = () => {
     // if(span !== "brand" && span !== "price"){
+      handleChange(name, !isChecked)
     setIsChecked(!isChecked)
-    handleChange(name, !isChecked)
     passCurrentItems(products)
     // }
-    deleteCheckedFiltersUnder(span ,filters)
-    console.log(span, filters)
+    // deleteCheckedFiltersUnder(span ,filters)
+    // console.log(span, filters)
   }
 
   return (
