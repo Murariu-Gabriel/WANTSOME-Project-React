@@ -103,11 +103,13 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   }
 
   const totalFilters = {
+    ["all-available-items"]: returnFromSearch(allItems, "all-available-items"),
     category: returnFromSearch(allItems, "category"),
     brand: returnFromSearch(currentItems, "brand"),
     price: returnFromSearch(currentItems, "price"),
   }
 
+  console.log(totalFilters)
   // !!!!!!!!!!!!!!!!!!!!
 
   // Current IDEA now you have to figure out how to make brand re-render only price
@@ -133,9 +135,14 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   const returnCheckedItems = () => {
     const filters = getLocalStorageItems("filters")
 
+   const entries = Object.entries(totalFilters)
+
     console.log(filters)
-    // This part does't work as intended it returns only what has been checked inside category it needs re-working
-    for (const key in totalFilters) {
+ 
+    // Last time 17:09:2033 you worked here and you realized that you might need to change total filters but returnFrom search has an undefined key so you have to figure that out
+
+    const allCheckedArray =  entries.reduce((accumulator, [key, value]) => {
+
       const data = totalFilters[key].reduce((accumulator, currentItem) => {
         for (const secKey in filters[key]) {
           if (currentItem.name === secKey && filters[key][secKey]) {
@@ -145,8 +152,15 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
         return accumulator
       }, [])
-      return data
-    }
+
+      // console.log(data, key, totalFilters)
+      return accumulator.concat({data, key})
+
+    }, [])
+
+    console.log(allCheckedArray)
+
+    return allCheckedArray
   }
 
  
@@ -160,7 +174,7 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     }
 
     if (checkIfAllFiltersFalse(filters)) {
-      console.log(array)
+      // console.log(array)
       return array
     } else {
       return currentSearchedItems
@@ -170,9 +184,9 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   // console.log(returnCheckedItems())
 
   const passCurrentItems = (array) => {
-    setCurrentItems(handleFilters(array))
-    console.log(handleFilters(array), filters)
-     console.log(returnCheckedItems())
+    // setCurrentItems(handleFilters(array))
+    // console.log(handleFilters(array), filters)
+     console.log(returnCheckedItems(), filters)
   }
 
   return (
