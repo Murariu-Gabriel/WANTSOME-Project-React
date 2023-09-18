@@ -103,7 +103,13 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   }
 
   const totalFilters = {
-    ["all-available-items"]: returnFromSearch(allItems, "all-available-items"),
+    ["all-available-products"]: [
+      {
+        products: allItems,
+        name: "all-available-products",
+        count: allItems.length,
+      },
+    ],
     category: returnFromSearch(allItems, "category"),
     brand: returnFromSearch(currentItems, "brand"),
     price: returnFromSearch(currentItems, "price"),
@@ -137,14 +143,15 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
    const entries = Object.entries(totalFilters)
 
-    console.log(filters)
+    console.log(entries)
  
-    // Last time 17:09:2033 you worked here and you realized that you might need to change total filters but returnFrom search has an undefined key so you have to figure that out
+    // Last time 18:09:2033 now you have to somehow make this function or other functions remember the last used array of filters and update based on that array(this needs more thinking)
 
     const allCheckedArray =  entries.reduce((accumulator, [key, value]) => {
-
       const data = totalFilters[key].reduce((accumulator, currentItem) => {
+        // console.log(totalFilters[key])
         for (const secKey in filters[key]) {
+          console.log(currentItem.name, secKey , filters[key][secKey])
           if (currentItem.name === secKey && filters[key][secKey]) {
             return accumulator.concat(currentItem.products)
           }
@@ -154,7 +161,7 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
       }, [])
 
       // console.log(data, key, totalFilters)
-      return accumulator.concat({data, key})
+      return accumulator.concat(data)
 
     }, [])
 
@@ -162,7 +169,6 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
     return allCheckedArray
   }
-
  
 
   // A problem of this function is that it checks for the fact that on click the first data obtained is an empty array and this affects the flow
@@ -184,9 +190,11 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   // console.log(returnCheckedItems())
 
   const passCurrentItems = (array) => {
-    // setCurrentItems(handleFilters(array))
+    setCurrentItems(handleFilters(array))
     // console.log(handleFilters(array), filters)
-     console.log(returnCheckedItems(), filters)
+     console.log(returnCheckedItems(), 
+    //  filters
+     )
   }
 
   return (
@@ -209,13 +217,7 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
         <FilterContainer
           span={"all-available-products"}
-          items={[
-            {
-              products: allItems,
-              name: "all-available-products",
-              count: allItems.length,
-            },
-          ]}
+          items={totalFilters["all-available-products"]}
           {...{ handleCheckboxChange, filters, passCurrentItems }}
         />
 
