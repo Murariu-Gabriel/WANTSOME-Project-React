@@ -30,11 +30,7 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     localStorage.setItem("filters", stringItems)
   }
 
-  // THE BIG IDEA IN FILTERS AND THEIR UPDATE SYSTEM
-
-  // - the filters have to work like a cascade and re-render only the filters (you can do that maybe by somehow having a useEffects dependencies in all filters that update somehow in cascade)
-  //    - when categories is accessed only brands and price change (maybe you need different functions for each category or a function that chooses which to update)
-  //    - when brands is accessed only price changes
+// THE MAIN PROBLEM HERE IS THAT FILTERS DON T UPDATE SYNCHRONOUSLY OR IT JUST DOES NOT DO I PROPERLY, WHEN FILTERS ARE SELECTED OTHERS GO BACK TO FALSE FOR SOME REASON
 
   const returnFromSearch = (list, fromList) => {
     // console.log(list)
@@ -116,42 +112,32 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   }
 
   console.log(totalFilters)
-  // !!!!!!!!!!!!!!!!!!!!
 
-  // Current IDEA now you have to figure out how to make brand re-render only price
-
-  const checkIfAllFiltersFalse = (filters) => {
-    for (const filter in filters) {
-      for (const key in filters[filter]) {
-        if (filters[filter][key]) {
-          return false
-        }
+  const checkIfAllFiltersFalse = (toCheck) => {
+    // for (const filter in toCheck) {
+    for (const key in toCheck) {
+      if (toCheck[key]) {
+        return false
       }
     }
+    // }
 
     return true
   }
 
-
   // IMPORTANT - THIS PART BE BROKEN IN MULTIPLE FUNCTIONS
   // - it seems like this function returns all checked items like intended but it doesn't take in account the fact that it must return checked items based on filter containers
 
-
-  // Idea, you could use this function multiple times and somehow check for last used filter category
   const returnCheckedItems = () => {
     const filters = getLocalStorageItems("filters")
 
-   const entries = Object.entries(totalFilters)
+    const entries = Object.entries(totalFilters)
 
-    console.log(entries)
- 
-    // Last time 18:09:2033 now you have to somehow make this function or other functions remember the last used array of filters and update based on that array(this needs more thinking)
+    // console.log(entries)
 
-    const allCheckedArray =  entries.reduce((accumulator, [key, value]) => {
+    const allCheckedArray = entries.reduce((accumulator, [key, value]) => {
       const data = totalFilters[key].reduce((accumulator, currentItem) => {
-        // console.log(totalFilters[key])
         for (const secKey in filters[key]) {
-          console.log(currentItem.name, secKey , filters[key][secKey])
           if (currentItem.name === secKey && filters[key][secKey]) {
             return accumulator.concat(currentItem.products)
           }
@@ -160,24 +146,116 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
         return accumulator
       }, [])
 
-      // console.log(data, key, totalFilters)
-      return accumulator.concat(data)
+      accumulator[key] = data
 
-    }, [])
+      return accumulator
+    }, {})
 
-    console.log(allCheckedArray)
+    console.log(allCheckedArray, "items accumulated from all the checkboxes " )
 
     return allCheckedArray
   }
- 
 
-  // A problem of this function is that it checks for the fact that on click the first data obtained is an empty array and this affects the flow
+  // NEW idea
 
-  const handleFilters = (array) => {
+  // make a function that handles all checked items with the returnCheckedItems function
 
-    if (returnCheckedItems().length !== 0) {
-      return returnCheckedItems()
+  // first you might need to make the function work for each filter cat individually
+
+  // second store the filter checked items in this function each individually
+
+  // third you need to update total filters with the selected generated items
+
+  // the idea here is that somehow the selected filter has to remain the same and not change
+
+  // the filter should change only if the one higher in hierarchy does
+
+  const handleFilterUpdates = () => {
+    const currentItemsForAllFilters = returnCheckedItems()
+
+    console.log(returnCheckedItems(), "IMPORTANT")
+
+
+    // if (currentItemsForAllFilters.category.length !== 0) {
+    //   console.log(currentItemsForAllFilters.category)
+    //   totalFilters.brand = returnFromSearch(
+    //     currentItemsForAllFilters.category,
+    //     "brand"
+    //   )
+    // }
+
+    // if (currentItemsForAllFilters.brand.length !== 0) {
+    //   console.log(currentItemsForAllFilters.brand)
+    //   totalFilters.price = returnFromSearch(
+    //     currentItemsForAllFilters.brand,
+    //     "price"
+    //   )
+    // }
+    
+    // console.log(currentItemsForAllFilters)
+    // console.log(totalFilters)
+    // console.log(filters)
+
+
+
+
+
+
+
+
+    // the ideea here is that each statement should return the specific items stored inside currentItemsForAll categories and only that ignoring the rest and having a specific order
+
+    // console.log(filters)
+
+    // if (checkIfAllFiltersFalse(filters.price)) {
+    //   console.log(currentItemsForAllFilters.price)
+    //   return currentItemsForAllFilters.price
+
+    // } else if (checkIfAllFiltersFalse(filters.brand)) {
+    //   console.log(currentItemsForAllFilters.brand)
+    //   return currentItemsForAllFilters.brand
+
+    // } else if (checkIfAllFiltersFalse(filters.category)) {
+    //   console.log(currentItemsForAllFilters.category)
+    //   return currentItemsForAllFilters.category
+
+    // } else if (checkIfAllFiltersFalse(filters["all-available-products"])) {
+    //   console.log(currentItemsForAllFilters["all-available-products"])
+    //   // console.log(currentItemsForAllFilters)
+    //   return currentItemsForAllFilters["all-available-items"]
+
+    // } else {
+    //   console.log(currentSearchedItems)
+    //   return currentSearchedItems
+    // }
+
+
+
+
+
+
+
+    if (checkIfAllFiltersFalse(filters["all-available-products"])) {
+      console.log(currentItemsForAllFilters["all-available-products"])
+      return totalFilters["all-available-products"][0].products
+    } else if (checkIfAllFiltersFalse(filters.category)) {
+      console.log(currentItemsForAllFilters.category)
+      return currentItemsForAllFilters.category
+    } else {
+      return currentSearchedItems
     }
+  }
+
+
+
+
+  // QUARANTINE PART | THIS CODE IS OUT, NEEDS UPDATING
+  const handleFilters = (array) => {
+    // if (returnCheckedItems().length !== 0) {
+    //   return returnCheckedItems()
+    // }
+
+    console.log(checkIfAllFiltersFalse(filters))
 
     if (checkIfAllFiltersFalse(filters)) {
       // console.log(array)
@@ -189,12 +267,21 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
   // console.log(returnCheckedItems())
 
+
+
+
+
+// Function that sends items to the parent component that re-renders everything
   const passCurrentItems = (array) => {
-    setCurrentItems(handleFilters(array))
+    setCurrentItems(handleFilterUpdates())
+    console.log(handleFilterUpdates())
+
+    // setCurrentItems(handleFilters(array))
     // console.log(handleFilters(array), filters)
-     console.log(returnCheckedItems(), 
+    //  console.log(returnCheckedItems(),
     //  filters
-     )
+    //  )
+    //  handleFilterUpdates()
   }
 
   return (
