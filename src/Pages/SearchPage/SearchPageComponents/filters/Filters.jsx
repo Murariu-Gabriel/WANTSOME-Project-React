@@ -17,6 +17,8 @@ priceRanges.then(data => {
 const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}) => {
   const filters = getLocalStorageItems("filters")
 
+  console.log(currentItems, "Items in the parent component")
+
   const handleCheckboxChange = (obj, item, isChecked) => {
     const touchedItems = {
       ...filters,
@@ -30,7 +32,6 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     localStorage.setItem("filters", stringItems)
   }
 
-// THE MAIN PROBLEM HERE IS THAT FILTERS DON T UPDATE SYNCHRONOUSLY OR IT JUST DOES NOT DO I PROPERLY, WHEN FILTERS ARE SELECTED OTHERS GO BACK TO FALSE FOR SOME REASON
 
   const returnFromSearch = (list, fromList) => {
     // console.log(list)
@@ -125,9 +126,7 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     return true
   }
 
-  // IMPORTANT - THIS PART BE BROKEN IN MULTIPLE FUNCTIONS
-  // - it seems like this function returns all checked items like intended but it doesn't take in account the fact that it must return checked items based on filter containers
-
+ 
   const returnCheckedItems = () => {
     const filters = getLocalStorageItems("filters")
 
@@ -151,99 +150,98 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
       return accumulator
     }, {})
 
-    console.log(allCheckedArray, "items accumulated from all the checkboxes " )
+    console.log(allCheckedArray, "items accumulated from all the checkboxes ")
 
     return allCheckedArray
   }
 
-  // NEW idea
 
-  // make a function that handles all checked items with the returnCheckedItems function
-
-  // first you might need to make the function work for each filter cat individually
-
-  // second store the filter checked items in this function each individually
-
-  // third you need to update total filters with the selected generated items
-
-  // the idea here is that somehow the selected filter has to remain the same and not change
-
-  // the filter should change only if the one higher in hierarchy does
+  const currentItemsForAllFilters = returnCheckedItems()
 
   const handleFilterUpdates = () => {
-    const currentItemsForAllFilters = returnCheckedItems()
+    const filters = getLocalStorageItems("filters")
 
     console.log(returnCheckedItems(), "IMPORTANT")
 
 
-    // if (currentItemsForAllFilters.category.length !== 0) {
-    //   console.log(currentItemsForAllFilters.category)
-    //   totalFilters.brand = returnFromSearch(
-    //     currentItemsForAllFilters.category,
-    //     "brand"
-    //   )
-    // }
-
-    // if (currentItemsForAllFilters.brand.length !== 0) {
-    //   console.log(currentItemsForAllFilters.brand)
-    //   totalFilters.price = returnFromSearch(
-    //     currentItemsForAllFilters.brand,
-    //     "price"
-    //   )
-    // }
-    
     // console.log(currentItemsForAllFilters)
     // console.log(totalFilters)
     // console.log(filters)
 
+    // NEXT
 
 
+    // price does not get updated correctly, you must find a way to update it no matter the filter clicked
+
+    // after you fix issue above
+    
+    // - take care each time you click a filter it either does not return the last accessed items in order or it gets stuck at categories
 
 
+   
 
+    console.log(filters)
 
+     if (
+       !checkIfAllFiltersFalse(filters.price) &&
+       currentItemsForAllFilters.brand.length !== 0
+     ) {
+       console.log(currentItemsForAllFilters.price)
+       return currentItemsForAllFilters.price
 
-    // the ideea here is that each statement should return the specific items stored inside currentItemsForAll categories and only that ignoring the rest and having a specific order
+     } else if (
+       !checkIfAllFiltersFalse(filters.brand) &&
+       currentItemsForAllFilters.category.length == 0
+     ) {
+       console.log(currentItemsForAllFilters.brand)
+       return currentItemsForAllFilters.brand
 
-    // console.log(filters)
+     } else if (!checkIfAllFiltersFalse(filters.category)) {
+       console.log(currentItemsForAllFilters.category)
+       return currentItemsForAllFilters.category
 
-    // if (checkIfAllFiltersFalse(filters.price)) {
-    //   console.log(currentItemsForAllFilters.price)
-    //   return currentItemsForAllFilters.price
+     } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
+       console.log(currentItemsForAllFilters["all-available-products"])
+       return totalFilters["all-available-products"][0].products
 
-    // } else if (checkIfAllFiltersFalse(filters.brand)) {
-    //   console.log(currentItemsForAllFilters.brand)
-    //   return currentItemsForAllFilters.brand
+     } else {
+       console.log(currentSearchedItems)
+       return currentSearchedItems
 
-    // } else if (checkIfAllFiltersFalse(filters.category)) {
+     }
+
+    // console.log(filters, "CurrentFilters")
+
+    // if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
+    //   console.log(currentItemsForAllFilters["all-available-products"])
+    //   return totalFilters["all-available-products"][0].products
+
+    // } else if (!checkIfAllFiltersFalse(filters.category)) {
     //   console.log(currentItemsForAllFilters.category)
     //   return currentItemsForAllFilters.category
 
-    // } else if (checkIfAllFiltersFalse(filters["all-available-products"])) {
-    //   console.log(currentItemsForAllFilters["all-available-products"])
-    //   // console.log(currentItemsForAllFilters)
-    //   return currentItemsForAllFilters["all-available-items"]
-
     // } else {
-    //   console.log(currentSearchedItems)
     //   return currentSearchedItems
     // }
+  }
+
+  if (currentItemsForAllFilters.category.length !== 0) {
+    console.log(currentItemsForAllFilters.category)
+    totalFilters.brand = returnFromSearch(
+      currentItemsForAllFilters.category,
+      "brand"
+    )
+  }
 
 
+  console.log(currentItemsForAllFilters.brand)
 
-
-
-
-
-    if (checkIfAllFiltersFalse(filters["all-available-products"])) {
-      console.log(currentItemsForAllFilters["all-available-products"])
-      return totalFilters["all-available-products"][0].products
-    } else if (checkIfAllFiltersFalse(filters.category)) {
-      console.log(currentItemsForAllFilters.category)
-      return currentItemsForAllFilters.category
-    } else {
-      return currentSearchedItems
-    }
+  if (currentItemsForAllFilters.brand.length !== 0) {
+    console.log(currentItemsForAllFilters.brand)
+    totalFilters.price = returnFromSearch(
+      currentItemsForAllFilters.brand,
+      "price"
+    )
   }
 
 
@@ -267,14 +265,11 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
   // console.log(returnCheckedItems())
 
-
-
-
-
-// Function that sends items to the parent component that re-renders everything
+  // Function that sends items to the parent component that re-renders everything
   const passCurrentItems = (array) => {
+    // setCurrentItems(array)
     setCurrentItems(handleFilterUpdates())
-    console.log(handleFilterUpdates())
+    // console.log(handleFilterUpdates())
 
     // setCurrentItems(handleFilters(array))
     // console.log(handleFilters(array), filters)
@@ -404,3 +399,71 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   )
 }
 export default Filters
+
+
+
+
+// pieces of code for later in case I need
+
+
+
+
+
+
+
+// if (currentItemsForAllFilters.brand.length !== 0) {
+//   console.log(currentItemsForAllFilters.brand)
+//   totalFilters.price = returnFromSearch(
+//     currentItemsForAllFilters.brand,
+//     "price"
+//   )
+//   // return []
+// } else if (currentItemsForAllFilters.category.length !== 0) {
+//   console.log(currentItemsForAllFilters.category)
+
+//   const currentStatus = returnFromSearch(
+//     currentItemsForAllFilters.category,
+//     "brand"
+//   )
+
+//   totalFilters.brand = currentStatus
+//   console.log(totalFilters)
+
+//   const concatArrays = currentStatus.reduce((accumulator, currentItem) => {
+//     return accumulator.concat(currentItem.products)
+//   }, [])
+
+//   console.log(concatArrays)
+
+//   return concatArrays
+// }
+
+
+
+
+//  if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
+//    console.log(currentItemsForAllFilters["all-available-products"])
+//    return totalFilters["all-available-products"][0].products
+//  } else if (!checkIfAllFiltersFalse(filters.category)) {
+//    console.log(currentItemsForAllFilters.category)
+//    return currentItemsForAllFilters.category
+//  } else if (
+//    !checkIfAllFiltersFalse(filters.brand) &&
+//    currentItemsForAllFilters.category.length == 0
+//  ) {
+//    console.log(currentItemsForAllFilters.brand)
+//    return currentItemsForAllFilters.brand
+//  } else if (
+//    !checkIfAllFiltersFalse(filters.price) &&
+//    currentItemsForAllFilters.brand.length == 0
+//  ) {
+//    console.log(currentItemsForAllFilters.price)
+//    return currentItemsForAllFilters.price
+//  } else {
+//    console.log(currentSearchedItems)
+//    return currentSearchedItems
+//  }
+
+
+
+
