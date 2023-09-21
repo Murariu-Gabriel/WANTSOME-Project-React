@@ -15,22 +15,11 @@ priceRanges.then(data => {
 
 
 const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}) => {
-  const filters = getLocalStorageItems("filters")
+  // const filters = getLocalStorageItems("filters")
 
-  console.log(currentItems, "Items in the parent component")
+  console.log(currentItems, "ITEMS IN THE PARENT COMPONENT")
 
-  const handleCheckboxChange = (obj, item, isChecked) => {
-    const touchedItems = {
-      ...filters,
-      [obj]: {
-        ...filters[obj],
-        [item]: isChecked,
-      },
-    }
 
-    const stringItems = JSON.stringify(touchedItems)
-    localStorage.setItem("filters", stringItems)
-  }
 
 
   const returnFromSearch = (list, fromList) => {
@@ -112,7 +101,7 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     price: returnFromSearch(currentItems, "price"),
   }
 
-  console.log(totalFilters)
+  console.log(totalFilters, "At the top of component, all items divided")
 
   const checkIfAllFiltersFalse = (toCheck) => {
     // for (const filter in toCheck) {
@@ -156,10 +145,11 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   }
 
 
-  const currentItemsForAllFilters = returnCheckedItems()
-
+  
   const handleFilterUpdates = () => {
     const filters = getLocalStorageItems("filters")
+    // const currentItemsForAllFilters = returnCheckedItems()
+    
 
     console.log(returnCheckedItems(), "IMPORTANT")
 
@@ -171,7 +161,11 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     // NEXT
 
 
-    // price does not get updated correctly, you must find a way to update it no matter the filter clicked
+    // now on click, all available products don t update and price
+
+    // for some reason all available products updates only if it s the first
+    
+    // for some reason price updates only if all the other items are selected
 
     // after you fix issue above
     
@@ -184,24 +178,24 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
      if (
        !checkIfAllFiltersFalse(filters.price) &&
-       currentItemsForAllFilters.brand.length !== 0
+       returnCheckedItems().brand.length !== 0
      ) {
-       console.log(currentItemsForAllFilters.price)
-       return currentItemsForAllFilters.price
+       console.log(returnCheckedItems().price)
+       return returnCheckedItems().price
 
      } else if (
        !checkIfAllFiltersFalse(filters.brand) &&
-       currentItemsForAllFilters.category.length == 0
+       returnCheckedItems().category.length !== 0
      ) {
-       console.log(currentItemsForAllFilters.brand)
-       return currentItemsForAllFilters.brand
+       console.log(returnCheckedItems().brand)
+       return returnCheckedItems().brand
 
      } else if (!checkIfAllFiltersFalse(filters.category)) {
-       console.log(currentItemsForAllFilters.category)
-       return currentItemsForAllFilters.category
+       console.log(returnCheckedItems().category)
+       return returnCheckedItems().category
 
      } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
-       console.log(currentItemsForAllFilters["all-available-products"])
+       console.log(returnCheckedItems()["all-available-products"])
        return totalFilters["all-available-products"][0].products
 
      } else {
@@ -213,33 +207,33 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     // console.log(filters, "CurrentFilters")
 
     // if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
-    //   console.log(currentItemsForAllFilters["all-available-products"])
+    //   console.log(returnCheckedItems()["all-available-products"])
     //   return totalFilters["all-available-products"][0].products
 
     // } else if (!checkIfAllFiltersFalse(filters.category)) {
-    //   console.log(currentItemsForAllFilters.category)
-    //   return currentItemsForAllFilters.category
+    //   console.log(returnCheckedItems().category)
+    //   return returnCheckedItems().category
 
     // } else {
     //   return currentSearchedItems
     // }
   }
 
-  if (currentItemsForAllFilters.category.length !== 0) {
-    console.log(currentItemsForAllFilters.category)
+  if (returnCheckedItems().category.length !== 0) {
+    console.log(returnCheckedItems().category)
     totalFilters.brand = returnFromSearch(
-      currentItemsForAllFilters.category,
+      returnCheckedItems().category,
       "brand"
     )
   }
 
 
-  console.log(currentItemsForAllFilters.brand)
+  console.log(returnCheckedItems().brand)
 
-  if (currentItemsForAllFilters.brand.length !== 0) {
-    console.log(currentItemsForAllFilters.brand)
+  if (returnCheckedItems().brand.length !== 0) {
+    console.log(returnCheckedItems().brand)
     totalFilters.price = returnFromSearch(
-      currentItemsForAllFilters.brand,
+      returnCheckedItems().brand,
       "price"
     )
   }
@@ -248,25 +242,25 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
 
   // QUARANTINE PART | THIS CODE IS OUT, NEEDS UPDATING
-  const handleFilters = (array) => {
-    // if (returnCheckedItems().length !== 0) {
-    //   return returnCheckedItems()
-    // }
+  // const handleFilters = (array) => {
+  //   // if (returnCheckedItems().length !== 0) {
+  //   //   return returnCheckedItems()
+  //   // }
 
-    console.log(checkIfAllFiltersFalse(filters))
+  //   console.log(checkIfAllFiltersFalse(filters))
 
-    if (checkIfAllFiltersFalse(filters)) {
-      // console.log(array)
-      return array
-    } else {
-      return currentSearchedItems
-    }
-  }
+  //   if (checkIfAllFiltersFalse(filters)) {
+  //     // console.log(array)
+  //     return array
+  //   } else {
+  //     return currentSearchedItems
+  //   }
+  // }
 
   // console.log(returnCheckedItems())
 
   // Function that sends items to the parent component that re-renders everything
-  const passCurrentItems = (array) => {
+  const passCurrentItems = (y) => {
     // setCurrentItems(array)
     setCurrentItems(handleFilterUpdates())
     // console.log(handleFilterUpdates())
@@ -300,25 +294,37 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
         <FilterContainer
           span={"all-available-products"}
           items={totalFilters["all-available-products"]}
-          {...{ handleCheckboxChange, filters, passCurrentItems }}
+          {...{ 
+            // handleCheckboxChange,
+            //  filters,
+              passCurrentItems }}
         />
 
         <FilterContainer
           span={"category"}
           items={totalFilters.category}
-          {...{ handleCheckboxChange, filters, passCurrentItems }}
+          {...{ 
+            // handleCheckboxChange, 
+            // filters,
+             passCurrentItems }}
         />
 
         <FilterContainer
           span={"brand"}
           items={totalFilters.brand}
-          {...{ handleCheckboxChange, filters, passCurrentItems }}
+          {...{ 
+            // handleCheckboxChange, 
+            // filters,
+             passCurrentItems }}
         />
 
         <FilterContainer
           span={"price"}
           items={totalFilters.price}
-          {...{ handleCheckboxChange, filters, passCurrentItems }}
+          {...{ 
+            // handleCheckboxChange,
+            //  filters,
+              passCurrentItems }}
         />
         {/* <div className="filter-container">
           <span id="filter-container-name">price</span>

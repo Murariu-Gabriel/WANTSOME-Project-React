@@ -4,7 +4,7 @@ import FilterElement from "./FilterElement"
 
 const FilterContainer = ({
   span,
-  handleCheckboxChange,
+  // handleCheckboxChange,
   items,
   filters,
   passCurrentItems,
@@ -38,7 +38,7 @@ const FilterContainer = ({
               {...{
                 count,
                 name,
-                handleChange,
+                // handleChange,
                 span,
                 filters,
                 products,

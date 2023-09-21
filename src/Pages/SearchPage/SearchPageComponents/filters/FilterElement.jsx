@@ -1,17 +1,33 @@
 import { useEffect, useState } from "react"
+import getLocalStorageItems from "../../../../Components/ReusableComponents/Functions/getLocalStorageItems"
 import getProducts from "../../../../Components/ReusableComponents/Functions/getProducts"
+
 
 const FilterElement = ({
   name,
   count,
-  handleChange,
+  // handleChange,
   span,
-  filters,
+  // filters,
   products,
   passCurrentItems,
 }) => {
+  const filters = getLocalStorageItems("filters")
   const [isChecked, setIsChecked] = useState(filters?.[span]?.[name] || false)
 
+    const handleCheckboxChange = (obj, item, isChecked) => {
+      const filters = getLocalStorageItems("filters")
+      const touchedItems = {
+        ...filters,
+        [obj]: {
+          ...filters[obj],
+          [item]: isChecked,
+        },
+      }
+
+      const stringItems = JSON.stringify(touchedItems)
+      localStorage.setItem("filters", stringItems)
+    }
   // const editedName = name.replace(/-/g, " ")
 
   // when I click on all available products all filters under should be unselected
@@ -51,7 +67,7 @@ const FilterElement = ({
   
   const handleCheckbox = () => {
     // if(span !== "brand" && span !== "price"){
-      handleChange(name, !isChecked)
+      handleCheckboxChange(span, name, !isChecked)
     setIsChecked(!isChecked)
     passCurrentItems(products)
     // }

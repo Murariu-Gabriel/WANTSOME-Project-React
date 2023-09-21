@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import getProducts from "../../../Components/ReusableComponents/Functions/getProducts"
 import replaceLine from "../../../Components/ReusableComponents/Functions/replaceLine"
-import DisplayResults from "./DisplayResults"
+import DisplayResults from "./displayResults/DisplayResults"
 import Filters from "./filters/Filters"
 
 const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
@@ -59,7 +59,7 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
           {...{ currentSearchedItems, currentItems, allItems, setCurrentItems }}
         />
 
-        <DisplayResults {...{ updateCounter, currentSearch, currentItems }} />
+        <DisplayResults {...{ updateCounter, currentItems }} />
       </div>
     </section>
   )

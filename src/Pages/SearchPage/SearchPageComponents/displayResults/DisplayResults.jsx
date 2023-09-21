@@ -1,6 +1,7 @@
-const DisplayResults = () => {
+import Product from "./Product"
 
-    // Here you will need to pass the count
+const DisplayResults = ({ updateCounter, currentItems }) => {
+  // Here you will need to pass the count
 
   return (
     <div className="display-search-results">
@@ -84,7 +85,12 @@ const DisplayResults = () => {
         </div>
       </div>
 
-      <div className="generated-products" id="generated-products"></div>
+      <div className="generated-products" id="generated-products">
+        {currentItems.map(item => {
+          const {id, name, images, price, discount: ifDiscount, new: ifNew} = item
+          return <Product key={id} {...{name, price, price, price, ifDiscount, ifNew, id}} productImage={images.display.first}/>
+        })}
+      </div>
 
       <div className="pagination" id="pagination"></div>
     </div>
