@@ -5,17 +5,14 @@ import getLocalStorageItems from "../../../../Components/ReusableComponents/Func
 import FilterContainer from "./FilterContainer"
 
 
-
 const priceRanges = getFromDataBase("http://localhost:3000/price-ranges")
 priceRanges.then(data => {
   const ranges = JSON.stringify(data)
   localStorage.setItem("price-ranges", ranges)
 })
 
-
-
 const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}) => {
-  // const filters = getLocalStorageItems("filters")
+  const filters = getLocalStorageItems("filters")
 
   console.log(currentItems, "ITEMS IN THE PARENT COMPONENT")
 
@@ -149,10 +146,8 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   const handleFilterUpdates = () => {
     const filters = getLocalStorageItems("filters")
     // const currentItemsForAllFilters = returnCheckedItems()
-    
 
     console.log(returnCheckedItems(), "IMPORTANT")
-
 
     // console.log(currentItemsForAllFilters)
     // console.log(totalFilters)
@@ -160,84 +155,83 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
     // NEXT
 
+    // now on click, all available products doesn't update and it s because of updateFilterContainers
 
-    // now on click, all available products don t update and price
+    // another problem now is that price still renders the first clicked items and hides the other filters
 
-    // for some reason all available products updates only if it s the first
-    
-    // for some reason price updates only if all the other items are selected
+    // the problem with all-available-products is that if i click on it while other filters are on the function that handles filters is returning me the last selected filter AND also now it does not update price and brand because of updateFilterContainers
 
-    // after you fix issue above
-    
-    // - take care each time you click a filter it either does not return the last accessed items in order or it gets stuck at categories
+  
+
+  
 
 
-   
-
-    console.log(filters)
-
-     if (
-       !checkIfAllFiltersFalse(filters.price) &&
-       returnCheckedItems().brand.length !== 0
-     ) {
-       console.log(returnCheckedItems().price)
-       return returnCheckedItems().price
-
-     } else if (
-       !checkIfAllFiltersFalse(filters.brand) &&
-       returnCheckedItems().category.length !== 0
-     ) {
-       console.log(returnCheckedItems().brand)
-       return returnCheckedItems().brand
-
-     } else if (!checkIfAllFiltersFalse(filters.category)) {
-       console.log(returnCheckedItems().category)
-       return returnCheckedItems().category
-
-     } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
-       console.log(returnCheckedItems()["all-available-products"])
-       return totalFilters["all-available-products"][0].products
-
-     } else {
-       console.log(currentSearchedItems)
-       return currentSearchedItems
-
-     }
+    if (
+      !checkIfAllFiltersFalse(filters.price) &&
+      returnCheckedItems().price.length !== 0
+    ) {
+      console.log(returnCheckedItems().price)
+      return returnCheckedItems().price
+    } else if (
+      !checkIfAllFiltersFalse(filters.brand) &&
+      returnCheckedItems().brand.length !== 0
+    ) {
+      console.log(returnCheckedItems().brand)
+      return returnCheckedItems().brand
+    } else if (!checkIfAllFiltersFalse(filters.category)) {
+      console.log(returnCheckedItems().category)
+      return returnCheckedItems().category
+    } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
+      console.log(returnCheckedItems()["all-available-products"])
+      return totalFilters["all-available-products"][0].products
+    } else {
+      //  console.log(currentSearchedItems)
+      return currentSearchedItems
+    }
 
     // console.log(filters, "CurrentFilters")
-
-    // if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
-    //   console.log(returnCheckedItems()["all-available-products"])
-    //   return totalFilters["all-available-products"][0].products
-
-    // } else if (!checkIfAllFiltersFalse(filters.category)) {
-    //   console.log(returnCheckedItems().category)
-    //   return returnCheckedItems().category
-
-    // } else {
-    //   return currentSearchedItems
-    // }
   }
+  
 
-  if (returnCheckedItems().category.length !== 0) {
-    console.log(returnCheckedItems().category)
-    totalFilters.brand = returnFromSearch(
-      returnCheckedItems().category,
-      "brand"
-    )
+
+  const updateFilterContainers = () => {
+    const filters = getLocalStorageItems("filters")
+
+    if (returnCheckedItems().category.length !== 0) {
+      console.log(returnCheckedItems().category)
+      totalFilters.brand = returnFromSearch(
+        returnCheckedItems().category,
+        "brand"
+      )
+    }
+  
+  
+    // console.log(returnCheckedItems().brand)
+  
+    if (returnCheckedItems().brand.length !== 0) {
+      console.log(returnCheckedItems().brand)
+      totalFilters.price = returnFromSearch(
+        returnCheckedItems().brand,
+        "price"
+      )
+    }
+  
+  
+   
+    console.log(checkIfAllFiltersFalse(filters.brand))
+
+    if(checkIfAllFiltersFalse(filters.category)){
+      console.log("meh")
+      totalFilters.brand = returnFromSearch(currentSearchedItems,"brand")
+    }
+
+    if (checkIfAllFiltersFalse(filters.brand)) {
+      console.log("meh")
+      totalFilters.price = returnFromSearch(currentSearchedItems, "price")
+    }
+
   }
-
-
-  console.log(returnCheckedItems().brand)
-
-  if (returnCheckedItems().brand.length !== 0) {
-    console.log(returnCheckedItems().brand)
-    totalFilters.price = returnFromSearch(
-      returnCheckedItems().brand,
-      "price"
-    )
-  }
-
+  updateFilterContainers() 
 
 
 
