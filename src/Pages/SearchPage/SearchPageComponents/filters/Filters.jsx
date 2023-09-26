@@ -165,67 +165,87 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
   
 
+    
+      if (
+        !checkIfAllFiltersFalse(filters.price) &&
+        returnCheckedItems().price.length !== 0
+      ) {
+        console.log(returnCheckedItems().price)
+        if(!checkIfAllFiltersFalse(filters["all-available-products"])){
+          console.log("da")
+        }
 
-    if (
-      !checkIfAllFiltersFalse(filters.price) &&
-      returnCheckedItems().price.length !== 0
-    ) {
-      console.log(returnCheckedItems().price)
-      return returnCheckedItems().price
-    } else if (
-      !checkIfAllFiltersFalse(filters.brand) &&
-      returnCheckedItems().brand.length !== 0
-    ) {
-      console.log(returnCheckedItems().brand)
-      return returnCheckedItems().brand
-    } else if (!checkIfAllFiltersFalse(filters.category)) {
-      console.log(returnCheckedItems().category)
-      return returnCheckedItems().category
-    } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
-      console.log(returnCheckedItems()["all-available-products"])
-      return totalFilters["all-available-products"][0].products
-    } else {
-      //  console.log(currentSearchedItems)
-      return currentSearchedItems
-    }
-
+        return returnCheckedItems().price
+      } else if (
+        !checkIfAllFiltersFalse(filters.brand) &&
+        returnCheckedItems().brand.length !== 0
+      ) {
+        console.log(returnCheckedItems().brand)
+        return returnCheckedItems().brand
+      } else if (!checkIfAllFiltersFalse(filters.category)) {
+        console.log(returnCheckedItems().category)
+        return returnCheckedItems().category
+      } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
+        console.log(returnCheckedItems()["all-available-products"])
+        return totalFilters["all-available-products"][0].products
+      } else {
+        //  console.log(currentSearchedItems)
+        return currentSearchedItems
+      }
+    
     // console.log(filters, "CurrentFilters")
   }
   
 
+  if (
+    returnCheckedItems().category.length !== 0 &&
+    returnCheckedItems().brand.length === 0
+  ) {
+    console.log(returnCheckedItems().category)
+    totalFilters.brand = returnFromSearch(
+      returnCheckedItems().category,
+      "brand"
+    )
 
+    // totalFilters.price = returnFromSearch(
+    //   returnCheckedItems().category,
+    //   "price"
+    // )
+  }
+
+
+  // console.log(returnCheckedItems().brand)
+
+  if (returnCheckedItems().brand.length !== 0) {
+    console.log(returnCheckedItems().brand)
+    totalFilters.price = returnFromSearch(
+      returnCheckedItems().brand,
+      "price"
+    )
+  }
+
+
+  // this function breaks loading of brand and price filters
   const updateFilterContainers = () => {
     const filters = getLocalStorageItems("filters")
 
-    if (returnCheckedItems().category.length !== 0) {
-      console.log(returnCheckedItems().category)
-      totalFilters.brand = returnFromSearch(
-        returnCheckedItems().category,
-        "brand"
-      )
-    }
-  
-  
-    // console.log(returnCheckedItems().brand)
-  
-    if (returnCheckedItems().brand.length !== 0) {
-      console.log(returnCheckedItems().brand)
-      totalFilters.price = returnFromSearch(
-        returnCheckedItems().brand,
-        "price"
-      )
-    }
   
   
    
     console.log(checkIfAllFiltersFalse(filters.brand))
 
-    if(checkIfAllFiltersFalse(filters.category)){
+    if(checkIfAllFiltersFalse(filters.category)
+    //  && returnCheckedItems()["all-available-products"].length === 0
+     ){
       console.log("meh")
       totalFilters.brand = returnFromSearch(currentSearchedItems,"brand")
     }
 
-    if (checkIfAllFiltersFalse(filters.brand)) {
+    if (
+      checkIfAllFiltersFalse(filters.brand) &&
+      returnCheckedItems().brand.length === 0
+      // && returnCheckedItems()["all-available-products"].length === 0
+    ) {
       console.log("meh")
       totalFilters.price = returnFromSearch(currentSearchedItems, "price")
     }
