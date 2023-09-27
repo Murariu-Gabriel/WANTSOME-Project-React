@@ -182,12 +182,15 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
       ) {
         console.log(returnCheckedItems().brand)
         return returnCheckedItems().brand
+
       } else if (!checkIfAllFiltersFalse(filters.category)) {
         console.log(returnCheckedItems().category)
         return returnCheckedItems().category
+
       } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
         console.log(returnCheckedItems()["all-available-products"])
         return totalFilters["all-available-products"][0].products
+
       } else {
         //  console.log(currentSearchedItems)
         return currentSearchedItems
@@ -234,20 +237,50 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
    
     console.log(checkIfAllFiltersFalse(filters.brand))
 
-    if(checkIfAllFiltersFalse(filters.category)
-    //  && returnCheckedItems()["all-available-products"].length === 0
-     ){
+    if (
+      checkIfAllFiltersFalse(filters.category) &&
+      returnCheckedItems()["all-available-products"].length === 0
+    ) {
       console.log("meh")
-      totalFilters.brand = returnFromSearch(currentSearchedItems,"brand")
+      totalFilters.brand = returnFromSearch(currentSearchedItems, "brand")
+
+    } else if (
+      !checkIfAllFiltersFalse(filters["all-available-products"]) &&
+      checkIfAllFiltersFalse(filters.category)
+    ) {
+      totalFilters.brand = returnFromSearch(
+        returnCheckedItems()["all-available-products"],
+        "brand"
+      )
+    } else {
+      totalFilters.brand = returnFromSearch(
+        returnCheckedItems().category,
+        "brand"
+      )
     }
 
     if (
       checkIfAllFiltersFalse(filters.brand) &&
-      returnCheckedItems().brand.length === 0
-      // && returnCheckedItems()["all-available-products"].length === 0
+      returnCheckedItems().brand.length === 0 
+      // && checkIfAllFiltersFalse(filters.category)
+      && returnCheckedItems()["all-available-products"].length === 0
     ) {
       console.log("meh")
       totalFilters.price = returnFromSearch(currentSearchedItems, "price")
+
+    } else if (!checkIfAllFiltersFalse(filters["all-available-products"]) &&
+      checkIfAllFiltersFalse(filters.brand)
+    ){
+      console.log("totals")
+       totalFilters.price = returnFromSearch(
+         returnCheckedItems()["all-available-products"],
+         "price"
+       )
+    } else  {
+      totalFilters.price = returnFromSearch(
+        returnCheckedItems().brand,
+        "price"
+      )
     }
 
   }
