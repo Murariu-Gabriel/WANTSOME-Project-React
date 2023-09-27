@@ -1,26 +1,18 @@
-import { useEffect } from "react"
-import { useState } from "react"
 import getFromDataBase from "../../../../Components/ReusableComponents/Functions/getFromDataBase"
 import getLocalStorageItems from "../../../../Components/ReusableComponents/Functions/getLocalStorageItems"
 import FilterContainer from "./FilterContainer"
 
 
 const priceRanges = getFromDataBase("http://localhost:3000/price-ranges")
+
 priceRanges.then(data => {
   const ranges = JSON.stringify(data)
   localStorage.setItem("price-ranges", ranges)
 })
 
 const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}) => {
-  const filters = getLocalStorageItems("filters")
-
-  console.log(currentItems, "ITEMS IN THE PARENT COMPONENT")
-
-
-
 
   const returnFromSearch = (list, fromList) => {
-    // console.log(list)
 
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
       if (fromList !== "price") {
@@ -98,7 +90,6 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     price: returnFromSearch(currentItems, "price"),
   }
 
-  console.log(totalFilters, "At the top of component, all items divided")
 
   const checkIfAllFiltersFalse = (toCheck) => {
     // for (const filter in toCheck) {
@@ -118,7 +109,6 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
 
     const entries = Object.entries(totalFilters)
 
-    // console.log(entries)
 
     const allCheckedArray = entries.reduce((accumulator, [key, value]) => {
       const data = totalFilters[key].reduce((accumulator, currentItem) => {
@@ -136,67 +126,43 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
       return accumulator
     }, {})
 
-    console.log(allCheckedArray, "items accumulated from all the checkboxes ")
-
     return allCheckedArray
   }
 
-
   
+  // PROBABLY YOU WILL HAVE TO COMBINE HANDLE FILTER UPDATES WITH ALL THE IFS AND UPDATE FILTER CONTAINERS SO YOU CAN MAKE FUNCTIONALITY THAT RETURNS THE CURRENT ACTIVE FILTER ITEMS
+
   const handleFilterUpdates = () => {
     const filters = getLocalStorageItems("filters")
-    // const currentItemsForAllFilters = returnCheckedItems()
 
-    console.log(returnCheckedItems(), "IMPORTANT")
-
-    // console.log(currentItemsForAllFilters)
-    // console.log(totalFilters)
-    // console.log(filters)
-
-    // NEXT
-
-    // now on click, all available products doesn't update and it s because of updateFilterContainers
-
-    // another problem now is that price still renders the first clicked items and hides the other filters
-
-    // the problem with all-available-products is that if i click on it while other filters are on the function that handles filters is returning me the last selected filter AND also now it does not update price and brand because of updateFilterContainers
-
-  
-
-  
-
-    
-      if (
-        !checkIfAllFiltersFalse(filters.price) &&
-        returnCheckedItems().price.length !== 0
-      ) {
-        console.log(returnCheckedItems().price)
-        if(!checkIfAllFiltersFalse(filters["all-available-products"])){
-          console.log("da")
-        }
-
-        return returnCheckedItems().price
-      } else if (
-        !checkIfAllFiltersFalse(filters.brand) &&
-        returnCheckedItems().brand.length !== 0
-      ) {
-        console.log(returnCheckedItems().brand)
-        return returnCheckedItems().brand
-
-      } else if (!checkIfAllFiltersFalse(filters.category)) {
-        console.log(returnCheckedItems().category)
-        return returnCheckedItems().category
-
-      } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
-        console.log(returnCheckedItems()["all-available-products"])
-        return totalFilters["all-available-products"][0].products
-
-      } else {
-        //  console.log(currentSearchedItems)
-        return currentSearchedItems
+    if (
+      !checkIfAllFiltersFalse(filters.price) &&
+      returnCheckedItems().price.length !== 0
+    ) {
+      console.log(returnCheckedItems().price)
+      if(!checkIfAllFiltersFalse(filters["all-available-products"])){
+        console.log("da")
       }
-    
-    // console.log(filters, "CurrentFilters")
+
+      return returnCheckedItems().price
+    } else if (
+      !checkIfAllFiltersFalse(filters.brand) &&
+      returnCheckedItems().brand.length !== 0
+    ) {
+      console.log(returnCheckedItems().brand)
+      return returnCheckedItems().brand
+
+    } else if (!checkIfAllFiltersFalse(filters.category)) {
+      console.log(returnCheckedItems().category)
+      return returnCheckedItems().category
+
+    } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
+      console.log(returnCheckedItems()["all-available-products"])
+      return totalFilters["all-available-products"][0].products
+
+    } else {
+      return currentSearchedItems
+    }
   }
   
 
@@ -204,20 +170,13 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     returnCheckedItems().category.length !== 0 &&
     returnCheckedItems().brand.length === 0
   ) {
-    console.log(returnCheckedItems().category)
+    
     totalFilters.brand = returnFromSearch(
       returnCheckedItems().category,
       "brand"
     )
-
-    // totalFilters.price = returnFromSearch(
-    //   returnCheckedItems().category,
-    //   "price"
-    // )
   }
 
-
-  // console.log(returnCheckedItems().brand)
 
   if (returnCheckedItems().brand.length !== 0) {
     console.log(returnCheckedItems().brand)
@@ -228,20 +187,13 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   }
 
 
-  // this function breaks loading of brand and price filters
   const updateFilterContainers = () => {
     const filters = getLocalStorageItems("filters")
-
-  
-  
-   
-    console.log(checkIfAllFiltersFalse(filters.brand))
 
     if (
       checkIfAllFiltersFalse(filters.category) &&
       returnCheckedItems()["all-available-products"].length === 0
     ) {
-      console.log("meh")
       totalFilters.brand = returnFromSearch(currentSearchedItems, "brand")
 
     } else if (
@@ -260,22 +212,20 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     }
 
     if (
-      checkIfAllFiltersFalse(filters.brand) &&
-      returnCheckedItems().brand.length === 0 
-      // && checkIfAllFiltersFalse(filters.category)
+      checkIfAllFiltersFalse(filters.brand) 
+      && returnCheckedItems().brand.length === 0 
       && returnCheckedItems()["all-available-products"].length === 0
     ) {
-      console.log("meh")
       totalFilters.price = returnFromSearch(currentSearchedItems, "price")
 
     } else if (!checkIfAllFiltersFalse(filters["all-available-products"]) &&
       checkIfAllFiltersFalse(filters.brand)
     ){
-      console.log("totals")
        totalFilters.price = returnFromSearch(
-         returnCheckedItems()["all-available-products"],
-         "price"
+          returnCheckedItems()["all-available-products"],
+          "price"
        )
+
     } else  {
       totalFilters.price = returnFromSearch(
         returnCheckedItems().brand,
@@ -284,40 +234,12 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     }
 
   }
+
   updateFilterContainers() 
 
 
-
-  // QUARANTINE PART | THIS CODE IS OUT, NEEDS UPDATING
-  // const handleFilters = (array) => {
-  //   // if (returnCheckedItems().length !== 0) {
-  //   //   return returnCheckedItems()
-  //   // }
-
-  //   console.log(checkIfAllFiltersFalse(filters))
-
-  //   if (checkIfAllFiltersFalse(filters)) {
-  //     // console.log(array)
-  //     return array
-  //   } else {
-  //     return currentSearchedItems
-  //   }
-  // }
-
-  // console.log(returnCheckedItems())
-
-  // Function that sends items to the parent component that re-renders everything
-  const passCurrentItems = (y) => {
-    // setCurrentItems(array)
+  const passCurrentItems = () => {
     setCurrentItems(handleFilterUpdates())
-    // console.log(handleFilterUpdates())
-
-    // setCurrentItems(handleFilters(array))
-    // console.log(handleFilters(array), filters)
-    //  console.log(returnCheckedItems(),
-    //  filters
-    //  )
-    //  handleFilterUpdates()
   }
 
   return (
