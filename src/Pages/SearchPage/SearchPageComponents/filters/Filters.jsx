@@ -12,6 +12,8 @@ priceRanges.then(data => {
 
 const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}) => {
 
+
+
   const returnFromSearch = (list, fromList) => {
 
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
@@ -91,7 +93,25 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
   }
 
 
-  const checkIfAllFiltersFalse = (toCheck) => {
+  const checkIfAllFiltersFalse = () => {
+    const filters = getLocalStorageItems("filters")
+
+    for (const filter in filters) {
+      for (const key in filters[filter]) {
+        if (filters[filter][key]) {
+          return false
+        }
+      }
+     
+    }
+
+    return true
+  }
+
+  
+
+
+  const ifFiltersFalse = (toCheck) => {
     // for (const filter in toCheck) {
     for (const key in toCheck) {
       if (toCheck[key]) {
@@ -136,27 +156,27 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     const filters = getLocalStorageItems("filters")
 
     if (
-      !checkIfAllFiltersFalse(filters.price) &&
+      !ifFiltersFalse(filters.price) &&
       returnCheckedItems().price.length !== 0
     ) {
       console.log(returnCheckedItems().price)
-      if(!checkIfAllFiltersFalse(filters["all-available-products"])){
+      if(!ifFiltersFalse(filters["all-available-products"])){
         console.log("da")
       }
 
       return returnCheckedItems().price
     } else if (
-      !checkIfAllFiltersFalse(filters.brand) &&
+      !ifFiltersFalse(filters.brand) &&
       returnCheckedItems().brand.length !== 0
     ) {
       console.log(returnCheckedItems().brand)
       return returnCheckedItems().brand
 
-    } else if (!checkIfAllFiltersFalse(filters.category)) {
+    } else if (!ifFiltersFalse(filters.category)) {
       console.log(returnCheckedItems().category)
       return returnCheckedItems().category
 
-    } else if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
+    } else if (!ifFiltersFalse(filters["all-available-products"])) {
       console.log(returnCheckedItems()["all-available-products"])
       return totalFilters["all-available-products"][0].products
 
@@ -191,14 +211,14 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     const filters = getLocalStorageItems("filters")
 
     if (
-      checkIfAllFiltersFalse(filters.category) &&
+      ifFiltersFalse(filters.category) &&
       returnCheckedItems()["all-available-products"].length === 0
     ) {
       totalFilters.brand = returnFromSearch(currentSearchedItems, "brand")
 
     } else if (
-      !checkIfAllFiltersFalse(filters["all-available-products"]) &&
-      checkIfAllFiltersFalse(filters.category)
+      !ifFiltersFalse(filters["all-available-products"]) &&
+      ifFiltersFalse(filters.category)
     ) {
       totalFilters.brand = returnFromSearch(
         returnCheckedItems()["all-available-products"],
@@ -212,14 +232,14 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     }
 
     if (
-      checkIfAllFiltersFalse(filters.brand) 
+      ifFiltersFalse(filters.brand) 
       && returnCheckedItems().brand.length === 0 
       && returnCheckedItems()["all-available-products"].length === 0
     ) {
       totalFilters.price = returnFromSearch(currentSearchedItems, "price")
 
-    } else if (!checkIfAllFiltersFalse(filters["all-available-products"]) &&
-      checkIfAllFiltersFalse(filters.brand)
+    } else if (!ifFiltersFalse(filters["all-available-products"]) &&
+      ifFiltersFalse(filters.brand)
     ){
        totalFilters.price = returnFromSearch(
           returnCheckedItems()["all-available-products"],
@@ -242,6 +262,11 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     setCurrentItems(handleFilterUpdates())
   }
 
+    const deleteFilters = () => {
+      localStorage.removeItem("filters")
+      setCurrentItems(handleFilterUpdates())
+    }
+
   return (
     <div className="filters">
       <div className="filter-navigation">
@@ -254,8 +279,15 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
       </div>
 
       <div className="generated-filters">
-        <div className="hide" id="remove-all-filters-parent">
-          <button className="remove-all-filters button" id="remove-all-filters">
+        <div
+          className={`${checkIfAllFiltersFalse() ? "hide" : ""}`}
+          id="remove-all-filters-parent"
+        >
+          <button
+            className="remove-all-filters button"
+            id="remove-all-filters"
+            onClick={deleteFilters}
+          >
             Remove all filters <span> X</span>
           </button>
         </div>
@@ -263,37 +295,25 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
         <FilterContainer
           span={"all-available-products"}
           items={totalFilters["all-available-products"]}
-          {...{ 
-            // handleCheckboxChange,
-            //  filters,
-              passCurrentItems }}
+          {...{passCurrentItems}}
         />
 
         <FilterContainer
           span={"category"}
           items={totalFilters.category}
-          {...{ 
-            // handleCheckboxChange, 
-            // filters,
-             passCurrentItems }}
+          {...{passCurrentItems}}
         />
 
         <FilterContainer
           span={"brand"}
           items={totalFilters.brand}
-          {...{ 
-            // handleCheckboxChange, 
-            // filters,
-             passCurrentItems }}
+          {...{passCurrentItems}}
         />
 
         <FilterContainer
           span={"price"}
           items={totalFilters.price}
-          {...{ 
-            // handleCheckboxChange,
-            //  filters,
-              passCurrentItems }}
+          {...{ passCurrentItems}}
         />
         {/* <div className="filter-container">
           <span id="filter-container-name">price</span>
@@ -416,20 +436,20 @@ export default Filters
 
 
 
-//  if (!checkIfAllFiltersFalse(filters["all-available-products"])) {
+//  if (!ifFiltersFalse(filters["all-available-products"])) {
 //    console.log(currentItemsForAllFilters["all-available-products"])
 //    return totalFilters["all-available-products"][0].products
-//  } else if (!checkIfAllFiltersFalse(filters.category)) {
+//  } else if (!ifFiltersFalse(filters.category)) {
 //    console.log(currentItemsForAllFilters.category)
 //    return currentItemsForAllFilters.category
 //  } else if (
-//    !checkIfAllFiltersFalse(filters.brand) &&
+//    !ifFiltersFalse(filters.brand) &&
 //    currentItemsForAllFilters.category.length == 0
 //  ) {
 //    console.log(currentItemsForAllFilters.brand)
 //    return currentItemsForAllFilters.brand
 //  } else if (
-//    !checkIfAllFiltersFalse(filters.price) &&
+//    !ifFiltersFalse(filters.price) &&
 //    currentItemsForAllFilters.brand.length == 0
 //  ) {
 //    console.log(currentItemsForAllFilters.price)

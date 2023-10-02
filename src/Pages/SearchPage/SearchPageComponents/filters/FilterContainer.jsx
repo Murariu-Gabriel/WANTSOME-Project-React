@@ -4,7 +4,6 @@ import FilterElement from "./FilterElement"
 
 const FilterContainer = ({
   span,
-  // handleCheckboxChange,
   items,
   filters,
   passCurrentItems,
@@ -13,9 +12,6 @@ const FilterContainer = ({
 
   // const editedSpan = span.replace(/-/g, " ")
 
-  const handleChange = (name, status) => {
-    handleCheckboxChange(span, name, status)
-  }
 
   useEffect(() => {
     setCurrentItems(items)
@@ -38,7 +34,6 @@ const FilterContainer = ({
               {...{
                 count,
                 name,
-                // handleChange,
                 span,
                 filters,
                 products,
