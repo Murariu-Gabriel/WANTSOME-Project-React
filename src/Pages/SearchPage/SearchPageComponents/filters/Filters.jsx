@@ -10,12 +10,20 @@ priceRanges.then(data => {
   localStorage.setItem("price-ranges", ranges)
 })
 
-const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}) => {
-
+const Filters = ({
+  currentItems,
+  setCurrentItems,
+  allItems,
+  currentSearchedItems,
+  setFiltersToggle,
+  filtersToggle,
+}) => {
+ 
+  console.log(currentItems,": current Items")
+   console.log(currentSearchedItems, ": current Searched Items")
 
 
   const returnFromSearch = (list, fromList) => {
-
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
       if (fromList !== "price") {
         const value = accumulator.find(
@@ -92,7 +100,6 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     price: returnFromSearch(currentItems, "price"),
   }
 
-
   const checkIfAllFiltersFalse = () => {
     const filters = getLocalStorageItems("filters")
 
@@ -102,16 +109,12 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
           return false
         }
       }
-     
     }
 
     return true
   }
 
-  
-
-
-  const ifFiltersFalse = (toCheck) => {
+  const isFilterFalse = (toCheck) => {
     // for (const filter in toCheck) {
     for (const key in toCheck) {
       if (toCheck[key]) {
@@ -123,12 +126,10 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     return true
   }
 
- 
   const returnCheckedItems = () => {
     const filters = getLocalStorageItems("filters")
 
     const entries = Object.entries(totalFilters)
-
 
     const allCheckedArray = entries.reduce((accumulator, [key, value]) => {
       const data = totalFilters[key].reduce((accumulator, currentItem) => {
@@ -149,76 +150,64 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     return allCheckedArray
   }
 
-  
   // PROBABLY YOU WILL HAVE TO COMBINE HANDLE FILTER UPDATES WITH ALL THE IFS AND UPDATE FILTER CONTAINERS SO YOU CAN MAKE FUNCTIONALITY THAT RETURNS THE CURRENT ACTIVE FILTER ITEMS
 
   const handleFilterUpdates = () => {
     const filters = getLocalStorageItems("filters")
 
     if (
-      !ifFiltersFalse(filters.price) &&
+      !isFilterFalse(filters.price) &&
       returnCheckedItems().price.length !== 0
     ) {
       console.log(returnCheckedItems().price)
-      if(!ifFiltersFalse(filters["all-available-products"])){
+      if (!isFilterFalse(filters["all-available-products"])) {
         console.log("da")
       }
 
       return returnCheckedItems().price
     } else if (
-      !ifFiltersFalse(filters.brand) &&
+      !isFilterFalse(filters.brand) &&
       returnCheckedItems().brand.length !== 0
     ) {
       console.log(returnCheckedItems().brand)
       return returnCheckedItems().brand
-
-    } else if (!ifFiltersFalse(filters.category)) {
+    } else if (!isFilterFalse(filters.category)) {
       console.log(returnCheckedItems().category)
       return returnCheckedItems().category
-
-    } else if (!ifFiltersFalse(filters["all-available-products"])) {
+    } else if (!isFilterFalse(filters["all-available-products"])) {
       console.log(returnCheckedItems()["all-available-products"])
       return totalFilters["all-available-products"][0].products
-
     } else {
       return currentSearchedItems
     }
   }
-  
 
   if (
     returnCheckedItems().category.length !== 0 &&
     returnCheckedItems().brand.length === 0
   ) {
-    
     totalFilters.brand = returnFromSearch(
       returnCheckedItems().category,
       "brand"
     )
   }
 
-
   if (returnCheckedItems().brand.length !== 0) {
     console.log(returnCheckedItems().brand)
-    totalFilters.price = returnFromSearch(
-      returnCheckedItems().brand,
-      "price"
-    )
+    totalFilters.price = returnFromSearch(returnCheckedItems().brand, "price")
   }
-
 
   const updateFilterContainers = () => {
     const filters = getLocalStorageItems("filters")
 
     if (
-      ifFiltersFalse(filters.category) &&
+      isFilterFalse(filters.category) &&
       returnCheckedItems()["all-available-products"].length === 0
     ) {
       totalFilters.brand = returnFromSearch(currentSearchedItems, "brand")
-
     } else if (
-      !ifFiltersFalse(filters["all-available-products"]) &&
-      ifFiltersFalse(filters.category)
+      !isFilterFalse(filters["all-available-products"]) &&
+      isFilterFalse(filters.category)
     ) {
       totalFilters.brand = returnFromSearch(
         returnCheckedItems()["all-available-products"],
@@ -232,48 +221,46 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
     }
 
     if (
-      ifFiltersFalse(filters.brand) 
-      && returnCheckedItems().brand.length === 0 
-      && returnCheckedItems()["all-available-products"].length === 0
+      isFilterFalse(filters.brand) &&
+      returnCheckedItems().brand.length === 0 &&
+      returnCheckedItems()["all-available-products"].length === 0
     ) {
       totalFilters.price = returnFromSearch(currentSearchedItems, "price")
-
-    } else if (!ifFiltersFalse(filters["all-available-products"]) &&
-      ifFiltersFalse(filters.brand)
-    ){
-       totalFilters.price = returnFromSearch(
-          returnCheckedItems()["all-available-products"],
-          "price"
-       )
-
-    } else  {
+    } else if (
+      !isFilterFalse(filters["all-available-products"]) &&
+      isFilterFalse(filters.brand)
+    ) {
       totalFilters.price = returnFromSearch(
-        returnCheckedItems().brand,
+        returnCheckedItems()["all-available-products"],
         "price"
       )
+    } else {
+      totalFilters.price = returnFromSearch(returnCheckedItems().brand, "price")
     }
-
   }
 
-  updateFilterContainers() 
-
+  updateFilterContainers()
 
   const passCurrentItems = () => {
     setCurrentItems(handleFilterUpdates())
   }
 
-    const deleteFilters = () => {
-      localStorage.removeItem("filters")
-      setCurrentItems(handleFilterUpdates())
-    }
+  const deleteFilters = () => {
+    localStorage.removeItem("filters")
+    setCurrentItems(handleFilterUpdates())
+  }
 
   return (
-    <div className="filters">
+    <div className={`filters ${filtersToggle ? "display overlay" : ""}`}>
       <div className="filter-navigation">
         <p>
-          <span id="products-counter">41</span> products
+          <span>{currentItems.length}</span> products
         </p>
-        <button className="button-2" id="display-result">
+        <button
+          className="button-2"
+          id="display-result"
+          onClick={() => setFiltersToggle(!filtersToggle)}
+        >
           display
         </button>
       </div>
@@ -295,25 +282,25 @@ const Filters = ({currentItems, setCurrentItems, allItems, currentSearchedItems}
         <FilterContainer
           span={"all-available-products"}
           items={totalFilters["all-available-products"]}
-          {...{passCurrentItems}}
+          {...{ passCurrentItems }}
         />
 
         <FilterContainer
           span={"category"}
           items={totalFilters.category}
-          {...{passCurrentItems}}
+          {...{ passCurrentItems }}
         />
 
         <FilterContainer
           span={"brand"}
           items={totalFilters.brand}
-          {...{passCurrentItems}}
+          {...{ passCurrentItems }}
         />
 
         <FilterContainer
           span={"price"}
           items={totalFilters.price}
-          {...{ passCurrentItems}}
+          {...{ passCurrentItems }}
         />
         {/* <div className="filter-container">
           <span id="filter-container-name">price</span>
@@ -436,20 +423,20 @@ export default Filters
 
 
 
-//  if (!ifFiltersFalse(filters["all-available-products"])) {
+//  if (!isFilterFalse(filters["all-available-products"])) {
 //    console.log(currentItemsForAllFilters["all-available-products"])
 //    return totalFilters["all-available-products"][0].products
-//  } else if (!ifFiltersFalse(filters.category)) {
+//  } else if (!isFilterFalse(filters.category)) {
 //    console.log(currentItemsForAllFilters.category)
 //    return currentItemsForAllFilters.category
 //  } else if (
-//    !ifFiltersFalse(filters.brand) &&
+//    !isFilterFalse(filters.brand) &&
 //    currentItemsForAllFilters.category.length == 0
 //  ) {
 //    console.log(currentItemsForAllFilters.brand)
 //    return currentItemsForAllFilters.brand
 //  } else if (
-//    !ifFiltersFalse(filters.price) &&
+//    !isFilterFalse(filters.price) &&
 //    currentItemsForAllFilters.brand.length == 0
 //  ) {
 //    console.log(currentItemsForAllFilters.price)

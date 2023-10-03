@@ -8,34 +8,16 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
   const [currentItems, setCurrentItems] = useState([])
   const [allItems, setAllItems] = useState([])
   const [currentSearchedItems, setCurrentSearchedItems] = useState([])
+  const [filtersToggle, setFiltersToggle] = useState(false)
+  
+  
 
-  
-  // and have a function that is passed into filters so when I activate a filter to update the display results and filters so they can be re-rendered
-
-  const updateCurrentItems = (items) => {
-    
-    // ideally this function should take care dynamically of getting out or adding elements
-    
-  }
-  
-  
-  /*
-  This whole section of components should be like a circle and might need to be applied in the filters component
-  
-  - items come in everything renders
-  - filter is selected then only the items selected remain, everything re-renders and generated based on the selected filter/filters
-  
-  - if no filters are selected render initial search, if all filters are deselected render initial search
-  
-  
-  */
  
  
  
  const products = getProducts()
  
  useEffect(() => {
-   // maybe this could be put in a function in case I need to reset to initial search
    products.then((data) => {
      const filteredData = data.filter(
        (product) =>
@@ -50,16 +32,30 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
     }, [])
     
     
-    // console.log(currentItems)
     
   return (
     <section className="generated-search-result ">
       <div className="container ">
         <Filters
-          {...{ currentSearchedItems, currentItems, allItems, setCurrentItems }}
+          {...{
+            currentSearchedItems,
+            currentItems,
+            allItems,
+            setCurrentItems,
+            setFiltersToggle,
+            filtersToggle,
+          }}
         />
 
-        <DisplayResults {...{ updateCounter, currentItems }} />
+        <DisplayResults
+          {...{
+            updateCounter,
+            currentItems,
+            filtersToggle,
+            setFiltersToggle,
+            currentSearch,
+          }}
+        />
       </div>
     </section>
   )

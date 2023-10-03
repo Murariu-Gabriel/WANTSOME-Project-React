@@ -1,26 +1,40 @@
-import Product from "./Product"
+import { useEffect } from "react"
+import { useState } from "react"
+import Pagination from "./Pagination"
 
-const DisplayResults = ({ updateCounter, currentItems }) => {
-  // Here you will need to pass the count
+
+const DisplayResults = ({
+  updateCounter,
+  currentItems,
+  setFiltersToggle,
+  filtersToggle,
+  currentSearch
+}) => {
+  // Here you will need to pass the count and use it in the individual item loaded
+
+  
 
   return (
     <div className="display-search-results">
       <div className="manipulate-result">
         <p className="search-text-result" id="search-text-result">
-          <span className="result-count" id="result-count">
-            0
-          </span>{" "}
-          <span id="plural">results</span> for
-          <span className="result-text" id="result-text">
-            ""
+          <span className="result-count">{currentItems.length}</span>
+          <span>
+            {" "}
+            {currentItems.length > 1 ? "results" : "result"} for
+            <span className="result-text">"{currentSearch}"</span>
           </span>
         </p>
 
         <ul className="list-of-filters"></ul>
 
         <div className="about-filters">
-          <button className="filter-button button-1" id="filter-button">
-            Filter
+          <button
+            className="filter-button button-1"
+            id="filter-button"
+            onClick={() => setFiltersToggle(!filtersToggle)}
+          >
+            Filters
           </button>
 
           <div className="select-box">
@@ -85,14 +99,13 @@ const DisplayResults = ({ updateCounter, currentItems }) => {
         </div>
       </div>
 
-      <div className="generated-products" id="generated-products">
-        {currentItems.map(item => {
-          const {id, name, images, price, discount: ifDiscount, new: ifNew} = item
-          return <Product key={id} {...{name, price, price, price, ifDiscount, ifNew, id}} productImage={images.display.first}/>
-        })}
-      </div>
+      
 
-      <div className="pagination" id="pagination"></div>
+      {/* <div className="pagination" id="pagination"></div> */}
+      <Pagination
+        items={currentItems}
+        itemsPerPage={8}
+      />
     </div>
   )
 }
