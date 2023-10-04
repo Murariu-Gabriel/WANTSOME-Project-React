@@ -38,7 +38,7 @@ const CartProduct = ({
   },[])
 
   return (
-    <li key={id}>
+    <li >
       <div className="img-container">
         <img src={image} alt={slug} />
       </div>
@@ -54,6 +54,7 @@ const CartProduct = ({
           -
         </button>
         <input
+          id={id}
           type="number"
           className="product-counter"
           value={count}

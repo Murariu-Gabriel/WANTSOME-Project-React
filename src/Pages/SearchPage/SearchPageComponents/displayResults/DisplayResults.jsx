@@ -17,7 +17,7 @@ const DisplayResults = ({
   return (
     <div className="display-search-results">
       <div className="manipulate-result">
-        <p className="search-text-result" id="search-text-result">
+        <p className="search-text-result" >
           <span className="result-count">{currentItems.length}</span>
           <span>
             {" "}
@@ -39,7 +39,7 @@ const DisplayResults = ({
 
           <div className="select-box">
             <p className="select">Order after</p>
-            <ul className="select-menu hide" id="select-order">
+            <ul className="select-menu hide">
               <li>
                 <span>Increasing</span> price
               </li>
@@ -56,7 +56,7 @@ const DisplayResults = ({
 
           <div className="select-box select-pagination">
             <p className="select">Pagination</p>
-            <ul className="select-menu hide" id="select-pagination">
+            <ul className="select-menu hide">
               <li>9 on page</li>
               <li>18 on page</li>
             </ul>
@@ -100,11 +100,10 @@ const DisplayResults = ({
       </div>
 
       
-
-      {/* <div className="pagination" id="pagination"></div> */}
       <Pagination
         items={currentItems}
         itemsPerPage={8}
+        updateCounter={updateCounter}
       />
     </div>
   )

@@ -4,7 +4,7 @@ import Product from "./Product"
 
 // You need to fix the anchors, they don t take full width or height and you can miss click the next paginated list of items
 
-const Pagination = ({ itemsPerPage, items }) => {
+const Pagination = ({ itemsPerPage, items, updateCounter }) => {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
 
@@ -29,10 +29,7 @@ const Pagination = ({ itemsPerPage, items }) => {
       `User requested page number ${event.selected}, which is offset ${newOffset}`
     )
     setItemOffset(newOffset)
-   
   }
-
-
 
   return (
     <>
@@ -49,7 +46,16 @@ const Pagination = ({ itemsPerPage, items }) => {
           return (
             <Product
               key={id}
-              {...{ name, price, price, price, ifDiscount, ifNew, id }}
+              {...{
+                name,
+                price,
+                price,
+                price,
+                ifDiscount,
+                ifNew,
+                id,
+                updateCounter,
+              }}
               productImage={images.display.first}
             />
           )
@@ -66,7 +72,6 @@ const Pagination = ({ itemsPerPage, items }) => {
         renderOnZeroPageCount={null}
         containerClassName="pagination"
         pageLinkClassName="pagination-element"
-        
       />
     </>
   )

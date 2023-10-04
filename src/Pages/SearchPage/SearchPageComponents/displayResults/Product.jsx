@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom"
 import Discount from "./Discount"
 import New from "./New"
+import updateCartItems from "../../../../Components/ReusableComponents/Functions/updateCartItems"
 
-const Product = ({ name, productImage, price, ifDiscount, ifNew, id }) => {
+const Product = ({ name, productImage, price, ifDiscount, ifNew, id, updateCounter }) => {
   
   // here maybe I need to think about something else, another method to have the discount calculated
   const calcDiscount = price * (ifDiscount / 100)
   const priceDiscount = ifDiscount ? price - calcDiscount : price
   const strikedText = ifDiscount ? `<small>${price}$</small>` : ""
+
+  const handleAddToCart = () => {
+    updateCounter(1)
+    updateCartItems(id, 1, "+")
+  }
 
   // here you will need to go back to add to cart functionality and figure out how to do it for each product
   return (
@@ -24,7 +30,7 @@ const Product = ({ name, productImage, price, ifDiscount, ifNew, id }) => {
           <strong>{priceDiscount}</strong> $
         </span>
 
-        <button className="button">
+        <button className="button" onClick={() => { handleAddToCart()}}>
           <svg
             width="2rem"
             height="100%"
