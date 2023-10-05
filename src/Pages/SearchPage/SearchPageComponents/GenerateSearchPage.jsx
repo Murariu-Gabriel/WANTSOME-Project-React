@@ -54,6 +54,7 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
             filtersToggle,
             setFiltersToggle,
             currentSearch,
+            setCurrentItems,
           }}
         />
       </div>

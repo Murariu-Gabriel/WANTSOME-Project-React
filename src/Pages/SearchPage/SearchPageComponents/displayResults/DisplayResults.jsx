@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useState } from "react"
 import Pagination from "./Pagination"
+import SelectBox from "./SelectBox"
 
 
 const DisplayResults = ({
@@ -10,14 +11,18 @@ const DisplayResults = ({
   filtersToggle,
   currentSearch
 }) => {
+  const [itemsPerPage, setItemsPerPage] = useState(9)
   // Here you will need to pass the count and use it in the individual item loaded
 
-  
+
+  // things to work with for the arrangement 
+  // setCurrentItems
+  // currentItems
 
   return (
     <div className="display-search-results">
       <div className="manipulate-result">
-        <p className="search-text-result" >
+        <p className="search-text-result">
           <span className="result-count">{currentItems.length}</span>
           <span>
             {" "}
@@ -37,31 +42,21 @@ const DisplayResults = ({
             Filters
           </button>
 
-          <div className="select-box">
-            <p className="select">Order after</p>
-            <ul className="select-menu hide">
-              <li>
-                <span>Increasing</span> price
-              </li>
-              <li>
-                <span>Decreasing</span> price
-              </li>
-              <li>
-                <span>New</span> products
-              </li>
-              <li>Discount</li>
-            </ul>
-            <span className="arrows"></span>
-          </div>
+          <SelectBox
+            selectType={"Order after"}
+            selectableItems={[
+              "Increasing price",
+              "Decreasing price",
+              "New products",
+            ]}
+          />
 
-          <div className="select-box select-pagination">
-            <p className="select">Pagination</p>
-            <ul className="select-menu hide">
-              <li>9 on page</li>
-              <li>18 on page</li>
-            </ul>
-            <span className="arrows"></span>
-          </div>
+          <SelectBox
+            selectType={"9 on page"}
+            selectableItems={["9 on page", "18 on page"]}
+            givenClass={"select-pagination"}
+            setItemsPerPage={setItemsPerPage}
+          />
 
           <button
             className="button change-style-button"
@@ -99,10 +94,9 @@ const DisplayResults = ({
         </div>
       </div>
 
-      
       <Pagination
         items={currentItems}
-        itemsPerPage={8}
+        itemsPerPage={itemsPerPage}
         updateCounter={updateCounter}
       />
     </div>
