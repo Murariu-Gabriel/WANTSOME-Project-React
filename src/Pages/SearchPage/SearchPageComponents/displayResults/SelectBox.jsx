@@ -5,20 +5,65 @@ const SelectBox = ({
   selectableItems,
   givenClass,
   setItemsPerPage,
+  currentItems,
+  setCurrentItems,
 }) => {
   const [selectToggle, setSelectToggle] = useState(false)
+  const [currentSelectedItem, setCurrentSelectedItem] = useState(selectType)
 
-  // you need to make select functionality
+  const sort = (array, callback) => {
+    const sort = array.toSorted(callback)
 
-  // when a li is selected a certain functionality should trigger and the p should contain the selected text
+    return sort
+  }
 
-  // you will have to take each li take the first word 
+  const handleSelectedItem = (item) => {
+    const firstWordSlashNumber = item.split(" ")[0].toLowerCase()
 
-  // for each work make if statements with functionality
+    if (!isNaN(firstWordSlashNumber)) {
+      const selectedItemPerPage = parseInt(firstWordSlashNumber)
 
+      setItemsPerPage(selectedItemPerPage)
+    }
 
+    if (firstWordSlashNumber === "increasing") {
+       const sortedItems = sort(currentItems, (a, b) => a.price - b.price)
 
-  // for pagination take the first number convert it to number and sent it to setItemsPerPage,
+       setCurrentItems(sortedItems)
+    }
+
+    if (firstWordSlashNumber === "decreasing") {
+       const sortedItems = sort(currentItems, (a, b) => b.price - a.price)
+
+       setCurrentItems(sortedItems)
+    }
+
+    if (firstWordSlashNumber === "new") {
+      const sortedItems = sort(currentItems, (a, b) => b.new - a.new)
+
+      setCurrentItems(sortedItems)
+    }
+
+    if (firstWordSlashNumber === "discount") {
+        const sortedItems = sort(currentItems, (a, b) => b.discount - a.discount)
+        setCurrentItems(sortedItems)
+
+    }
+  }
+
+  
+  /// THINGS TO FIX/ADD
+
+    // I need to somehow make it remember the order and when filters are changed the order to be kept
+
+    // the order and pagination select boxes need to close when you click outside of them
+
+    // maybe you need to somehow make the filters be remembered and reloaded
+
+    // the search bar on search should contain the searched words
+
+    // you need to change the DB and make discount work different, maybe in a way that it feels like it has been provided from the backend 
+
 
   return (
     <div
@@ -27,11 +72,21 @@ const SelectBox = ({
         setSelectToggle(!selectToggle)
       }}
     >
-      <p className="select">{selectType}</p>
+      <p className="select">{currentSelectedItem}</p>
 
       <ul className={`select-menu ${selectToggle ? "" : "hide"} `}>
         {selectableItems.map((item) => {
-          return <li key={crypto.randomUUID()}>{item}</li>
+          return (
+            <li
+              key={crypto.randomUUID()}
+              onClick={() => {
+                setCurrentSelectedItem(item)
+                handleSelectedItem(item)
+              }}
+            >
+              {item}
+            </li>
+          )
         })}
       </ul>
       <span className="arrows"></span>

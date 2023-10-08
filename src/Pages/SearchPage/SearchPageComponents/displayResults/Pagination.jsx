@@ -4,36 +4,30 @@ import Product from "./Product"
 
 // You need to fix the anchors, they don t take full width or height and you can miss click the next paginated list of items
 
-const Pagination = ({ itemsPerPage, items, updateCounter }) => {
-  // Here we use item offsets; we could also use page offsets
-  // following the API or data you're working with.
-
+const Pagination = ({
+  itemsPerPage,
+  items,
+  updateCounter,
+  viewOptionToggle,
+}) => {
   const [itemOffset, setItemOffset] = useState(0)
 
-  // Simulate fetching items from another resources.
-  // (This could be items from props; or items loaded in a local state
-  // from an API endpoint with useEffect and useState)
-
   const endOffset = itemOffset + itemsPerPage
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`)
-
   const currentItems = items.slice(itemOffset, endOffset)
-  console.log(currentItems)
-
   const pageCount = Math.ceil(items.length / itemsPerPage)
 
-  // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % items.length
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    )
+
     setItemOffset(newOffset)
   }
 
   return (
     <>
-      <div className="generated-products" id="generated-products">
+      <div
+        className={`generated-products${viewOptionToggle ? "-line" : ""}`}
+        id="generated-products"
+      >
         {currentItems.map((item) => {
           const {
             id,
@@ -48,8 +42,6 @@ const Pagination = ({ itemsPerPage, items, updateCounter }) => {
               key={id}
               {...{
                 name,
-                price,
-                price,
                 price,
                 ifDiscount,
                 ifNew,

@@ -3,8 +3,8 @@ import Discount from "./Discount"
 import New from "./New"
 import updateCartItems from "../../../../Components/ReusableComponents/Functions/updateCartItems"
 
+
 const Product = ({ name, productImage, price, ifDiscount, ifNew, id, updateCounter }) => {
-  
   // here maybe I need to think about something else, another method to have the discount calculated
   const calcDiscount = price * (ifDiscount / 100)
   const priceDiscount = ifDiscount ? price - calcDiscount : price
