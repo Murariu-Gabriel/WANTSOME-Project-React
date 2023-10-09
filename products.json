@@ -25,7 +25,11 @@
       "brand": "xiaomi",
       "new": false,
       "price": 100,
-      "discount": 10,
+      "discount": {
+        "isDiscounted": true,
+        "price": 90,
+        "percent": 10
+      },
       "description": "Six all-new colors for the strap* and three for the watch case A watch with different, always changeable looksThe new beige watch case pairs with the skin-friendly, multiple color TPU strap selection. Adapt it to your style, whether it's street sports, fashion, or business.",
       "features": "\n32g lightweight design* Slim and lightweight Light as a lipstick tube, thanks to its brand-new, tailored frame* Unleash your energy and make your workouts more enjoyable. *32g lightweight design: Refers to the net weight of the watch (not including the strap). *The watch body weighs approximately 32g, about the weight of lipstick.. \n\n       16-day ultra-long battery life The longer battery life lets you travel stress-free Global upgrades of low-power AI algorithms extend the battery life of the watch. Charge instantly with the easy magnetic charging cable",
       "includes": [
@@ -298,7 +302,11 @@
       "brand": "garmin",
       "new": false,
       "price": 140,
-      "discount": 10,
+      "discount": {
+        "isDiscounted": true,
+        "price": 126,
+        "percent": 10
+      },
       "description": "MORE THAN STYLISH This hybrid smartwatch combines the traditional look of an analog watch with the essential smart features you need to keep up with your busy life.",
       "features": "\n        Stylish 40 mm hybrid smartwatch with timeless analog look and smart features.Supported Application:Heart Rate Monitor,Fitness Tracker,Sleep Monitor,Social Media,Time Display. Battery life: up to 5 days in smartwatch mode and up to one additional day in watch mode (hands tell time only)\n        All-day activity tracking counts steps, calories, sleep and more (this device is intended to be an estimation of your activity and metrics; it is not a medical device)\n\n        Enhance your style with a metallic dial and accents, available in colors to suit every taste and preference. Effortlessly change your look with 20 mm industry standard quick release watch bands\n        Hidden touchscreen display reacts to your movements and is visible only when you need it",
       "includes": [
@@ -729,29 +737,76 @@
       "personal_information": {
         "fullName": "Daniel Creanga",
         "email": "cevaEmail@gmail.com",
-        "phoneNumber": 222222222221,
-        "address": "22",
-        "zipCode": "22222",
-        "city": "2",
-        "country": "2",
-        "cardNumber": "222222222",
-        "cardPin": "2222"
+        "phoneNumber": 123123123123,
+        "address": "123",
+        "zipCode": "12312",
+        "city": "123",
+        "country": "123",
+        "cardNumber": "",
+        "cardPin": ""
       }
     }
   ],
   "price-ranges": [
-    { "priceRange": "0 - 50", "rangeMin": 0, "rangeMax": 50 },
-    { "priceRange": "50 - 100", "rangeMin": 50, "rangeMax": 100 },
-    { "priceRange": "100 - 200", "rangeMin": 100, "rangeMax": 200 },
-    { "priceRange": "200 - 300", "rangeMin": 200, "rangeMax": 300 },
-    { "priceRange": "300 - 500", "rangeMin": 300, "rangeMax": 500 },
-    { "priceRange": "500 - 1000", "rangeMin": 500, "rangeMax": 1000 },
-    { "priceRange": "1000 - 1500", "rangeMin": 1000, "rangeMax": 1500 },
-    { "priceRange": "1500 - 2000", "rangeMin": 1500, "rangeMax": 2000 },
-    { "priceRange": "2000 - 3000", "rangeMin": 2000, "rangeMax": 3000 },
-    { "priceRange": "3000 - 4000", "rangeMin": 1500, "rangeMax": 2000 },
-    { "priceRange": "4000 - 5000", "rangeMin": 1500, "rangeMax": 2000 },
-    { "priceRange": "Above 5000", "rangeMin": 5000, "rangeMax": 10000000 }
+    {
+      "priceRange": "0 - 50",
+      "rangeMin": 0,
+      "rangeMax": 50
+    },
+    {
+      "priceRange": "50 - 100",
+      "rangeMin": 50,
+      "rangeMax": 100
+    },
+    {
+      "priceRange": "100 - 200",
+      "rangeMin": 100,
+      "rangeMax": 200
+    },
+    {
+      "priceRange": "200 - 300",
+      "rangeMin": 200,
+      "rangeMax": 300
+    },
+    {
+      "priceRange": "300 - 500",
+      "rangeMin": 300,
+      "rangeMax": 500
+    },
+    {
+      "priceRange": "500 - 1000",
+      "rangeMin": 500,
+      "rangeMax": 1000
+    },
+    {
+      "priceRange": "1000 - 1500",
+      "rangeMin": 1000,
+      "rangeMax": 1500
+    },
+    {
+      "priceRange": "1500 - 2000",
+      "rangeMin": 1500,
+      "rangeMax": 2000
+    },
+    {
+      "priceRange": "2000 - 3000",
+      "rangeMin": 2000,
+      "rangeMax": 3000
+    },
+    {
+      "priceRange": "3000 - 4000",
+      "rangeMin": 1500,
+      "rangeMax": 2000
+    },
+    {
+      "priceRange": "4000 - 5000",
+      "rangeMin": 1500,
+      "rangeMax": 2000
+    },
+    {
+      "priceRange": "Above 5000",
+      "rangeMin": 5000,
+      "rangeMax": 10000000
+    }
   ]
-
 }

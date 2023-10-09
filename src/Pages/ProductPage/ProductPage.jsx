@@ -58,7 +58,9 @@ const ProductPage = ({ updateCounter }) => {
     images,
     description,
     price,
+    discount,
     features,
+    new: newProduct,
     includes,
   } = product
 
@@ -66,8 +68,7 @@ const ProductPage = ({ updateCounter }) => {
     <>
       <section className="product">
         <div className="container">
-        
-        <GoBack/>
+          <GoBack />
 
           <article>
             <div className="image-container">
@@ -75,13 +76,26 @@ const ProductPage = ({ updateCounter }) => {
             </div>
 
             <div className="product-info">
-              <p className="overline"></p>
+              {newProduct ? <p className="overline">new product</p> : ""}
+              {discount 
+              ? 
+                <p className="overline discount">
+                  Discount: {discount.percent}% OFF
+                </p>
+              : 
+                ""
+              }
 
               <h2>{name}</h2>
               <p>{description}</p>
+
               <strong>
-                <span>{`${price} $`}</span>
+                <span>
+                  {discount ? <small>{price}$</small> : ""}{" "}
+                  {discount ? discount.price : price}$
+                </span>
               </strong>
+
               <form>
                 <div className="input-stepper">
                   <button id="decrement" type="button" onClick={minus}>

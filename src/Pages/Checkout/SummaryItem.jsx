@@ -1,11 +1,13 @@
 import { useEffect } from "react"
 
-const SummaryItem = ({ name, img, price, count, setTotal }) => {
+const SummaryItem = ({ name, img, price, count, discount, setTotal }) => {
+
+   const currentPrice = discount ? discount.price : price
 
   useEffect(() => {
 
     if(setTotal){
-      setTotal((currentState) => currentState + price * count)
+      setTotal((currentState) => currentState + currentPrice * count)
     }
   }, [])
 
@@ -18,7 +20,7 @@ const SummaryItem = ({ name, img, price, count, setTotal }) => {
       <p>
         <strong>{name}</strong>
         <span>$</span>
-        <span>{price}</span>
+        <span>{currentPrice}</span>
       </p>
 
       <span>

@@ -8,7 +8,7 @@ const Product = ({ id, name, description, image, discount, newProduct }) => {
       </Link>
       <div>
         {newProduct ?  (<p className='overline'>new product</p>)  : ""}
-        {discount ? (<p className='overline discount'>Discount: {discount}% OFF</p>) : ""}
+        {discount ? (<p className='overline discount'>Discount: {discount.percent}% OFF</p>) : ""}
         <h2>{name}</h2>
         <p>{description}</p>
         <Link to={`/productPage/${id}`} className="button-1">

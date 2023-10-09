@@ -5,32 +5,38 @@ import updateCartItems from "../../../../Components/ReusableComponents/Functions
 
 
 const Product = ({ name, productImage, price, ifDiscount, ifNew, id, updateCounter }) => {
-  // here maybe I need to think about something else, another method to have the discount calculated
-  const calcDiscount = price * (ifDiscount / 100)
-  const priceDiscount = ifDiscount ? price - calcDiscount : price
-  const strikedText = ifDiscount ? `<small>${price}$</small>` : ""
+  // const calcDiscount = price * (ifDiscount.percent / 100)
+  // const priceDiscount =  price - calcDiscount 
+
+
+  // console.log(`NAME: ${name}, price:${price}, discounted price:${priceDiscount} `)
 
   const handleAddToCart = () => {
     updateCounter(1)
     updateCartItems(id, 1, "+")
   }
 
-  // here you will need to go back to add to cart functionality and figure out how to do it for each product
+
   return (
     <article>
       <img className="category-image" src={productImage} alt={name} />
       <div>
-          {ifNew && <New/>}
-          {ifDiscount && <Discount ifDiscount={ifDiscount}/>} 
+        {ifNew && <New />}
+        {ifDiscount && <Discount ifDiscount={ifDiscount} />}
 
         <h3 className="subtitle">{name}</h3>
 
         <span>
-          {strikedText}
-          <strong>{priceDiscount}</strong> $
+          {ifDiscount ? <small>{price}$</small> : ""}
+          <strong>{ifDiscount ? ifDiscount.price : price}</strong> $
         </span>
 
-        <button className="button" onClick={() => { handleAddToCart()}}>
+        <button
+          className="button"
+          onClick={() => {
+            handleAddToCart()
+          }}
+        >
           <svg
             width="2rem"
             height="100%"

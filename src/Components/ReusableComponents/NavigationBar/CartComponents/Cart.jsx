@@ -52,12 +52,12 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
 
               <ul className="cart-list">
                 {cartItems.map((product, index) => {
-                  const { slug, price, images, id } = product
-                  console.log(index)
+                  const { slug, price, images, discount, id } = product
+                  
                   return (
                     <CartProduct
                       key={id}
-                      {...{ slug, price, id }}
+                      {...{ slug, price, discount, id }}
                       image={images.display.first}
                       itemCount={counts[index][1]}
                       updateCounter={updateCounter}

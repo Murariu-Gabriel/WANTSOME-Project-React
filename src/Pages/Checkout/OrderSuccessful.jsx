@@ -4,10 +4,10 @@ import getCartLength from "../../Components/ReusableComponents/Functions/getCart
 
 import "./orderSuccessStyles.scss"
 
-const OrderSuccessful = ({ grandTotal, name, img, price, count }) => {
+const OrderSuccessful = ({ grandTotal, name, img, discount, price, count }) => {
 
-  const carrItems = getCartLength()
-  const items = carrItems - count
+  const cartItems = getCartLength()
+  const items = cartItems - count
 
   return (
     <div className="popup overlay3">
@@ -33,7 +33,7 @@ const OrderSuccessful = ({ grandTotal, name, img, price, count }) => {
         <div className="order">
           <div className="order-container">
             <ul>
-              <SummaryItem {...{ name, img, price, count }} />
+              <SummaryItem {...{ name, img, price, discount, count }} />
             </ul>
             <p>
               and <span>{items}</span> other

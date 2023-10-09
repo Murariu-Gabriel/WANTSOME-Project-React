@@ -6,12 +6,13 @@ import "./SearchPage.scss"
 const SearchPage = ({ updateCounter }) => {
   const params = useParams()
   const currentSearch = params.id
+  console.log(params)
   // updateCounter is to be used for adding items to cart and takes 2 parameters, how many items to add and operation, if you add only 1 as first parameter it will just add 1
 
 
   return (
     <>
-      <div>SearchPage searched item = {currentSearch}</div>
+      {/* <div>SearchPage searched item = {currentSearch}</div> */}
 
       <GenerateSearchPage {...{ updateCounter, currentSearch}} />
 

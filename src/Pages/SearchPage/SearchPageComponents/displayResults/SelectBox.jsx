@@ -27,15 +27,15 @@ const SelectBox = ({
     }
 
     if (firstWordSlashNumber === "increasing") {
-       const sortedItems = sort(currentItems, (a, b) => a.price - b.price)
+      const sortedItems = sort(currentItems, (a, b) => a.price - b.price)
 
-       setCurrentItems(sortedItems)
+      setCurrentItems(sortedItems)
     }
 
     if (firstWordSlashNumber === "decreasing") {
-       const sortedItems = sort(currentItems, (a, b) => b.price - a.price)
+      const sortedItems = sort(currentItems, (a, b) => b.price - a.price)
 
-       setCurrentItems(sortedItems)
+      setCurrentItems(sortedItems)
     }
 
     if (firstWordSlashNumber === "new") {
@@ -45,25 +45,32 @@ const SelectBox = ({
     }
 
     if (firstWordSlashNumber === "discount") {
-        const sortedItems = sort(currentItems, (a, b) => b.discount - a.discount)
-        setCurrentItems(sortedItems)
+      const sortedItems = sort(
+        currentItems,
+        (a, b) =>
+          b.discount?.isDiscounted ||
+          b.discount - a.discount?.isDiscounted ||
+          a.discount
+      )
 
+      console.log(sortedItems)
+      setCurrentItems(sortedItems)
     }
   }
 
-  
   /// THINGS TO FIX/ADD
 
-    // I need to somehow make it remember the order and when filters are changed the order to be kept
+  // I need to somehow make it remember the order and when filters are changed the order to be kept
 
-    // the order and pagination select boxes need to close when you click outside of them
+  // the order and pagination select boxes need to close when you click outside of them
 
-    // maybe you need to somehow make the filters be remembered and reloaded
+  // maybe you need to somehow make the filters be remembered and reloaded
 
-    // the search bar on search should contain the searched words
+  // the search bar on search should contain the searched words
 
-    // you need to change the DB and make discount work different, maybe in a way that it feels like it has been provided from the backend 
+  // for some reason the width of filter selection doesn t behave normal
 
+  // you have to make a component for no results 
 
   return (
     <div

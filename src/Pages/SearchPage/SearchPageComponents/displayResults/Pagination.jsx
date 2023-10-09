@@ -2,7 +2,6 @@ import {useState } from "react"
 import ReactPaginate from "react-paginate"
 import Product from "./Product"
 
-// You need to fix the anchors, they don t take full width or height and you can miss click the next paginated list of items
 
 const Pagination = ({
   itemsPerPage,

@@ -347,7 +347,7 @@ const Checkout = () => {
 
               <ul className="summary-list">
                 {summaryItems.map((item, index) => {
-                  const { slug, price, images, id } = item
+                  const { slug, price, images, discount, id } = item
 
                   return (
                     <SummaryItem
@@ -357,6 +357,7 @@ const Checkout = () => {
                       price={price}
                       count={counts[index][1]}
                       setTotal={setTotal}
+                      discount={discount}
                     />
                   )
                 })}
@@ -397,6 +398,7 @@ const Checkout = () => {
           img={summaryItems[0].images.display.first}
           count={counts[0][1]}
           price={summaryItems[0].price}
+          discount={summaryItems[0].discount}
         />
       )}
     </>

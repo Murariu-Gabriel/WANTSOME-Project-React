@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import getLocalStorageItems from "../../Functions/getLocalStorageItems"
 import replaceLine from "../../Functions/replaceLine"
 import updateRecentSearches from "../../Functions/updateRecentSearches"
@@ -14,6 +14,9 @@ const SearchBar = () => {
   const [items, setItems] = useState([])
 
   const navigate = useNavigate()
+
+  const path = window.location.pathname
+  console.log(path)
 
   const {
     isLoading,
@@ -45,19 +48,6 @@ const SearchBar = () => {
     return restOfSentence
   }
   
-  
-  
-  
-  
-  // main functionalities
-
-
-  // - Somehow I need to make categories appear along the items not just items
-
-  // naive IDEA, I could have them stored in the database
-
-
-
 
 
   useEffect(() => {
@@ -163,6 +153,8 @@ const SearchBar = () => {
   const loadSearch = () => {
     navigate(`/search/${query}`, {})
     window.location.reload()
+    setQuery(path)
+    console.log(path, "ASDAS")
   }
 
   return (

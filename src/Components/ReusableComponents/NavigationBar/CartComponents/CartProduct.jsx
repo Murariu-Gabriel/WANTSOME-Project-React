@@ -7,6 +7,7 @@ const CartProduct = ({
   price,
   image,
   itemCount,
+  discount,
   id,
   updateCounter,
   ifZeroUpdate,
@@ -14,6 +15,7 @@ const CartProduct = ({
 }) => {
   const [count, setCount] = useState(itemCount)
 
+  const currentPrice = discount ? discount.price : price
   // here we need to pass props from the cart, the item with all the information necessary for setting it up
 
   const handleMinus = () => {
@@ -22,23 +24,23 @@ const CartProduct = ({
     updateCartItems(id, 1, "-")
     updateCounter(1, "-")
     ifZeroUpdate(currentCount, id)
-    setTotal(currentState => currentState - price)
+    setTotal(currentState => currentState - currentPrice)
   }
 
   const handlePlus = () => {
     setCount((currentState) => currentState + 1)
     updateCartItems(id, 1, "+")
     updateCounter(1)
-    setTotal((currentState) => currentState + price)
+    setTotal((currentState) => currentState + currentPrice)
 
   }
 
   useEffect(() => {
-    setTotal( currentState => currentState + (price * itemCount))
+    setTotal( currentState => currentState + (currentPrice * itemCount))
   },[])
 
   return (
-    <li >
+    <li>
       <div className="img-container">
         <img src={image} alt={slug} />
       </div>
@@ -46,7 +48,7 @@ const CartProduct = ({
       <p>
         <strong>{slug}</strong>
         <span>$</span>
-        <span>{price}</span>
+        <span>{currentPrice}</span>
       </p>
 
       <div className="input-stepper">
