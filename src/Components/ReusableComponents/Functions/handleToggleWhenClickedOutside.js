@@ -28,6 +28,7 @@ const handleToggleWhenClickedOutside = (ref, isToggled, setToggle, extraRef ) =>
     // else {
     //   console.log("Toggle enabled")
     // }
+    
   }
 
   console.log( "Is toggle active", isToggled)
