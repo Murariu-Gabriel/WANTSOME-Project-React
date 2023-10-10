@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom"
 import About from "../../Components/About/About"
 import Categories from "../../Components/ReusableComponents/Categories/Categories"
 import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
+import LoadingError from "../../Components/ReusableComponents/LoadingError"
+import LoadingTransition from "../../Components/ReusableComponents/LoadingTransition"
 import Product from "./Product"
 
 import "./styles.scss"
@@ -17,10 +19,10 @@ const CategoryPage = () => {
   } = useFetch(`http://localhost:3000/products?category=${id}`)
 
   if (isLoading) {
-    return <h2>Loading...</h2>
+    return <LoadingTransition/>
   }
   if (isError) {
-    return <h2>There was an error</h2>
+    return <LoadingError/>
   }
 
   const sortedProducts = products.toSorted((a, b) => b.new - a.new)

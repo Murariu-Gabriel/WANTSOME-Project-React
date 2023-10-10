@@ -7,12 +7,16 @@ import LogoToHome from "./LogoToHome"
 import UserOptions from "./UserOptions"
 
 import "./NavigationStyles/index.scss"
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 const NavigationBar = ({ cartCounter, updateCounter, setCartCounter }) => {
   const [navToggle, setNavToggle] = useState(false)
   const [cartToggle, setCartToggle] = useState(false)
   const [userOptionsToggle, setUserOptionsToggle] = useState(false)
+
+  const refForCart = useRef(null)
+  const refForUser = useRef(null)
+
 
   const toggleNav = () => {
     setNavToggle(!navToggle)
@@ -21,6 +25,7 @@ const NavigationBar = ({ cartCounter, updateCounter, setCartCounter }) => {
   const getUser = localStorage.getItem("user")
 
   const user = getUser ? JSON.parse(getUser) : false
+
 
   return (
     <section className="navigation">
@@ -37,6 +42,7 @@ const NavigationBar = ({ cartCounter, updateCounter, setCartCounter }) => {
           <button
             className="cart-button"
             onClick={() => setCartToggle(!cartToggle)}
+            ref={refForCart}
           >
             <svg width="23" height="20" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -50,6 +56,7 @@ const NavigationBar = ({ cartCounter, updateCounter, setCartCounter }) => {
           <button
             className="user-account"
             onClick={() => setUserOptionsToggle(!userOptionsToggle)}
+            ref={refForUser}
           >
             <svg
               stroke="currentColor"
@@ -69,14 +76,26 @@ const NavigationBar = ({ cartCounter, updateCounter, setCartCounter }) => {
 
       {cartToggle ? (
         <Cart
-          updateCounter={updateCounter}
-          cartCounter={cartCounter}
-          setCartCounter={setCartCounter}
+          extraRef={refForCart}
+          {...{
+            updateCounter,
+            cartCounter,
+            setCartCounter,
+            cartToggle,
+            setCartToggle,
+          }}
         />
       ) : (
         ""
       )}
-      {userOptionsToggle ? <UserOptions user={user} /> : ""}
+      {userOptionsToggle ? (
+        <UserOptions
+          {...{ user, userOptionsToggle, setUserOptionsToggle }}
+          extraRef={refForUser}
+        />
+      ) : (
+        ""
+      )}
     </section>
   )
 }

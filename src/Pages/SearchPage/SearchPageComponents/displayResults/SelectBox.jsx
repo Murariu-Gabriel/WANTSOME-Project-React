@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react"
 import { useState } from "react"
+import handleToggleWhenClickedOutside from "../../../../Components/ReusableComponents/Functions/handleToggleWhenClickedOutside"
 
 const SelectBox = ({
   selectType,
@@ -10,6 +12,14 @@ const SelectBox = ({
 }) => {
   const [selectToggle, setSelectToggle] = useState(false)
   const [currentSelectedItem, setCurrentSelectedItem] = useState(selectType)
+
+  const selectBoxRef = useRef(null)
+
+
+  useEffect(
+    handleToggleWhenClickedOutside(selectBoxRef, selectToggle, setSelectToggle)
+  ,[])
+
 
   const sort = (array, callback) => {
     const sort = array.toSorted(callback)
@@ -62,19 +72,11 @@ const SelectBox = ({
 
   // I need to somehow make it remember the order and when filters are changed the order to be kept
 
-  // the order and pagination select boxes need to close when you click outside of them
-
-  // maybe you need to somehow make the filters be remembered and reloaded
-
-  // the search bar on search should contain the searched words
-
-  // for some reason the width of filter selection doesn t behave normal
-
-  // you have to make a component for no results 
 
   return (
     <div
       className={`select-box ${givenClass ? givenClass : ""}`}
+      ref={selectBoxRef}
       onClick={() => {
         setSelectToggle(!selectToggle)
       }}

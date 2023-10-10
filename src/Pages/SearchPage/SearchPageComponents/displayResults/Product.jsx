@@ -51,7 +51,7 @@ const Product = ({ name, productImage, price, ifDiscount, ifNew, id, updateCount
           Add to cart
         </button>
       </div>
-      <Link className="big-link" to={`/productPage/${id}`}></Link>
+      <Link reloadDocument className="big-link" to={`/productPage/${id}`}></Link>
     </article>
   )
 }

@@ -9,6 +9,8 @@ import updateCartItems from "../../Components/ReusableComponents/Functions/updat
 import GoBack from "../../Components/ReusableComponents/GoBack"
 
 import "./styles.scss"
+import LoadingTransition from "../../Components/ReusableComponents/LoadingTransition"
+import LoadingError from "../../Components/ReusableComponents/LoadingError"
 
 
 const ProductPage = ({ updateCounter }) => {
@@ -46,10 +48,10 @@ const ProductPage = ({ updateCounter }) => {
   } = useFetch(`http://localhost:3000/products/${id}`)
 
   if (isLoading) {
-    return <h2>Loading...</h2>
+    return <LoadingTransition/>
   }
   if (isError) {
-    return <h2>There was an error</h2>
+    return <LoadingError/>
   }
 
   const {

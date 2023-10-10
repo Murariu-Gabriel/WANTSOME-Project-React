@@ -119,5 +119,16 @@ img {
   display: flex;
 }
 
+.loading{
+  text-align: center;
+}
 
+.no-results{
+  text-transform: lowercase;
+  margin-top: $xl-spacing;
+
+  span{
+    color: rgb(255, 0, 0);
+  }
+}
 

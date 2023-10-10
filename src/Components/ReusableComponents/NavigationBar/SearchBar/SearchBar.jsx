@@ -15,8 +15,21 @@ const SearchBar = () => {
 
   const navigate = useNavigate()
 
-  const path = window.location.pathname
-  console.log(path)
+
+  const getSearchQuery = () => {
+    const path = window.location.pathname.split("/")
+    const query = path[path.length - 1].replace(/%20/g, " ")
+
+    console.log(path[1])
+
+    return path[1] === "search" ? query : ""
+  }
+  
+
+  useEffect(() => {
+    setQuery(getSearchQuery())
+    // console.log(path, "ASDAS")
+  }, [])
 
   const {
     isLoading,
@@ -24,38 +37,33 @@ const SearchBar = () => {
     data: products,
   } = useFetch(`http://localhost:3000/products`)
 
-
   const recentSearches = getLocalStorageItems("recent-searches", [])
 
-
-  
   const placeHolderAssist = (text, value) => {
     const splitWord = text.split("")
     splitWord.splice(0, value.length, value)
-    
+
     return splitWord.join("")
   }
-  
+
   const cutBehindWord = (sentence, word) => {
     const startingWord = " " + word
     const start = sentence.indexOf(startingWord)
     if (start < 0) {
       return ""
     }
-    
+
     const restOfSentence = sentence.substring(start, sentence.length)
-    
+
     return restOfSentence
   }
-  
 
+
+  
 
   useEffect(() => {
     setItems(recentSearches)
   }, [searchToggle])
-
-
-
 
   if (isLoading) {
     return <h2>Loading...</h2>
@@ -72,41 +80,37 @@ const SearchBar = () => {
   }
 
   const handleSearch = (value) => {
-
     const currentQuerySearch = value.toLowerCase()
 
     setQuery(currentQuerySearch)
 
     console.log(currentQuerySearch)
 
+    const currentSearch = products
+      .map((product) => {
+        if (product.name.includes(currentQuerySearch)) {
+          return product
+        } else if (replaceLine(product.category).includes(currentQuerySearch)) {
+          return {
+            name: replaceLine(product.category),
+            id: crypto.randomUUID(),
+          }
+        }
 
+        return null
+      })
+      .filter((item) => item !== null)
+      .reduce((accumulator, currentObject) => {
+        const existingItem = accumulator.find(
+          (obj) => obj.name === currentObject.name
+        )
 
-    const currentSearch = products.map((product) => {
-    if (product.name.includes(currentQuerySearch)) {
-      return product;
+        if (!existingItem) {
+          accumulator.push(currentObject)
+        }
 
-    } else if (replaceLine(product.category).includes(currentQuerySearch)) {
-      return {
-        name: replaceLine(product.category),
-        id: crypto.randomUUID(),
-      };
-    }
-
-     return null
-    }).filter((item) => item !== null).reduce((accumulator, currentObject) => {
-
-      const existingItem = accumulator.find((obj) => obj.name === currentObject.name)
-
-      if(!existingItem){
-        accumulator.push(currentObject)
-      }
-
-      return accumulator
-
-    }, [])
-        
-        
-    
+        return accumulator
+      }, [])
 
     if (value.length >= 2 && currentSearch.length > 0) {
       setItems(currentSearch)
@@ -128,22 +132,17 @@ const SearchBar = () => {
 
         setPlaceholder(placeholderOptions)
       }
-     
-      
-    } else if (value.length < 2){
+    } else if (value.length < 2) {
       setItems(recentSearches)
       setPlaceholder("")
-    }
-     else {
+    } else {
       setItems([])
       setPlaceholder("")
-     
     }
-
   }
 
   const handleSearchButton = () => {
-    if(query.length >= 2){
+    if (query.length >= 2) {
       loadSearch()
       closeSearchToggle()
       updateRecentSearches(query)
@@ -153,8 +152,8 @@ const SearchBar = () => {
   const loadSearch = () => {
     navigate(`/search/${query}`, {})
     window.location.reload()
-    setQuery(path)
-    console.log(path, "ASDAS")
+    
+   
   }
 
   return (
@@ -198,9 +197,7 @@ const SearchBar = () => {
               </svg>
             </button>
 
-            <button
-              onClick={handleSearchButton}
-            >
+            <button onClick={handleSearchButton}>
               <svg
                 stroke="currentColor"
                 strokeWidth="0"
@@ -213,16 +210,12 @@ const SearchBar = () => {
               </svg>
             </button>
 
-            <div
-              className={`search-results  ${searchToggle ? "" : "hide"} `}
-              
-            >
+            <div className={`search-results  ${searchToggle ? "" : "hide"} `}>
               <p className="suggestion">
                 {query.length >= 2 ? "Search suggestions" : "Recent searches"}
               </p>
 
-              <SearchResults {...{items, query}}/>
-             
+              <SearchResults {...{ items, query }} />
             </div>
           </div>
         </div>

@@ -4,20 +4,21 @@
     padding-top: $l-spacing;
     .container{ 
 
-        .search-err{
-            text-transform: lowercase;
-            text-align: center;
-            word-break: break-all;
-            span{
-                color: rgb(249, 81, 81);
-            }
-        }
+        // .search-err{
+        //     text-transform: lowercase;
+        //     text-align: center;
+        //     word-break: break-all;
+        //     span{
+        //         color: rgb(249, 81, 81);
+        //     }
+        // }
 
 
 
         .filters{
             display: none;
             overflow-y: scroll;
+        
 
             &::-webkit-scrollbar{
                 display: none;
@@ -33,6 +34,7 @@
                 flex-wrap: wrap;
                 align-items: center;
                 gap: 1rem;
+                
 
                 p{
                     margin: 0;
@@ -61,7 +63,7 @@
                             background-color: $white;
                             border-bottom-right-radius: $base-border-radius;
                             border-top-right-radius: $base-border-radius;
-                           color: $palette-red;
+                            color: $palette-red;
                         }
                     }
                 }
@@ -74,7 +76,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
-
+                
 
                 .remove-all-filters{
                     border: 1px solid $orange;
@@ -100,7 +102,7 @@
                 
 
                 .filter-container{
-                    
+
                     div{
                         position: relative;
                         display: flex;
@@ -809,6 +811,7 @@
         .filters {
             all: unset;
             display: block;
+            width: 100%;
             min-width: 175px;
             max-width: 250px;
             

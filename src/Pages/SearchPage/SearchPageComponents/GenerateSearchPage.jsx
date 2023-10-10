@@ -10,10 +10,7 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
   const [currentSearchedItems, setCurrentSearchedItems] = useState([])
   const [filtersToggle, setFiltersToggle] = useState(false)
   
-  
 
- 
- 
  
  const products = getProducts()
  
@@ -30,12 +27,26 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
        setAllItems(data)
       })
     }, [])
+
+
+    // setTimeout(() => {
+      if(currentSearchedItems.length === 0){
+        return (
+        <div className="container">
+          <h2 className="no-results">
+            <span>0 results for:</span> {currentSearch}
+          </h2>
+        </div>
+        )
+      }
+    // }, 2000)
     
     
     
   return (
     <section className="generated-search-result ">
       <div className="container ">
+
         <Filters
           {...{
             currentSearchedItems,

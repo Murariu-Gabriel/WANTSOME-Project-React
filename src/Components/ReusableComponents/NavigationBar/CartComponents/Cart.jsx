@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from "react"
+import { useState, useEffect, memo, useRef } from "react"
 import { Link } from "react-router-dom"
 import getLocalStorageItems from "../../Functions/getLocalStorageItems"
 import generateProducts from "../../Functions/generateProducts"
@@ -6,16 +6,18 @@ import CartProduct from "./CartProduct"
 import getCounts from "../../Functions/getEntries"
 import getItemsInfo from "../../Functions/getItemsInfo"
 import "./cartStyles/index.scss"
+import handleToggleWhenClickedOutside from "../../Functions/handleToggleWhenClickedOutside"
 
 // you might need to use useMemo or memo in this component or figure if it works correctly 
 
-const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
+const Cart = memo(({ updateCounter, cartCounter, setCartCounter, cartToggle, setCartToggle, extraRef }) => {
   const [cartItems, setCartItems] = useState([])
   const [total, setTotal] = useState(0)
 
   const items = getLocalStorageItems("cart-products")
   const counts = getCounts(items)
-
+  
+  const cartRef = useRef(null)
 
   const ifZeroUpdate = (count, id) => {
     if (count === 0) {
@@ -32,13 +34,28 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
   }
 
   useEffect(() => {
-    getItemsInfo(items, generateProducts).then((products) => setCartItems(products))
+    getItemsInfo(items, generateProducts).then((products) => {
+      setCartItems(products)
+    }
+    )
   }, [])
+
+   useEffect(
+     handleToggleWhenClickedOutside(
+       cartRef,
+       cartToggle,
+       setCartToggle,
+       extraRef
+     ),
+     []
+   )
+
+
 
   return (
     <div className="cart-container overlay show-cart ">
       <div className="shopping-container">
-        <form className="shopping-cart">
+        <form ref={cartRef} className="shopping-cart">
           {cartCounter > 0 ? (
             <>
               <div>
@@ -53,7 +70,7 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
               <ul className="cart-list">
                 {cartItems.map((product, index) => {
                   const { slug, price, images, discount, id } = product
-                  
+
                   return (
                     <CartProduct
                       key={id}
@@ -63,7 +80,6 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter }) => {
                       updateCounter={updateCounter}
                       ifZeroUpdate={ifZeroUpdate}
                       setTotal={setTotal}
-                     
                     />
                   )
                 })}

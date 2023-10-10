@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import Input from "../../Components/ReusableComponents/FormComponents/Input"
-import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
 import RegisterPopup from "./RegisterPopup"
 import "./signUpStyles.scss"
 

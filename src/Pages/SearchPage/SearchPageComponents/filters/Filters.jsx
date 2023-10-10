@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import getFromDataBase from "../../../../Components/ReusableComponents/Functions/getFromDataBase"
 import getLocalStorageItems from "../../../../Components/ReusableComponents/Functions/getLocalStorageItems"
 import FilterContainer from "./FilterContainer"
@@ -249,6 +250,10 @@ const Filters = ({
     localStorage.removeItem("filters")
     setCurrentItems(handleFilterUpdates())
   }
+
+  useEffect(()=> {
+    setCurrentItems(handleFilterUpdates())
+  }, [])
 
   return (
     <div className={`filters ${filtersToggle ? "display overlay" : ""}`}>

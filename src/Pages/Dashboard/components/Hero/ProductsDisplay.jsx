@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react"
 import { Link } from "react-router-dom"
 import useFetch from "../../../../Components/ReusableComponents/Functions/useFetch"
+import LoadingError from "../../../../Components/ReusableComponents/LoadingError"
+import LoadingTransition from "../../../../Components/ReusableComponents/LoadingTransition"
 import CarouselSlide from "./CarouselSlide"
 import "./productDisplayStyles.scss"
 
@@ -113,10 +115,10 @@ const ProductsDisplay = () => {
   }, [])
 
   if (isLoading) {
-    return <h2>Loading...</h2>
+    return <LoadingTransition/>
   }
   if (isError) {
-    return <h2>There was an error</h2>
+    return <LoadingError/>
   }
 
   return (

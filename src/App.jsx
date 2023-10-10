@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Link, Route, Routes, NavLink, useLocation } from "react-router-dom"
 import {Login, SignUp, Dashboard, CategoryPage, Checkout, ProductPage, SearchPage, NotFound} from "./Pages"
 import NavigationBar from './Components/ReusableComponents/NavigationBar/NavigationBar'
@@ -11,9 +11,19 @@ const App = () => {
   const [cartCounter, setCartCounter] = useState(0)
   const location = useLocation()
   const isSignInPage = location.pathname !== "/login" && location.pathname !== "/registration"
+  const isSearchPage = location.pathname.split("/")[1]
+
+
+
 
   useEffect(() => {
     setCartCounter(getCartLength())
+    
+    if (isSearchPage !== "search" && isSearchPage !== "productPage") {
+      localStorage.removeItem("filters")
+      console.log(isSearchPage)
+    }
+
   }, [])
 
   const updateCounter = (num, operation) => {
