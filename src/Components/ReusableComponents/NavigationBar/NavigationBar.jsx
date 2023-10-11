@@ -16,7 +16,7 @@ const NavigationBar = ({ cartCounter, updateCounter, setCartCounter }) => {
 
   const refForCart = useRef(null)
   const refForUser = useRef(null)
-
+  const refForNav = useRef(null)
 
   const toggleNav = () => {
     setNavToggle(!navToggle)
@@ -31,13 +31,17 @@ const NavigationBar = ({ cartCounter, updateCounter, setCartCounter }) => {
     <section className="navigation">
       <div className="container">
         <header>
-          <ButtonRender navToggle={navToggle} toggleNav={toggleNav} />
+          <ButtonRender refForNav={refForNav} {...{ navToggle, toggleNav }} />
 
           <LogoToHome />
 
           <SimpleNav />
 
-          {navToggle ? <NavToggle /> : ""}
+          {navToggle ? (
+            <NavToggle extraRef={refForNav} {...{ navToggle, toggleNav }} />
+          ) : (
+            ""
+          )}
 
           <button
             className="cart-button"

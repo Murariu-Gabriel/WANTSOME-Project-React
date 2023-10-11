@@ -15,7 +15,6 @@ const SelectBox = ({
 
   const selectBoxRef = useRef(null)
 
-
   useEffect(
     handleToggleWhenClickedOutside(selectBoxRef, selectToggle, setSelectToggle)
   ,[])

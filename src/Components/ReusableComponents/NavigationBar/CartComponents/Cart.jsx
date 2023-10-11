@@ -16,7 +16,7 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter, cartToggle, set
 
   const items = getLocalStorageItems("cart-products")
   const counts = getCounts(items)
-  
+
   const cartRef = useRef(null)
 
   const ifZeroUpdate = (count, id) => {
@@ -40,15 +40,20 @@ const Cart = memo(({ updateCounter, cartCounter, setCartCounter, cartToggle, set
     )
   }, [])
 
-   useEffect(
-     handleToggleWhenClickedOutside(
-       cartRef,
-       cartToggle,
-       setCartToggle,
-       extraRef
-     ),
-     []
-   )
+
+  useEffect( () => {
+    
+    
+    // if(!cartToggle){
+       handleToggleWhenClickedOutside(
+         cartRef,
+         cartToggle,
+         setCartToggle,
+         extraRef
+       )
+    // }
+
+   },[])
 
 
 

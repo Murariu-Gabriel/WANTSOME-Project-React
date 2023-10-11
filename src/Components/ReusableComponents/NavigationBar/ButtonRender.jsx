@@ -1,9 +1,10 @@
-const ButtonRender = ({navToggle, toggleNav}) => {
+const ButtonRender = ({navToggle, toggleNav, refForNav}) => {
+
 
   return (
     <>
       {navToggle ? (
-        <button onClick={() => toggleNav()}>
+        <button ref={refForNav} onClick={() => toggleNav()}>
           <svg
             stroke="currentColor"
             strokeWidth="0"

@@ -6,7 +6,8 @@ import handleToggleWhenClickedOutside from "../Functions/handleToggleWhenClicked
 const UserOptions = ({ user, userOptionsToggle, setUserOptionsToggle, extraRef }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const userRef = useRef(null)
+  const userRef1 = useRef(null)
+  const userRef2 = useRef(null)
 
   const handleLogout = () => {
     setIsLoggedIn(!isLoggedIn)
@@ -19,25 +20,26 @@ const UserOptions = ({ user, userOptionsToggle, setUserOptionsToggle, extraRef }
     }
   }, [])
 
-  useEffect(
-    handleToggleWhenClickedOutside(
-      userRef,
-      userOptionsToggle,
-      setUserOptionsToggle,
-      extraRef
-    ),
-    []
-  )
+  console.log("userToggle initiation")
+  useEffect(() =>{
+     if (isLoggedIn) {
+      // Use userRef2 when the second div is visible
+      handleToggleWhenClickedOutside(userRef1, userOptionsToggle, setUserOptionsToggle, extraRef);
+    } else {
+      // Use userRef1 when the first div is visible
+      handleToggleWhenClickedOutside(userRef2, userOptionsToggle, setUserOptionsToggle, extraRef);
+    }
+  }, [])
 
-  // console.log(user)
+  // console.log(extraRef)
 
   return (
     <aside className="user-container overlay">
       <div className="user-options-container">
-        <div className="user-options" ref={userRef}>
+        <div className="user-options" >
           <div
             className={`user-options-content ${isLoggedIn ? "hide" : ""}`}
-            // ref={userRef}
+            ref={userRef2}
           >
             <Link reloadDocument to="/login" className="button-1">
               Login
@@ -54,7 +56,7 @@ const UserOptions = ({ user, userOptionsToggle, setUserOptionsToggle, extraRef }
 
           <div
             className={`user-options-content  ${isLoggedIn ? "" : "hide"}`}
-            // ref={userRef}
+            ref={userRef1}
           >
             <span>Welcome, {user.last_name}!</span>
             <button className="button-3" onClick={() => handleLogout()}>
