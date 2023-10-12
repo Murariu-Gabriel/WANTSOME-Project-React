@@ -13,7 +13,7 @@ const DisplayResults = ({
   setCurrentItems,
 }) => {
   const [itemsPerPage, setItemsPerPage] = useState(9)
-    const [viewOptionToggle, setViewOptionToggle] = useState(false)
+  const [viewOptionToggle, setViewOptionToggle] = useState(false)
  
     const handleViewChange = () => {
       setViewOptionToggle(!viewOptionToggle)
@@ -59,6 +59,8 @@ const DisplayResults = ({
             selectableItems={["9 on page", "18 on page"]}
             givenClass={"select-pagination"}
             setItemsPerPage={setItemsPerPage}
+            currentItems={currentItems}
+            setCurrentItems={setCurrentItems}
           />
 
           <button

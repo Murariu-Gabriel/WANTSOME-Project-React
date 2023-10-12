@@ -20,6 +20,8 @@ const SelectBox = ({
   ,[])
 
 
+  console.log(currentItems)
+
   const sort = (array, callback) => {
     const sort = array.toSorted(callback)
 
@@ -27,12 +29,21 @@ const SelectBox = ({
   }
 
   const handleSelectedItem = (item) => {
-    const firstWordSlashNumber = item.split(" ")[0].toLowerCase()
+    console.log(setCurrentItems)
 
+    const firstWordSlashNumber = item.split(" ")[0].toLowerCase()
+    console.log(item)
+    
+    setCurrentSelectedItem(item)
     if (!isNaN(firstWordSlashNumber)) {
       const selectedItemPerPage = parseInt(firstWordSlashNumber)
 
+      
+      localStorage.setItem("pagination_preference", item)
+      console.log(selectedItemPerPage)
       setItemsPerPage(selectedItemPerPage)
+    } else {
+      localStorage.setItem("order_preference", item)
     }
 
     if (firstWordSlashNumber === "increasing") {
@@ -63,6 +74,8 @@ const SelectBox = ({
       )
 
       console.log(sortedItems)
+      
+      
       setCurrentItems(sortedItems)
     }
   }
@@ -71,6 +84,37 @@ const SelectBox = ({
 
   // I need to somehow make it remember the order and when filters are changed the order to be kept
 
+  // first save the options selected in local storage
+
+  // two, use a useEffect and if there is something in local storage apply the current order and pagination
+
+  // you will cal the function that you made up in this function
+
+  // there is a problem, you might just need to somehow trigger the function from this component each you click on a filter
+
+  // RECENT PROBLEMS PROBLEMS
+
+  // because this component uses different functionality in 2 places it error because it doesn t find the functionality from the other
+  
+  // you either figure out how to condition when one doesn t have the other or to condition them when they both have the same
+
+  useEffect(() => {
+    if (setItemsPerPage && setCurrentItems){
+      const paginationPreference = localStorage.getItem("pagination_preference")
+      const orderPreference = localStorage.getItem("order_preference")
+      console.log(paginationPreference, orderPreference)
+      // get the pagination and order
+      if (paginationPreference) {
+        handleSelectedItem(paginationPreference)
+      }
+
+      if (orderPreference) {
+        handleSelectedItem(orderPreference)
+      }
+
+    }
+
+  }, [])
 
   return (
     <div
@@ -88,7 +132,6 @@ const SelectBox = ({
             <li
               key={crypto.randomUUID()}
               onClick={() => {
-                setCurrentSelectedItem(item)
                 handleSelectedItem(item)
               }}
             >

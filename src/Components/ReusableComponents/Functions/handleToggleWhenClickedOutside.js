@@ -1,7 +1,9 @@
 const handleToggleWhenClickedOutside = (ref, isToggled, setToggle, extraRef = null) => {
 
   const handleOutsideClick = (event) => {
-   document.body.classList.add("stop-scroll")
+    if (!event.target.classList.contains("select")){
+      document.body.classList.add("stop-scroll")
+    }
 
    if (isToggled && ref.current) {
      if (
