@@ -5,6 +5,7 @@ import replaceLine from "../../Functions/replaceLine"
 import updateRecentSearches from "../../Functions/updateRecentSearches"
 import useFetch from "../../Functions/useFetch"
 import SearchResults from "./SearchResults"
+import { apiUrl } from "../../Functions/generalVariables"
 import "./searchStyles/index.scss"
 
 const SearchBar = () => {
@@ -35,7 +36,7 @@ const SearchBar = () => {
     isLoading,
     isError,
     data: products,
-  } = useFetch(`http://localhost:3000/products`)
+  } = useFetch(`${apiUrl}/products`)
 
   const recentSearches = getLocalStorageItems("recent-searches", [])
 

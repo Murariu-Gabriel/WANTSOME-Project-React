@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import CategoryElement from "./CategoryElement"
+import { apiUrl } from "../Functions/generalVariables"
+
 import "./styles.scss"
 
 const Categories = () => {
@@ -8,7 +10,7 @@ const Categories = () => {
 
   const getCategories = async () => {
     try {
-      const response = await fetch("http://localhost:3000/categories")
+      const response = await fetch(`${apiUrl}/categories`)
       const data = await response.json()
   
       setCategories(data)

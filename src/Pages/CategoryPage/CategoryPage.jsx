@@ -6,6 +6,7 @@ import useFetch from "../../Components/ReusableComponents/Functions/useFetch"
 import LoadingError from "../../Components/ReusableComponents/LoadingError"
 import LoadingTransition from "../../Components/ReusableComponents/LoadingTransition"
 import Product from "./Product"
+import { apiUrl } from "../../Components/ReusableComponents/Functions/generalVariables"
 
 import "./styles.scss"
 
@@ -16,7 +17,7 @@ const CategoryPage = () => {
     isLoading,
     isError,
     data: products,
-  } = useFetch(`http://localhost:3000/products?category=${id}`)
+  } = useFetch(`${apiUrl}/products?category=${id}`)
 
   if (isLoading) {
     return <LoadingTransition/>

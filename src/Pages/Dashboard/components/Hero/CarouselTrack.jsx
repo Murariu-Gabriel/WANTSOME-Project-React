@@ -1,3 +1,4 @@
+import { apiUrl } from "../../../../Components/ReusableComponents/Functions/generalVariables"
 import useFetch from "../../../../Components/ReusableComponents/Functions/useFetch"
 
 const CarouselTrack = () => {
@@ -10,7 +11,7 @@ const CarouselTrack = () => {
         isLoading,
         isError,
         data: products,
-    } = useFetch("http://localhost:3000/products?new=true")
+    } = useFetch(`${apiUrl}/products?new=true`)
 
 
 

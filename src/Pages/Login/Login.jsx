@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Input from "../../Components/ReusableComponents/FormComponents/Input"
-import "./loginStyles.scss"
+import { apiUrl } from "../../Components/ReusableComponents/Functions/generalVariables"
 import SimpleInput from "./SimpleInput"
+
+import "./loginStyles.scss"
 
 const Login = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -55,7 +57,7 @@ const Login = () => {
     formValidation()
 
     if (values.email.length > 0 && values.password.length > 0) {
-      fetch(`http://localhost:3000/users?email=${values.email}`)
+      fetch(`${apiUrl}/users?email=${values.email}`)
         .then((response) => {
           if (response.ok && response.status === 200) {
             return response.json()

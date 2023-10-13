@@ -11,6 +11,7 @@ import GoBack from "../../Components/ReusableComponents/GoBack"
 import "./styles.scss"
 import LoadingTransition from "../../Components/ReusableComponents/LoadingTransition"
 import LoadingError from "../../Components/ReusableComponents/LoadingError"
+import { apiUrl } from "../../Components/ReusableComponents/Functions/generalVariables"
 
 
 const ProductPage = ({ updateCounter }) => {
@@ -45,7 +46,7 @@ const ProductPage = ({ updateCounter }) => {
     isLoading,
     isError,
     data: product,
-  } = useFetch(`http://localhost:3000/products/${id}`)
+  } = useFetch(`${apiUrl}/products/${id}`)
 
   if (isLoading) {
     return <LoadingTransition/>

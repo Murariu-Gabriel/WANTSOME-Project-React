@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { apiUrl } from "../../../../Components/ReusableComponents/Functions/generalVariables"
 import "./heroStyles.scss"
 
 
@@ -8,7 +9,7 @@ const Hero = () => {
 
   const itemForHero = async () => {
     try {
-    const response = await fetch("http://localhost:3000/products/item-3")
+    const response = await fetch(`${apiUrl}/products/item-3`)
     const data = await response.json()
     
       setItem(data)

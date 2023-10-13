@@ -1,10 +1,12 @@
+import { apiUrl } from "./generalVariables"
+
 
 const generateProducts = async (array) => {
   try {
     const getProducts = await Promise.all(
       array.map(async (element) => {
         const response = await fetch(
-          `http://localhost:3000/products/item-${element}`
+          `${apiUrl}/products/item-${element}`
         )
 
         if (response.ok && response.status === 200) {

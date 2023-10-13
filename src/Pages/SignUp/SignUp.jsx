@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import Input from "../../Components/ReusableComponents/FormComponents/Input"
+import { apiUrl } from "../../Components/ReusableComponents/Functions/generalVariables"
 import RegisterPopup from "./RegisterPopup"
 import "./signUpStyles.scss"
 
@@ -226,7 +227,7 @@ const SignUp = () => {
     console.log(hasError)
     if(hasError.length === 0){
 
-    fetch(`http://localhost:3000/users?email=${email}`)
+    fetch(`${apiUrl}/users?email=${email}`)
       .then((response) => {
         if (response.ok && response.status === 200) {
           return response.json()
@@ -246,7 +247,7 @@ const SignUp = () => {
           })
         } else {
           setPopToggle(true)
-          fetch("http://localhost:3000/users", {
+          fetch(`${apiUrl}/users`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

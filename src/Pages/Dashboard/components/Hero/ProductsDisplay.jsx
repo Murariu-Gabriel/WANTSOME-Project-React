@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { Link } from "react-router-dom"
+import { apiUrl } from "../../../../Components/ReusableComponents/Functions/generalVariables"
 import useFetch from "../../../../Components/ReusableComponents/Functions/useFetch"
 import LoadingError from "../../../../Components/ReusableComponents/LoadingError"
 import LoadingTransition from "../../../../Components/ReusableComponents/LoadingTransition"
@@ -18,7 +19,7 @@ const ProductsDisplay = () => {
     isLoading,
     isError,
     data: products,
-  } = useFetch("http://localhost:3000/products?new=true")
+  } = useFetch(`${apiUrl}/products?new=true`)
 
   const sleep = (ms = 0) => {
     return new Promise((resolve) => setTimeout(resolve, ms))

@@ -745,6 +745,26 @@
         "cardNumber": "",
         "cardPin": ""
       }
+    },
+    {
+      "first_name": "Dan",
+      "last_name": "Negru",
+      "email": "dan@yahoo.com",
+      "signup_password": "!Danareparola1",
+      "condition_terms": "on",
+      "full_name": "Dan Negru",
+      "id": 3,
+      "personal_information": {
+        "fullName": "Dan Negru",
+        "email": "dan@yahoo.com",
+        "phoneNumber": 123123123121,
+        "address": "12",
+        "zipCode": "12312",
+        "city": "1",
+        "country": "1",
+        "cardNumber": "",
+        "cardPin": ""
+      }
     }
   ],
   "price-ranges": [

@@ -35,10 +35,12 @@ const OrderSuccessful = ({ grandTotal, name, img, discount, price, count }) => {
             <ul>
               <SummaryItem {...{ name, img, price, discount, count }} />
             </ul>
-            <p>
-              and <span>{items}</span> other
-              <span> {items > 1 ? "items" : "item"}</span>
-            </p>
+            {items > 0 && (
+              <p>
+                and <span>{items}</span> other
+                <span> {items > 1 ? "items" : "item"}</span>
+              </p>
+            )}
           </div>
 
           <div className="order-total">

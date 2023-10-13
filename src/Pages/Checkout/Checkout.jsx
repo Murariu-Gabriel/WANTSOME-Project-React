@@ -10,9 +10,10 @@ import getItemsInfo from "../../Components/ReusableComponents/Functions/getItems
 import SummaryItem from "./SummaryItem"
 import TotalPaymentListElement from "./TotalPaymentListElement"
 import GoBack from "../../Components/ReusableComponents/GoBack"
+import { apiUrl } from "../../Components/ReusableComponents/Functions/generalVariables"
+import InputForCheckout from "./InputForCheckout"
 
 import "./styles.scss"
-import InputForCheckout from "./InputForCheckout"
 
 const Checkout = () => {
   const [togglePopUp, setTogglePopUp] = useState(false)
@@ -29,7 +30,7 @@ const Checkout = () => {
     defaultValues: async () => {
 
       try {
-        const response = await fetch(`http://localhost:3000/users/${user.id}`)
+        const response = await fetch(`${apiUrl}/users/${user.id}`)
         const data = await response.json()
 
         return {
@@ -84,7 +85,7 @@ const Checkout = () => {
     console.log("form submited", data)
     setTogglePopUp(true)
 
-     fetch(`http://localhost:3000/users/${user.id}`, {
+     fetch(`${apiUrl}/users/${user.id}`, {
        method: "PATCH",
        headers: {
          "Content-Type": "application/json",
