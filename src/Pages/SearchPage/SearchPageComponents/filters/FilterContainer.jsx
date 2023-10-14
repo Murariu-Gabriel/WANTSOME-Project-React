@@ -6,12 +6,11 @@ const FilterContainer = ({
   span,
   items,
   filters,
-  passCurrentItems,
+  passCurrentItems
 }) => {
   const [currentItems, setCurrentItems] = useState([])
 
   // const editedSpan = span.replace(/-/g, " ")
-
 
   useEffect(() => {
     setCurrentItems(items)
@@ -27,7 +26,6 @@ const FilterContainer = ({
         {currentItems.map((item) => {
           const { count, name, products } = item
 
-          
           return (
             <FilterElement
               key={crypto.randomUUID()}

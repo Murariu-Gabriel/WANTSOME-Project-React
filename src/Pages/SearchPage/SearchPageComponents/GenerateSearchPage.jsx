@@ -9,9 +9,13 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
   const [allItems, setAllItems] = useState([])
   const [currentSearchedItems, setCurrentSearchedItems] = useState([])
   const [filtersToggle, setFiltersToggle] = useState(false)
-  
+  const [toggleUpdatePreference, setToggleUpdatePreference] = useState(false)
 
  
+  const updatePreferenceToggle = () => {
+    setToggleUpdatePreference(!toggleUpdatePreference)
+  }
+
  const products = getProducts()
  
  useEffect(() => {
@@ -46,7 +50,6 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
   return (
     <section className="generated-search-result ">
       <div className="container ">
-
         <Filters
           {...{
             currentSearchedItems,
@@ -55,6 +58,7 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
             setCurrentItems,
             setFiltersToggle,
             filtersToggle,
+            updatePreferenceToggle,
           }}
         />
 

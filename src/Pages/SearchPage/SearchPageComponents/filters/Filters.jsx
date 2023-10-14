@@ -19,10 +19,8 @@ const Filters = ({
   setFiltersToggle,
   filtersToggle,
 }) => {
- 
-  console.log(currentItems,": current Items")
-   console.log(currentSearchedItems, ": current Searched Items")
-
+  console.log(currentItems, ": current Items")
+  console.log(currentSearchedItems, ": current Searched Items")
 
   const returnFromSearch = (list, fromList) => {
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
@@ -242,6 +240,8 @@ const Filters = ({
 
   updateFilterContainers()
 
+  // I could make a function that sorts the  result from handle filter update after the current order preferences
+
   const passCurrentItems = () => {
     setCurrentItems(handleFilterUpdates())
   }
@@ -251,7 +251,7 @@ const Filters = ({
     setCurrentItems(handleFilterUpdates())
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     setCurrentItems(handleFilterUpdates())
   }, [])
 
@@ -287,25 +287,25 @@ const Filters = ({
         <FilterContainer
           span={"all-available-products"}
           items={totalFilters["all-available-products"]}
-          {...{ passCurrentItems }}
+          {...{ passCurrentItems, }}
         />
 
         <FilterContainer
           span={"category"}
           items={totalFilters.category}
-          {...{ passCurrentItems }}
+          {...{ passCurrentItems, }}
         />
 
         <FilterContainer
           span={"brand"}
           items={totalFilters.brand}
-          {...{ passCurrentItems }}
+          {...{ passCurrentItems, }}
         />
 
         <FilterContainer
           span={"price"}
           items={totalFilters.price}
-          {...{ passCurrentItems }}
+          {...{ passCurrentItems, }}
         />
         {/* <div className="filter-container">
           <span id="filter-container-name">price</span>

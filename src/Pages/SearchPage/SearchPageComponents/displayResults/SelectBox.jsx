@@ -1,5 +1,4 @@
-import { useEffect, useRef } from "react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import handleToggleWhenClickedOutside from "../../../../Components/ReusableComponents/Functions/handleToggleWhenClickedOutside"
 
 const SelectBox = ({
@@ -21,31 +20,29 @@ const SelectBox = ({
     []
   )
 
- 
-
   const sort = (array, callback) => {
     const sort = array.toSorted(callback)
 
     return sort
   }
 
+
+  // you need to figure out how to break or make another function like this that will arrange the array in filters before loading it
+
+
   const handleSelectedItem = (item) => {
     const firstWordSlashNumber = item.split(" ")[0].toLowerCase()
     console.log(item)
 
-
-      setCurrentSelectedItem(item)
-
+    setCurrentSelectedItem(item)
 
     if (!isNaN(firstWordSlashNumber)) {
       const selectedItemPerPage = parseInt(firstWordSlashNumber)
-
 
       localStorage.setItem("pagination_preference", item)
       console.log(selectedItemPerPage)
       setItemsPerPage(selectedItemPerPage)
     } else {
-
       localStorage.setItem("order_preference", item)
     }
 
@@ -86,23 +83,19 @@ const SelectBox = ({
 
   // maybe I can store the function that makes order and pagination preference in higher in components
 
+  useEffect(() => {
+    const paginationPreference = localStorage.getItem("pagination_preference")
+    const orderPreference = localStorage.getItem("order_preference")
+    console.log(paginationPreference, orderPreference)
 
-    useEffect(() => {
-      const paginationPreference = localStorage.getItem("pagination_preference")
-      const orderPreference = localStorage.getItem("order_preference")
-      console.log(paginationPreference, orderPreference)
-
-      if (orderPreference && selectType === "Order after") {
-        console.log("orderPreference")
-        handleSelectedItem(orderPreference)
-      } else if (paginationPreference && selectType === "9 on page") {
-        console.log("paginationPreference")
-        handleSelectedItem(paginationPreference)
-      }
-    }, [])
-  
-
- 
+    if (orderPreference && selectType === "Order after") {
+      console.log("orderPreference")
+      handleSelectedItem(orderPreference)
+    } else if (paginationPreference && selectType === "9 on page") {
+      console.log("paginationPreference")
+      handleSelectedItem(paginationPreference)
+    }
+  }, [])
 
   return (
     <div

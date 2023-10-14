@@ -11,15 +11,14 @@ const DisplayResults = ({
   filtersToggle,
   currentSearch,
   setCurrentItems,
+ 
 }) => {
   const [itemsPerPage, setItemsPerPage] = useState(9)
   const [viewOptionToggle, setViewOptionToggle] = useState(false)
 
- 
-    const handleViewChange = () => {
-      setViewOptionToggle(!viewOptionToggle)
-    }
-
+  const handleViewChange = () => {
+    setViewOptionToggle(!viewOptionToggle)
+  }
 
   return (
     <div className="display-search-results">
@@ -54,7 +53,7 @@ const DisplayResults = ({
             ]}
             setCurrentItems={setCurrentItems}
             currentItems={currentItems}
-       
+          
           />
 
           <SelectBox
@@ -64,7 +63,7 @@ const DisplayResults = ({
             setItemsPerPage={setItemsPerPage}
             currentItems={currentItems}
             setCurrentItems={setCurrentItems}
-    
+           
           />
 
           <button

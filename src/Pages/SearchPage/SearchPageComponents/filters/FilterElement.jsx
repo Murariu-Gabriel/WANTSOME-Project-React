@@ -30,28 +30,23 @@ const FilterElement = ({
     if (filters?.["all-available-products"]?.[name]) {
       localStorage.removeItem("filters")
       handleCheckboxChange(span, name, !isChecked)
-      
-
     } else if (filters?.["category"]?.[name]) {
       delete filters.brand
       delete filters.price
       const stringItems = JSON.stringify(filters)
       localStorage.setItem("filters", stringItems)
       handleCheckboxChange(span, name, !isChecked)
-
     } else if (filters?.["brand"]?.[name]) {
       delete filters.price
       const stringItems = JSON.stringify(filters)
       localStorage.setItem("filters", stringItems)
       handleCheckboxChange(span, name, !isChecked)
-
     } else {
       handleCheckboxChange(span, name, !isChecked)
     }
   }
 
   // const editedName = name.replace(/-/g, " ")
-
 
   // this is to do after I figure out the function above
   // if span == brand then update price
@@ -60,7 +55,6 @@ const FilterElement = ({
     handleLoadingOrderOfFilters()
     setIsChecked(!isChecked)
     passCurrentItems(products)
-
   }
 
   return (
