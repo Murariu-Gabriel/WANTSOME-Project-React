@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import getFromDataBase from "../../../../Components/ReusableComponents/Functions/getFromDataBase"
 import getLocalStorageItems from "../../../../Components/ReusableComponents/Functions/getLocalStorageItems"
+import orderProducts from "../../../../Components/ReusableComponents/Functions/orderProducts"
 import FilterContainer from "./FilterContainer"
 
 
@@ -240,19 +241,29 @@ const Filters = ({
 
   updateFilterContainers()
 
-  // I could make a function that sorts the  result from handle filter update after the current order preferences
+
+  const handleOrder = () => {
+    const orderPreference = localStorage.getItem("order_preference")
+    const firstWord = orderPreference.split(" ")[0].toLowerCase()
+    const orderedProducts = orderProducts(firstWord, handleFilterUpdates())
+
+    setCurrentItems(orderedProducts)
+  }
 
   const passCurrentItems = () => {
-    setCurrentItems(handleFilterUpdates())
+
+    handleOrder()
   }
 
   const deleteFilters = () => {
     localStorage.removeItem("filters")
-    setCurrentItems(handleFilterUpdates())
+
+    handleOrder()
   }
 
   useEffect(() => {
-    setCurrentItems(handleFilterUpdates())
+
+    handleOrder()
   }, [])
 
   return (

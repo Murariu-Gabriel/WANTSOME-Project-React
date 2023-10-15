@@ -6,14 +6,21 @@ import "./SearchPage.scss"
 const SearchPage = ({ updateCounter }) => {
   const params = useParams()
   const currentSearch = params.id
-  console.log(params)
-  // updateCounter is to be used for adding items to cart and takes 2 parameters, how many items to add and operation, if you add only 1 as first parameter it will just add 1
 
+  // when pagination is clicked the page should load at top
+
+  // when coming back from product page you should come back to the same page you left
+
+  // search should respond to enter
+
+  // all the toggles should respond to esc
+
+  // NEXT AND LAST THING 
+
+  // you need to make the navbar sticky and figure out the cross platform sticky nav
 
   return (
     <>
-      {/* <div>SearchPage searched item = {currentSearch}</div> */}
-
       <GenerateSearchPage {...{ updateCounter, currentSearch}} />
 
       <About />
