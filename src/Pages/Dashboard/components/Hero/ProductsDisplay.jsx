@@ -66,7 +66,7 @@ const ProductsDisplay = () => {
     }
   }
 
-  console.log("re-render", activeIdx)
+
 
   const moveRight = jumperFactory(1)
   const moveLeft = jumperFactory(-1)

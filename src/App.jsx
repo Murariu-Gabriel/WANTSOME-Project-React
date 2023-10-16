@@ -21,8 +21,10 @@ const App = () => {
     
     if (isSearchPage !== "search" && isSearchPage !== "productPage") {
       localStorage.removeItem("filters")
-      console.log(isSearchPage)
+      localStorage.removeItem("order_preference")
+      localStorage.removeItem("current_page")
     }
+
 
   }, [])
 

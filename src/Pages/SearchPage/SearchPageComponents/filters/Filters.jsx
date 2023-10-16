@@ -20,8 +20,7 @@ const Filters = ({
   setFiltersToggle,
   filtersToggle,
 }) => {
-  console.log(currentItems, ": current Items")
-  console.log(currentSearchedItems, ": current Searched Items")
+
 
   const returnFromSearch = (list, fromList) => {
     const uniqueCategories = list.reduce((accumulator, currentValue) => {
@@ -159,23 +158,19 @@ const Filters = ({
       !isFilterFalse(filters.price) &&
       returnCheckedItems().price.length !== 0
     ) {
-      console.log(returnCheckedItems().price)
-      if (!isFilterFalse(filters["all-available-products"])) {
-        console.log("da")
-      }
-
       return returnCheckedItems().price
+
     } else if (
       !isFilterFalse(filters.brand) &&
       returnCheckedItems().brand.length !== 0
     ) {
-      console.log(returnCheckedItems().brand)
       return returnCheckedItems().brand
+
     } else if (!isFilterFalse(filters.category)) {
-      console.log(returnCheckedItems().category)
+     
       return returnCheckedItems().category
     } else if (!isFilterFalse(filters["all-available-products"])) {
-      console.log(returnCheckedItems()["all-available-products"])
+      
       return totalFilters["all-available-products"][0].products
     } else {
       return currentSearchedItems
@@ -193,7 +188,7 @@ const Filters = ({
   }
 
   if (returnCheckedItems().brand.length !== 0) {
-    console.log(returnCheckedItems().brand)
+   
     totalFilters.price = returnFromSearch(returnCheckedItems().brand, "price")
   }
 
@@ -244,10 +239,16 @@ const Filters = ({
 
   const handleOrder = () => {
     const orderPreference = localStorage.getItem("order_preference")
-    const firstWord = orderPreference.split(" ")[0].toLowerCase()
-    const orderedProducts = orderProducts(firstWord, handleFilterUpdates())
+    
+    if(orderPreference){
+      const firstWord = orderPreference.split(" ")[0].toLowerCase()
+      const orderedProducts = orderProducts(firstWord, handleFilterUpdates())
+      setCurrentItems(orderedProducts)
 
-    setCurrentItems(orderedProducts)
+    } else {
+      setCurrentItems(handleFilterUpdates())
+    }
+
   }
 
   const passCurrentItems = () => {
@@ -397,71 +398,6 @@ const Filters = ({
   )
 }
 export default Filters
-
-
-
-
-// pieces of code for later in case I need
-
-
-
-
-
-
-
-// if (currentItemsForAllFilters.brand.length !== 0) {
-//   console.log(currentItemsForAllFilters.brand)
-//   totalFilters.price = returnFromSearch(
-//     currentItemsForAllFilters.brand,
-//     "price"
-//   )
-//   // return []
-// } else if (currentItemsForAllFilters.category.length !== 0) {
-//   console.log(currentItemsForAllFilters.category)
-
-//   const currentStatus = returnFromSearch(
-//     currentItemsForAllFilters.category,
-//     "brand"
-//   )
-
-//   totalFilters.brand = currentStatus
-//   console.log(totalFilters)
-
-//   const concatArrays = currentStatus.reduce((accumulator, currentItem) => {
-//     return accumulator.concat(currentItem.products)
-//   }, [])
-
-//   console.log(concatArrays)
-
-//   return concatArrays
-// }
-
-
-
-
-//  if (!isFilterFalse(filters["all-available-products"])) {
-//    console.log(currentItemsForAllFilters["all-available-products"])
-//    return totalFilters["all-available-products"][0].products
-//  } else if (!isFilterFalse(filters.category)) {
-//    console.log(currentItemsForAllFilters.category)
-//    return currentItemsForAllFilters.category
-//  } else if (
-//    !isFilterFalse(filters.brand) &&
-//    currentItemsForAllFilters.category.length == 0
-//  ) {
-//    console.log(currentItemsForAllFilters.brand)
-//    return currentItemsForAllFilters.brand
-//  } else if (
-//    !isFilterFalse(filters.price) &&
-//    currentItemsForAllFilters.brand.length == 0
-//  ) {
-//    console.log(currentItemsForAllFilters.price)
-//    return currentItemsForAllFilters.price
-//  } else {
-//    console.log(currentSearchedItems)
-//    return currentSearchedItems
-//  }
-
 
 
 

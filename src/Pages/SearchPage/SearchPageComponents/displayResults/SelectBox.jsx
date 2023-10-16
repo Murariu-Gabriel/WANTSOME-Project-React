@@ -24,7 +24,7 @@ const SelectBox = ({
 
   const handleSelectedItem = (item) => {
     const firstWordSlashNumber = item.split(" ")[0].toLowerCase()
-    console.log(item)
+
 
     setCurrentSelectedItem(item)
 
@@ -32,28 +32,25 @@ const SelectBox = ({
       const selectedItemPerPage = parseInt(firstWordSlashNumber)
 
       localStorage.setItem("pagination_preference", item)
-      console.log(selectedItemPerPage)
+     
       setItemsPerPage(selectedItemPerPage)
     } else {
       localStorage.setItem("order_preference", item)
+      setCurrentItems(orderProducts(firstWordSlashNumber, currentItems))
     }
-
-   
-    setCurrentItems(orderProducts(firstWordSlashNumber, currentItems))
-
   }
 
 
   useEffect(() => {
     const paginationPreference = localStorage.getItem("pagination_preference")
     const orderPreference = localStorage.getItem("order_preference")
-    console.log(paginationPreference, orderPreference)
+  
 
     if (orderPreference && selectType === "Order after") {
-      console.log("orderPreference")
+     
       handleSelectedItem(orderPreference)
     } else if (paginationPreference && selectType === "9 on page") {
-      console.log("paginationPreference")
+   
       handleSelectedItem(paginationPreference)
     }
   }, [])

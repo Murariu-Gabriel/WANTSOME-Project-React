@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import getLocalStorageItems from "../../Functions/getLocalStorageItems"
 import replaceLine from "../../Functions/replaceLine"
@@ -6,6 +6,8 @@ import updateRecentSearches from "../../Functions/updateRecentSearches"
 import useFetch from "../../Functions/useFetch"
 import SearchResults from "./SearchResults"
 import { apiUrl } from "../../Functions/generalVariables"
+import handleToggleWhenClickedOutside from "../../Functions/handleToggleWhenClickedOutside"
+
 import "./searchStyles/index.scss"
 
 const SearchBar = () => {
@@ -16,12 +18,11 @@ const SearchBar = () => {
 
   const navigate = useNavigate()
 
+  const searchRef = useRef()
 
   const getSearchQuery = () => {
     const path = window.location.pathname.split("/")
     const query = path[path.length - 1].replace(/%20/g, " ")
-
-    console.log(path[1])
 
     return path[1] === "search" ? query : ""
   }
@@ -29,7 +30,6 @@ const SearchBar = () => {
 
   useEffect(() => {
     setQuery(getSearchQuery())
-    // console.log(path, "ASDAS")
   }, [])
 
   const {
@@ -60,10 +60,11 @@ const SearchBar = () => {
   }
 
 
-  
-
   useEffect(() => {
     setItems(recentSearches)
+
+    handleToggleWhenClickedOutside(searchRef, searchToggle, setSearchToggle)
+
   }, [searchToggle])
 
   if (isLoading) {
@@ -81,6 +82,7 @@ const SearchBar = () => {
   }
 
   const handleSearch = (value) => {
+
     const currentQuerySearch = value.toLowerCase()
 
     setQuery(currentQuerySearch)
@@ -154,8 +156,15 @@ const SearchBar = () => {
     navigate(`/search/${query}`, {})
     window.location.reload()
     
-   
   }
+
+  const handleOnKeyDown = (e) => {
+    if(e.key === "Enter"){
+      loadSearch()
+    }
+  }
+
+ 
 
   return (
     <>
@@ -163,6 +172,7 @@ const SearchBar = () => {
       <section className={`search-container ${searchToggle ? "overlay2" : ""}`}>
         <div className={`form-content ${searchToggle ? "content-width" : ""}`}>
           <div
+            ref={searchRef}
             className={`input-container ${
               searchToggle ? "top search-animation" : ""
             }`}
@@ -175,6 +185,7 @@ const SearchBar = () => {
               value={query}
               onChange={(e) => handleSearch(e.target.value)}
               onClick={() => setSearchToggle(true)}
+              onKeyDown={handleOnKeyDown}
             />
 
             <p className="place-holder" id="place-holder">
