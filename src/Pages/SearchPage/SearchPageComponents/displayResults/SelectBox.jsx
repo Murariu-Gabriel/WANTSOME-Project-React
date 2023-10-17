@@ -40,6 +40,8 @@ const SelectBox = ({
     }
   }
 
+ 
+
 
   useEffect(() => {
     const paginationPreference = localStorage.getItem("pagination_preference")
