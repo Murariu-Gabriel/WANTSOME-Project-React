@@ -3,7 +3,7 @@ import getFromDataBase from "../../../../Components/ReusableComponents/Functions
 import getLocalStorageItems from "../../../../Components/ReusableComponents/Functions/getLocalStorageItems"
 import orderProducts from "../../../../Components/ReusableComponents/Functions/orderProducts"
 import FilterContainer from "./FilterContainer"
-
+import checkIfAllFiltersFalse from "../../../../Components/ReusableComponents/Functions/checkIfAllFiltersFalse"
 
 const priceRanges = getFromDataBase("http://localhost:3000/price-ranges")
 
@@ -11,6 +11,10 @@ priceRanges.then(data => {
   const ranges = JSON.stringify(data)
   localStorage.setItem("price-ranges", ranges)
 })
+
+// Long story short this solution is not appropriate for applying filters to a site
+
+// This should have been made with the json-server filtering query which is much more convenient and has more performance
 
 const Filters = ({
   currentItems,
@@ -99,19 +103,19 @@ const Filters = ({
     price: returnFromSearch(currentItems, "price"),
   }
 
-  const checkIfAllFiltersFalse = () => {
-    const filters = getLocalStorageItems("filters")
+  // const checkIfAllFiltersFalse = () => {
+  //   const filters = getLocalStorageItems("filters")
 
-    for (const filter in filters) {
-      for (const key in filters[filter]) {
-        if (filters[filter][key]) {
-          return false
-        }
-      }
-    }
+  //   for (const filter in filters) {
+  //     for (const key in filters[filter]) {
+  //       if (filters[filter][key]) {
+  //         return false
+  //       }
+  //     }
+  //   }
 
-    return true
-  }
+  //   return true
+  // }
 
   const isFilterFalse = (toCheck) => {
     // for (const filter in toCheck) {
@@ -237,22 +241,29 @@ const Filters = ({
   updateFilterContainers()
 
 
+  // somewhere in the code this array that should be loaded with the selected filters is overwritten
+  
+  // the else statement works just fine
+
+
   const handleOrder = () => {
     const orderPreference = localStorage.getItem("order_preference")
     
     if(orderPreference){
       const firstWord = orderPreference.split(" ")[0].toLowerCase()
       const orderedProducts = orderProducts(firstWord, handleFilterUpdates())
-      setCurrentItems(orderedProducts)
 
-    } else {
+      setCurrentItems(orderedProducts)
+    } 
+    else {
+
       setCurrentItems(handleFilterUpdates())
     }
 
   }
 
   const passCurrentItems = () => {
-
+    localStorage.setItem("current_page", 0)
     handleOrder()
   }
 
@@ -263,7 +274,6 @@ const Filters = ({
   }
 
   useEffect(() => {
-
     handleOrder()
   }, [])
 

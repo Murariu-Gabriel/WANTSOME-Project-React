@@ -22,10 +22,10 @@ const handleToggleWhenClickedOutside = (ref, isToggled, setToggle, extraRef = nu
    } else {
 
   
-     document.removeEventListener("click", handleOutsideClick)
-      document.removeEventListener("keydown", handleKeyPress)
-     document.body.classList.remove("stop-scroll")
-     console.log("fail")
+    document.removeEventListener("click", handleOutsideClick)
+    document.removeEventListener("keydown", handleKeyPress)
+    document.body.classList.remove("stop-scroll")
+     
    }
   }
 

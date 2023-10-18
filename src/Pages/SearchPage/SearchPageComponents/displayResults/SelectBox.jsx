@@ -36,6 +36,7 @@ const SelectBox = ({
       setItemsPerPage(selectedItemPerPage)
     } else {
       localStorage.setItem("order_preference", item)
+    
       setCurrentItems(orderProducts(firstWordSlashNumber, currentItems))
     }
   }
@@ -50,9 +51,11 @@ const SelectBox = ({
 
     if (orderPreference && selectType === "Order after") {
      
-      handleSelectedItem(orderPreference)
-    } else if (paginationPreference && selectType === "9 on page") {
    
+
+      // handleSelectedItem(orderPreference)
+    } else if (paginationPreference && selectType === "9 on page") {
+      
       handleSelectedItem(paginationPreference)
     }
   }, [])

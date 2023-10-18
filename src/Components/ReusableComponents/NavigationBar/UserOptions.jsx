@@ -20,7 +20,7 @@ const UserOptions = ({ user, userOptionsToggle, setUserOptionsToggle, extraRef }
     }
   }, [])
 
-  console.log("userToggle initiation")
+
   useEffect(() =>{
      if (isLoggedIn) {
       // Use userRef2 when the second div is visible

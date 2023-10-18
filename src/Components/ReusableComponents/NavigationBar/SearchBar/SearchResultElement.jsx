@@ -26,6 +26,7 @@ const SearchResultElement = ({name, query}) => {
   const handleClick = () => {
     updateRecentSearches(name)
     localStorage.removeItem("filters")
+    localStorage.setItem("current_page", 0)
   }
 
   return (

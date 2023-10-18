@@ -32,7 +32,7 @@ const orderProducts = (order, currentItems) => {
         a.discount
     )
 
-    console.log(sortedItems)
+
 
     return sortedItems
   }

@@ -156,6 +156,7 @@ const SearchBar = () => {
     navigate(`/search/${query}`, {})
     window.location.reload()
     localStorage.removeItem("filters")
+    localStorage.setItem("current_page", 0)
     
   }
 

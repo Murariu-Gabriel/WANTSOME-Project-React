@@ -11,7 +11,6 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
   const [filtersToggle, setFiltersToggle] = useState(false)
   const [toggleUpdatePreference, setToggleUpdatePreference] = useState(false)
 
- 
   const updatePreferenceToggle = () => {
     setToggleUpdatePreference(!toggleUpdatePreference)
   }
@@ -30,21 +29,21 @@ const GenerateSearchPage = ({ updateCounter, currentSearch }) => {
        setCurrentSearchedItems(filteredData)
        setAllItems(data)
       })
-    }, [])
+  }, [])
 
 
-    // setTimeout(() => {
-      if(currentSearchedItems.length === 0){
-        return (
-        <div className="container">
-          <h2 className="no-results">
-            <span>0 results for:</span> {currentSearch}
-          </h2>
-        </div>
-        )
-      }
-    // }, 2000)
-    
+  // setTimeout(() => {
+    if(currentSearchedItems.length === 0){
+      return (
+      <div className="container">
+        <h2 className="no-results">
+          <span>0 results for:</span> {currentSearch}
+        </h2>
+      </div>
+      )
+    }
+  // }, 2000)
+  
     
     
   return (

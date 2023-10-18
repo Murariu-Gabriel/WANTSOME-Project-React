@@ -4,6 +4,8 @@ import GenerateSearchPage from "./SearchPageComponents/GenerateSearchPage"
 
 import "./SearchPage.scss"
 
+
+
 const SearchPage = ({ updateCounter }) => {
   const params = useParams()
   const currentSearch = params.id
